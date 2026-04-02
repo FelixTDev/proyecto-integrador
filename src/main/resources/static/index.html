@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa Chantilly — Catálogo de Pasteles Artesanales</title>
+  <meta name="description" content="Descubre nuestra colección exclusiva de pasteles artesanales. Elaborados con ingredientes premium, diseñados a tu gusto." />
+
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #c9a96e;
+      --primary-light: #e8c9a0;
+      --accent: #d4856a;
+      --bg: #0f0a08;
+      --bg-card: rgba(255,255,255,0.04);
+      --bg-card-hover: rgba(255,255,255,0.08);
+      --text: #f5f0e8;
+      --muted: #9a8a7e;
+      --border: rgba(201,169,110,0.15);
+      --gradient: linear-gradient(135deg,#c9a96e 0%,#d4856a 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    .nav-custom {
+      background: rgba(15,10,8,0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem; font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 5rem 1rem 3rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem,6vw,4.5rem);
+      font-weight: 700; line-height: 1.1; margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p { color: var(--muted); font-size: 1.1rem; font-weight: 300; letter-spacing: .4px; }
+    .hero-divider {
+      width: 60px; height: 2px; margin: 1.5rem auto;
+      background: var(--gradient); border-radius: 2px;
+    }
+
+    /* ── CATEGORY FILTERS ────────────────────────── */
+    .filters { display: flex; flex-wrap: wrap; gap: .6rem; justify-content: center; padding: 1rem 0 2rem; }
+    .btn-cat {
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 50px;
+      padding: .4rem 1.25rem; font-size: .85rem; font-weight: 500;
+      cursor: pointer; transition: all .25s ease;
+    }
+    .btn-cat:hover, .btn-cat.active {
+      background: var(--gradient); border-color: transparent; color: #fff;
+      transform: translateY(-2px); box-shadow: 0 6px 18px rgba(201,169,110,.3);
+    }
+
+    /* ── PRODUCT GRID ────────────────────────────── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.5rem; padding-bottom: 3rem;
+    }
+
+    /* ── CARD ────────────────────────────────────── */
+    .card-ch {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; cursor: pointer;
+      transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
+    }
+    .card-ch:hover {
+      transform: translateY(-7px); background: var(--bg-card-hover);
+      box-shadow: 0 22px 55px rgba(0,0,0,.55), 0 0 0 1px rgba(201,169,110,.2);
+    }
+    .card-img-wrap {
+      height: 200px; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg,#1a130a,#261c12);
+      font-size: 3.8rem; color: var(--primary); opacity: .35;
+      overflow: hidden; position: relative;
+    }
+    .card-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; opacity: 1;
+    }
+    .card-body-ch { padding: 1.2rem; }
+    .card-cat {
+      font-size: .7rem; font-weight: 600; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--primary); margin-bottom: .35rem;
+    }
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 600; line-height: 1.3;
+      color: var(--text); margin-bottom: .45rem;
+    }
+    .card-desc {
+      font-size: .82rem; color: var(--muted); line-height: 1.55;
+      margin-bottom: .9rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-footer-ch {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: .75rem; border-top: 1px solid var(--border);
+    }
+    .card-price { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .card-price small { font-size: .75rem; font-weight: 400; color: var(--muted); }
+    .badge-stock {
+      font-size: .68rem; padding: .28rem .7rem; border-radius: 50px; font-weight: 600;
+    }
+    .badge-ok  { background: rgba(52,199,89,.1);  color: #34c759; border: 1px solid rgba(52,199,89,.2); }
+    .badge-no  { background: rgba(255,69,58,.1); color: #ff453a; border: 1px solid rgba(255,69,58,.2); }
+    .alergenos { display: flex; flex-wrap: wrap; gap: 4px; margin-top: .55rem; }
+    .alergenotag {
+      font-size: .63rem; background: rgba(201,169,110,.07);
+      border: 1px solid rgba(201,169,110,.14); color: var(--muted);
+      padding: 2px 7px; border-radius: 50px;
+    }
+
+    /* ── SKELETON ────────────────────────────────── */
+    .skeleton {
+      background: linear-gradient(90deg,#1a130a 25%,#261d12 50%,#1a130a 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .sk-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .sk-img  { height: 200px; }
+    .sk-body { padding: 1.2rem; }
+    .sk-line { height: 13px; margin-bottom: 8px; }
+    .sk-title { height: 19px; width: 65%; margin-bottom: 10px; }
+    .sk-price { height: 24px; width: 35%; }
+
+    /* ── PAGINATION ──────────────────────────────── */
+    .pag { display: flex; justify-content: center; gap: .5rem; padding: 1.5rem 0 3rem; flex-wrap: wrap; }
+    .btn-pag {
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--muted);
+      border-radius: 8px; padding: .38rem .9rem; font-size: .85rem; cursor: pointer;
+      transition: all .2s; min-width: 38px; text-align: center;
+    }
+    .btn-pag:hover, .btn-pag.active { background: var(--gradient); border-color: transparent; color: #fff; }
+    .btn-pag:disabled { opacity: .3; cursor: not-allowed; }
+
+    /* ── MODAL ───────────────────────────────────── */
+    .modal-content {
+      background: #16100c; border: 1px solid var(--border);
+      border-radius: 20px; color: var(--text);
+    }
+    .modal-header { border-bottom: 1px solid var(--border); padding: 1.4rem 1.6rem; }
+    .modal-title {
+      font-family: 'Playfair Display', serif; font-size: 1.45rem;
+      background: var(--gradient);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .btn-close-custom {
+      background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer;
+    }
+    .modal-body { padding: 1.5rem 1.6rem; }
+    .variante-card {
+      background: rgba(201,169,110,.05); border: 1px solid var(--border);
+      border-radius: 12px; padding: .9rem 1rem; margin-bottom: .75rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .var-name  { font-weight: 600; font-size: .9rem; }
+    .var-price { color: var(--primary); font-weight: 700; font-size: 1.1rem; }
+    .var-meta  { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── EMPTY STATE ─────────────────────────────── */
+    .empty-state { text-align: center; padding: 4rem 1rem; color: var(--muted); }
+    .empty-state i { font-size: 3.5rem; margin-bottom: 1rem; opacity: .4; }
+    .empty-state p { font-size: 1rem; }
+
+    /* ── TOAST ───────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+      background: #1e160e; border: 1px solid var(--border); border-radius: 12px;
+      padding: .75rem 1.3rem; font-size: .85rem; color: var(--text);
+      box-shadow: 0 8px 30px rgba(0,0,0,.5); display: none;
+    }
+
+    @media(max-width:576px){ .card-price { font-size: 1.1rem; } }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav class="nav-custom">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a href="/" class="nav-brand">Casa Chantilly</a>
+    <div class="d-flex gap-2 align-items-center">
+      <span id="nav-count" class="text-muted" style="font-size:.82rem"></span>
+      <a href="/carrito.html" class="btn-cat" style="text-decoration:none" id="navCart">
+        <i class="bi bi-cart3 me-1"></i>Carrito
+      </a>
+      <a href="/login.html" class="btn-cat" style="text-decoration:none" id="navLogin">
+        <i class="bi bi-person me-1"></i>Ingresar
+      </a>
+      <button class="btn-cat" style="display:none" id="navLogout" onclick="doLogout()">
+        <i class="bi bi-box-arrow-right me-1"></i>Salir
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Pasteles Artesanales<br/>Hechos con Amor</h1>
+  <div class="hero-divider"></div>
+  <p>Cada creación es única — diseñada especialmente para tus momentos especiales.</p>
+</section>
+
+<!-- ── MAIN ──────────────────────────────────────────────────── -->
+<main class="container" id="main">
+
+  <!-- Category filters -->
+  <div class="filters" id="filters">
+    <button class="btn-cat active" id="btn-cat-all" onclick="filtrar(null, this)"
+            data-cat-id="">Todos</button>
+    <!-- JS injects category buttons here -->
+  </div>
+
+  <!-- Product grid -->
+  <div class="product-grid" id="grid"></div>
+
+  <!-- Pagination -->
+  <div class="pag" id="pag"></div>
+</main>
+
+<!-- ── DETAIL MODAL ───────────────────────────────────────────── -->
+<div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-nombre">Detalle</h5>
+        <button type="button" class="btn-close-custom" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="modal-cat" class="mb-1" style="font-size:.75rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--primary)"></p>
+        <p id="modal-desc" style="color:var(--muted);font-size:.9rem;line-height:1.65"></p>
+        <div id="modal-alergenos" class="alergenos mb-3"></div>
+        <h6 style="font-family:'Playfair Display',serif;margin-bottom:1rem">Variantes disponibles</h6>
+        <div id="modal-variantes"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // ── State ────────────────────────────────────────────
+  let state = { catId: null, page: 0, size: 12, totalPages: 0 };
+
+  // ── Bootstrap modal instance ─────────────────────────
+  const bsModal = new bootstrap.Modal(document.getElementById('modalDetalle'));
+
+  // ── Init ─────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCategorias();
+    loadProductos();
+  });
+
+  // ── Categorías ───────────────────────────────────────
+  async function loadCategorias() {
+    try {
+      const res = await fetch('/api/catalogo/categorias');
+      const json = await res.json();
+      const cats = json.data || [];
+      const container = document.getElementById('filters');
+      cats.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-cat';
+        btn.id = 'btn-cat-' + c.id;
+        btn.textContent = c.nombre;
+        btn.onclick = () => filtrar(c.id, btn);
+        container.appendChild(btn);
+      });
+    } catch (e) { console.warn('Sin categorías:', e); }
+  }
+
+  function filtrar(catId, el) {
+    state.catId = catId; state.page = 0;
+    document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    loadProductos();
+  }
+
+  // ── Productos (con skeleton) ──────────────────────────
+  async function loadProductos() {
+    showSkeletons(state.size);
+    try {
+      let url = `/api/catalogo?page=${state.page}&size=${state.size}`;
+      if (state.catId) url += `&categoria=${state.catId}`;
+      const res = await fetch(url);
+      const json = await res.json();
+      const p    = json.data;
+      state.totalPages = p.totalPages;
+
+      document.getElementById('nav-count').textContent =
+        p.totalElements > 0 ? `${p.totalElements} producto${p.totalElements > 1 ? 's' : ''}` : '';
+
+      renderGrid(p.content);
+      renderPag(p.totalPages, p.number);
+    } catch (e) {
+      document.getElementById('grid').innerHTML =
+        `<div class="empty-state col-12"><i class="bi bi-exclamation-circle"></i><p>Error al cargar el catálogo.</p></div>`;
+      console.error(e);
+    }
+  }
+
+  function showSkeletons(n) {
+    document.getElementById('pag').innerHTML = '';
+    const g = document.getElementById('grid');
+    g.innerHTML = Array.from({length: n}, () => `
+      <div class="sk-card">
+        <div class="sk-img skeleton"></div>
+        <div class="sk-body">
+          <div class="sk-line skeleton" style="width:45%"></div>
+          <div class="sk-title skeleton"></div>
+          <div class="sk-line skeleton"></div>
+          <div class="sk-line skeleton" style="width:80%"></div>
+          <div class="sk-price skeleton mt-3"></div>
+        </div>
+      </div>`).join('');
+  }
+
+  function renderGrid(products) {
+    const g = document.getElementById('grid');
+    if (!products || products.length === 0) {
+      g.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+        <i class="bi bi-cake2"></i>
+        <p>No hay productos disponibles en esta categoría.</p>
+      </div>`;
+      return;
+    }
+    g.innerHTML = products.map(p => `
+      <div class="card-ch" onclick="verDetalle(${p.id})" role="button"
+           aria-label="Ver detalle de ${p.nombre}" id="card-${p.id}">
+        <div class="card-img-wrap">
+          ${p.urlFotoPortada
+            ? `<img src="${p.urlFotoPortada}" alt="${p.nombre}" loading="lazy">`
+            : `<i class="bi bi-cake2"></i>`}
+        </div>
+        <div class="card-body-ch">
+          <div class="card-cat">${p.nombreCategoria || ''}</div>
+          <div class="card-name">${p.nombre}</div>
+          <div class="card-desc">${p.descripcion || '&nbsp;'}</div>
+          ${p.listaAlergenos && p.listaAlergenos.length
+            ? `<div class="alergenos">${p.listaAlergenos.map(a =>
+                `<span class="alergenotag"><i class="bi bi-exclamation-triangle"></i> ${a}</span>`
+              ).join('')}</div>` : ''}
+          <div class="card-footer-ch">
+            <div class="card-price">
+              S/ ${Number(p.precioMinimo).toFixed(2)}
+              <small>desde</small>
+            </div>
+            <span class="badge-stock ${p.hayStock ? 'badge-ok' : 'badge-no'}">
+              ${p.hayStock ? '<i class="bi bi-check-circle me-1"></i>Disponible'
+                           : '<i class="bi bi-x-circle me-1"></i>Sin stock'}
+            </span>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── Paginación ────────────────────────────────────────
+  function renderPag(total, current) {
+    const pag = document.getElementById('pag');
+    if (total <= 1) { pag.innerHTML = ''; return; }
+
+    let html = `<button class="btn-pag" ${current === 0 ? 'disabled' : ''}
+                  onclick="irPagina(${current-1})"><i class="bi bi-chevron-left"></i></button>`;
+
+    for (let i = 0; i < total; i++) {
+      if (total > 7 && Math.abs(i - current) > 2 && i !== 0 && i !== total - 1) {
+        if (i === 1 || i === total - 2) html += `<span class="btn-pag" style="cursor:default">…</span>`;
+        continue;
+      }
+      html += `<button class="btn-pag ${i === current ? 'active' : ''}"
+                 onclick="irPagina(${i})">${i + 1}</button>`;
+    }
+
+    html += `<button class="btn-pag" ${current === total - 1 ? 'disabled' : ''}
+               onclick="irPagina(${current + 1})"><i class="bi bi-chevron-right"></i></button>`;
+    pag.innerHTML = html;
+  }
+
+  function irPagina(p) {
+    state.page = p;
+    loadProductos();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Modal Detalle ─────────────────────────────────────
+  async function verDetalle(id) {
+    document.getElementById('modal-nombre').textContent  = 'Cargando…';
+    document.getElementById('modal-cat').textContent     = '';
+    document.getElementById('modal-desc').textContent    = '';
+    document.getElementById('modal-alergenos').innerHTML = '';
+    document.getElementById('modal-variantes').innerHTML = '<p style="color:var(--muted)">Cargando variantes…</p>';
+    bsModal.show();
+
+    try {
+      const res  = await fetch(`/api/catalogo/${id}`);
+      const json = await res.json();
+      const d    = json.data;
+
+      document.getElementById('modal-nombre').textContent = d.nombre;
+      document.getElementById('modal-cat').textContent    = d.nombreCategoria;
+      document.getElementById('modal-desc').textContent   = d.descripcion || 'Sin descripción.';
+
+      document.getElementById('modal-alergenos').innerHTML =
+        (d.listaAlergenos || []).map(a =>
+          `<span class="alergenotag"><i class="bi bi-exclamation-triangle me-1"></i>${a}</span>`
+        ).join('') || '<span style="color:var(--muted);font-size:.82rem">Sin alérgenos registrados</span>';
+
+      document.getElementById('modal-variantes').innerHTML =
+        (d.variantes || []).map(v => `
+          <div class="variante-card">
+            <div>
+              <div class="var-name">${v.nombreVariante}</div>
+              <div class="var-meta">
+                ${v.pesoGramos ? `${v.pesoGramos}g &bull; ` : ''}
+                Tiempo prep: ${v.tiempoPrepMin || 60} min &bull;
+                Stock: ${v.stockDisponible}
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.8rem">
+              <div class="var-price">S/ ${Number(v.precio).toFixed(2)}</div>
+              ${v.activo && v.stockDisponible > 0 ? `<button class="btn-cat" onclick="addToCart(${v.id})" style="padding:.3rem .8rem;font-size:.75rem"><i class="bi bi-cart-plus me-1"></i>Agregar</button>` : ''}
+            </div>
+          </div>`).join('') || '<p style="color:var(--muted)">Sin variantes disponibles.</p>';
+
+    } catch (e) {
+      document.getElementById('modal-nombre').textContent = 'Error al cargar';
+      showToast('No se pudo cargar el detalle del producto.');
+    }
+  }
+
+  // ── Toast ─────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 3500);
+  }
+
+  // ── Auth state ────────────────────────────────────────
+  (function checkAuth(){
+    const jwt = localStorage.getItem('jwt');
+    if(jwt){
+      document.getElementById('navLogin').style.display='none';
+      document.getElementById('navLogout').style.display='inline-block';
+    }
+  })();
+
+  async function doLogout(){
+    const jwt=localStorage.getItem('jwt');
+    if(jwt){
+      try{await fetch('/api/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+jwt}})}catch(e){}
+    }
+    localStorage.removeItem('jwt');localStorage.removeItem('email');
+    window.location.reload();
+  }
+
+  // ── Add to cart ───────────────────────────────────────
+  async function addToCart(varianteId){
+    const jwt=localStorage.getItem('jwt');
+    if(!jwt){showToast('Inicia sesión para agregar al carrito');setTimeout(()=>window.location.href='/login.html',1500);return}
+    try{
+      const res=await fetch('/api/carrito/items',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+jwt},body:JSON.stringify({varianteId:varianteId,cantidad:1})});
+      const json=await res.json();
+      if(json.success){showToast('✓ Agregado al carrito')}else{showToast(json.message||'Error al agregar')}
+    }catch(e){showToast('Error de conexión')}
+  }
+</script>
+</body>
+</html>
