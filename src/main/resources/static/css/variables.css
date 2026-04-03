@@ -1,0 +1,71 @@
+/* ═══════════════════════════════════════════════
+   CASA CHANTILLY — Design Tokens
+   ═══════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Paleta principal */
+  --gold:          #c9a96e;
+  --gold-light:    #e8c9a0;
+  --gold-dark:     #a07840;
+  --rose:          #d4856a;
+  --cream:         #f5f0e8;
+
+  /* Fondos */
+  --bg:            #0d0905;
+  --bg-2:          #120c08;
+  --bg-3:          #1a1208;
+  --bg-card:       rgba(255,255,255,0.035);
+  --bg-card-hover: rgba(255,255,255,0.065);
+  --bg-input:      rgba(255,255,255,0.04);
+
+  /* Texto */
+  --text:          #f0ebe0;
+  --text-2:        #c8bfb0;
+  --muted:         #8a7a6e;
+  --muted-light:   #a89880;
+
+  /* Bordes */
+  --border:        rgba(201,169,110,0.14);
+  --border-focus:  rgba(201,169,110,0.45);
+
+  /* Gradientes */
+  --grad:          linear-gradient(135deg, #c9a96e 0%, #d4856a 100%);
+  --grad-soft:     linear-gradient(135deg, rgba(201,169,110,0.15) 0%, rgba(212,133,106,0.1) 100%);
+
+  /* Estado */
+  --green:         #34c759;
+  --green-bg:      rgba(52,199,89,0.08);
+  --red:           #ff453a;
+  --red-bg:        rgba(255,69,58,0.08);
+  --yellow:        #ffd60a;
+  --yellow-bg:     rgba(255,214,10,0.08);
+  --blue:          #0a84ff;
+  --blue-bg:       rgba(10,132,255,0.08);
+
+  /* Tipografía */
+  --font-display:  'Cormorant Garamond', Georgia, serif;
+  --font-body:     'DM Sans', system-ui, sans-serif;
+
+  /* Espaciado */
+  --radius-sm:     8px;
+  --radius:        12px;
+  --radius-lg:     18px;
+  --radius-xl:     24px;
+
+  /* Sombras */
+  --shadow-sm:     0 2px 12px rgba(0,0,0,0.3);
+  --shadow:        0 8px 32px rgba(0,0,0,0.45);
+  --shadow-lg:     0 20px 60px rgba(0,0,0,0.6);
+  --shadow-gold:   0 8px 32px rgba(201,169,110,0.2);
+
+  /* Transiciones */
+  --ease:          cubic-bezier(0.4,0,0.2,1);
+  --fast:          0.15s var(--ease);
+  --normal:        0.25s var(--ease);
+  --slow:          0.4s var(--ease);
+
+  /* Nav height */
+  --nav-h:         64px;
+}

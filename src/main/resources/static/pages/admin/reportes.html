@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Reportes de Ventas — Admin Casa Chantilly</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+  <link rel="stylesheet" href="../../css/variables.css"/>
+  <link rel="stylesheet" href="../../css/base.css"/>
+  <style>
+    .static-note { background:var(--yellow-bg); border:1px solid rgba(255,214,10,.2); border-radius:var(--radius); padding:.65rem 1rem; font-size:.8rem; color:var(--yellow); margin-bottom:1.5rem; }
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">Casa Chantilly</a>
+    <div class="nav-links">
+      <a href="dashboard.html" class="btn btn-ghost btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
+      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()" style="display:none"><i class="bi bi-box-arrow-right"></i></button>
+    </div>
+  </div>
+</nav>
+
+<div class="layout-admin">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <span class="sidebar-label">Catálogo</span>
+      <a href="dashboard.html"  class="sidebar-link "><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="productos.html"  class="sidebar-link "><i class="bi bi-box-seam"></i> Productos</a>
+      <a href="inventario.html" class="sidebar-link "><i class="bi bi-archive"></i> Inventario</a>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-label">Pedidos</span>
+      <a href="pedidos.html" class="sidebar-link "><i class="bi bi-receipt"></i> Todos los pedidos</a>
+      <a href="estados.html" class="sidebar-link "><i class="bi bi-kanban"></i> Estados</a>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-label">Reportes</span>
+      <a href="reportes.html"   class="sidebar-link active"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
+      <a href="analisis.html"   class="sidebar-link "><i class="bi bi-graph-up"></i> Análisis</a>
+    </div>
+    <div class="sidebar-section">
+      <span class="sidebar-label">Config</span>
+      <a href="usuarios.html"    class="sidebar-link "><i class="bi bi-people"></i> Usuarios</a>
+      <a href="promociones.html" class="sidebar-link "><i class="bi bi-tag"></i> Promociones</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="page-header">
+      <h1 class="page-title"><i class="bi bi-bar-chart-line" style="font-size:1.8rem;margin-right:.5rem"></i>Reportes de Ventas</h1>
+      <p class="page-sub">RF24 — Dashboard de ventas y rendimiento</p>
+    </div>
+    
+        <div class="static-note"><i class="bi bi-info-circle"></i> Reportes dinámicos disponibles en <strong>Fase 3 (RF24)</strong>.</div>
+        <div class="grid-4 mb-3">
+          <div class="stat-card"><div class="stat-label">Ventas del mes</div><div class="stat-value">S/ 8,450</div><div class="stat-delta" style="color:var(--green)">↑ 12% vs mes anterior</div></div>
+          <div class="stat-card"><div class="stat-label">Pedidos del mes</div><div class="stat-value">87</div><div class="stat-delta" style="color:var(--green)">↑ 8%</div></div>
+          <div class="stat-card"><div class="stat-label">Ticket promedio</div><div class="stat-value">S/ 97</div></div>
+          <div class="stat-card"><div class="stat-label">Tasa cancelación</div><div class="stat-value" style="color:var(--red)">3.4%</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card"><h6 style="font-family:var(--font-display);margin-bottom:1rem">Ventas por día (simulado)</h6><div style="display:flex;align-items:flex-end;gap:.5rem;height:120px">${''.join(['<div style="flex:1;background:var(--grad);border-radius:4px 4px 0 0;height:'+str(h)+'%"></div>' for h in [40,60,35,80,55,90,70,45,65,100,75,50,85,60]])}</div><div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:.5rem"><span>19 Mar</span><span>02 Abr</span></div></div>
+          <div class="card"><h6 style="font-family:var(--font-display);margin-bottom:1rem">Métodos de pago</h6><div style="display:flex;flex-direction:column;gap:.75rem"><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.875rem">Tarjeta</span><div style="display:flex;align-items:center;gap:.75rem"><div style="width:120px;height:8px;background:var(--bg-3);border-radius:99px;overflow:hidden"><div style="width:65%;height:100%;background:var(--grad)"></div></div><span style="font-size:.82rem;color:var(--gold)">65%</span></div></div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.875rem">Yape/Plin</span><div style="display:flex;align-items:center;gap:.75rem"><div style="width:120px;height:8px;background:var(--bg-3);border-radius:99px;overflow:hidden"><div style="width:25%;height:100%;background:var(--gold)"></div></div><span style="font-size:.82rem;color:var(--gold)">25%</span></div></div><div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:.875rem">Efectivo</span><div style="display:flex;align-items:center;gap:.75rem"><div style="width:120px;height:8px;background:var(--bg-3);border-radius:99px;overflow:hidden"><div style="width:10%;height:100%;background:var(--muted)"></div></div><span style="font-size:.82rem;color:var(--muted)">10%</span></div></div></div></div>
+        </div>
+  </main>
+</div>
+
+<script src="../../js/app.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => { Auth.requireAdmin(); });
+</script>
+</body>
+</html>
