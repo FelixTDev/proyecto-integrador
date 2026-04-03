@@ -3,373 +3,307 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Casa Chantilly — Catálogo</title>
+  <title>La Casa del Chantilly — Pastelería Artesanal</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="css/variables.css"/>
   <link rel="stylesheet" href="css/base.css"/>
   <style>
-    /* ── HERO ── */
+    /* Hero */
     .hero {
-      text-align: center; padding: 5rem 1rem 2.5rem;
-      position: relative; overflow: hidden;
+      position: relative;
+      background: var(--bg-2);
+      padding: 5rem 1.5rem;
+      text-align: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
     }
     .hero::before {
-      content: ''; position: absolute;
-      top: -30%; left: 50%; transform: translateX(-50%);
-      width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 65%);
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at center, rgba(204,32,32,0.15) 0%, transparent 60%);
       pointer-events: none;
     }
-    .hero-eyebrow {
-      font-size: 0.72rem; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 1rem;
-      display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-    }
-    .hero-eyebrow::before, .hero-eyebrow::after {
-      content: ''; width: 32px; height: 1px; background: var(--gold); opacity: 0.4;
-    }
-    .hero h1 {
+    .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(2.8rem,7vw,5.5rem);
-      font-weight: 300; line-height: 1.05;
-      color: var(--cream);
-      margin-bottom: 1.25rem;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1rem;
+      position: relative;
     }
-    .hero h1 em {
-      font-style: italic;
-      background: var(--grad);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .hero-title span { color: var(--gold); }
+    .hero-subtitle {
+      color: var(--text-2);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      position: relative;
     }
-    .hero-sub { color: var(--muted-light); font-size: 1.05rem; font-weight: 300; max-width: 500px; margin: 0 auto; }
-
-    /* ── FILTERS ── */
-    .filters-bar {
-      display: flex; flex-wrap: wrap; gap: 0.5rem;
-      justify-content: center; padding: 2rem 0 1.5rem;
+    /* Catálogo Controls */
+    .cat-controls {
+      display: flex; gap: 1rem; margin-bottom: 2rem;
+      flex-wrap: wrap; align-items: center; justify-content: space-between;
     }
-    .btn-cat {
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--muted-light); border-radius: 99px;
-      padding: 0.4rem 1.15rem; font-size: 0.82rem; font-weight: 500;
-      cursor: pointer; transition: all var(--normal);
+    .cat-filters {
+      display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem;
     }
-    .btn-cat:hover { border-color: var(--gold); color: var(--gold); }
-    .btn-cat.active {
-      background: var(--grad); border-color: transparent; color: #fff;
-      box-shadow: 0 4px 16px rgba(201,169,110,0.3);
+    .cat-filters .btn { border-radius: 99px; }
+    
+    /* Product Card */
+    .product-img-wrapper {
+      position: relative; padding-top: 80%;
+      background: var(--bg-3); border-radius: 8px; margin-bottom: 1rem;
+      overflow: hidden;
     }
-
-    /* ── PRODUCT GRID ── */
-    .prod-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(265px,1fr));
-      gap: 1.5rem; padding-bottom: 4rem;
+    .product-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
     }
-
-    /* ── PRODUCT CARD ── */
-    .prod-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); overflow: hidden; cursor: pointer;
-      transition: transform var(--normal), background var(--normal), box-shadow var(--normal);
-    }
-    .prod-card:hover {
-      transform: translateY(-6px); background: var(--bg-card-hover);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(201,169,110,0.18);
-    }
-    .prod-img {
-      height: 195px;
-      background: linear-gradient(135deg, #1a1208, #261c10);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3.5rem; color: var(--gold); opacity: 0.25;
-      overflow: hidden; position: relative;
-    }
-    .prod-img img { width:100%; height:100%; object-fit:cover; opacity:1; }
-    .prod-body { padding: 1.15rem 1.2rem 1.2rem; }
-    .prod-cat {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem;
-    }
-    .prod-name {
+    .product-title {
       font-family: var(--font-display);
-      font-size: 1.15rem; font-weight: 600; line-height: 1.25;
-      color: var(--text); margin-bottom: 0.4rem;
+      font-size: 1.25rem; font-weight: 600;
+      color: var(--white); margin-bottom: 0.25rem;
     }
-    .prod-desc {
-      font-size: 0.8rem; color: var(--muted); line-height: 1.55;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-      overflow: hidden; margin-bottom: 0.85rem;
+    .product-desc {
+      font-size: 0.85rem; color: var(--muted);
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: 1rem; min-height: 2.7em;
     }
-    .prod-alerg {
-      display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 0.9rem;
+    .product-price { color: var(--gold); font-size: 1.25rem; font-weight: 600; }
+    
+    /* Modal Variants */
+    .var-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+    .var-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.75rem 1rem; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); cursor: pointer;
+      transition: all var(--fast); background: var(--bg-input);
     }
-    .alerg-tag {
-      font-size: 0.62rem;
-      background: rgba(201,169,110,0.06);
-      border: 1px solid rgba(201,169,110,0.12);
-      color: var(--muted); padding: 2px 7px; border-radius: 99px;
-    }
-    .prod-foot {
-      display: flex; align-items: center; justify-content: space-between;
-      padding-top: 0.75rem; border-top: 1px solid var(--border);
-    }
-    .prod-price { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
-    .prod-price small { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
-
-    /* ── SKELETON CARDS ── */
-    .sk-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); overflow: hidden;
-    }
-    .sk-img  { height: 195px; }
-    .sk-body { padding: 1.15rem; }
-    .sk-line { height: 13px; margin-bottom: 8px; }
-    .sk-t    { height: 20px; width: 65%; margin-bottom: 10px; }
-    .sk-p    { height: 26px; width: 38%; }
-
-    /* ── PAGINATION ── */
-    .pag {
-      display: flex; justify-content: center;
-      gap: 0.4rem; padding: 1rem 0 3rem; flex-wrap: wrap;
-    }
-    .btn-pag {
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--muted); border-radius: var(--radius-sm);
-      padding: 0.38rem 0.85rem; font-size: 0.84rem;
-      cursor: pointer; transition: all var(--normal);
-      min-width: 38px; text-align: center;
-    }
-    .btn-pag:hover, .btn-pag.active {
-      background: var(--grad); border-color: transparent; color: #fff;
-    }
-    .btn-pag:disabled { opacity: 0.3; pointer-events: none; }
-
-    /* ── MODAL DETALLE ── */
-    .var-row {
-      background: rgba(201,169,110,0.04);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 0.85rem 1rem; margin-bottom: 0.65rem;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    }
-    .var-name { font-weight: 600; font-size: 0.9rem; }
-    .var-meta { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
-    .var-price { color: var(--gold); font-weight: 700; font-size: 1.1rem; white-space: nowrap; }
+    .var-item:hover { border-color: var(--gold); background: rgba(245,197,24,0.05); }
+    .var-item.selected { border-color: var(--gold); background: rgba(245,197,24,0.1); }
+    .var-item-name { font-weight: 500; color: var(--white); }
+    .var-item-price { color: var(--gold); }
+    
+    /* Pagination */
+    .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem; }
   </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-brand">Casa Chantilly</a>
-    <div class="nav-links" style="gap:0.4rem">
-      <span id="nav-user" style="font-size:.8rem;color:var(--muted);padding:0 .5rem"></span>
-      <a href="pages/cliente/carrito.html" class="btn btn-ghost btn-sm">
-        <i class="bi bi-cart3"></i> Carrito
-      </a>
-      <a href="pages/cliente/perfil.html" id="nav-perfil" class="btn btn-ghost btn-sm" style="display:none">
-        <i class="bi bi-person"></i>
-      </a>
-      <a id="nav-admin" href="pages/admin/dashboard.html" class="btn btn-outline btn-sm" style="display:none">
-        <i class="bi bi-speedometer2"></i> Admin
-      </a>
-      <a id="nav-login" href="pages/auth/login.html" class="btn btn-gold btn-sm">
-        <i class="bi bi-box-arrow-in-right"></i> Ingresar
-      </a>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()" style="display:none">
-        <i class="bi bi-box-arrow-right"></i>
-      </button>
+    <a href="index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
+    <div class="nav-links">
+      <a href="pages/admin/dashboard.html" id="nav-admin" class="btn btn-ghost btn-sm" style="display:none"><i class="bi bi-shield-lock"></i> Panel</a>
+      <a href="pages/cliente/carrito.html" class="btn btn-ghost btn-sm"><i class="bi bi-cart3"></i> Carrito</a>
+      <a href="pages/cliente/perfil.html" id="nav-perfil" class="btn btn-ghost btn-sm" style="display:none"><i class="bi bi-person-circle"></i> <span id="nav-user"></span></a>
+      <a href="pages/auth/login.html" id="nav-login" class="btn btn-primary btn-sm"><i class="bi bi-box-arrow-in-right"></i> Ingresar</a>
+      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()" style="display:none"><i class="bi bi-box-arrow-right"></i> Salir</button>
     </div>
   </div>
 </nav>
 
-<!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-eyebrow">Pastelería Artesanal · Lima</div>
-  <h1>Hechos con<br/><em>amor y tradición</em></h1>
-  <p class="hero-sub">Cada pastel es una obra única, elaborada con ingredientes premium para tus momentos más especiales.</p>
+  <h1 class="hero-title">El arte del pastel <span>hecho con amor</span></h1>
+  <p class="hero-subtitle">Descubre nuestra exquisita selección de pastelería artesanal, elaborada diariamente con la frescura y calidad que nos caracteriza en La Casa del Chantilly.</p>
+  <a href="#catalogo" class="btn btn-gold btn-lg">Ver Catálogo <i class="bi bi-arrow-down"></i></a>
 </section>
 
-<!-- ── MAIN ── -->
-<main class="container">
-  <div class="filters-bar" id="filters">
-    <button class="btn-cat active" onclick="filtrar(null, this)">Todos</button>
+<div class="container section" id="catalogo">
+  <div class="cat-controls">
+    <div class="cat-filters" id="cat-filters">
+      <!-- Botones de categoría inyectados vía JS -->
+    </div>
+    <div style="color:var(--muted-light);font-size:0.85rem;" id="cat-counts"></div>
   </div>
-  <div class="prod-grid" id="grid"></div>
-  <div class="pag" id="pag"></div>
-</main>
 
-<!-- ── MODAL DETALLE ── -->
+  <div class="grid-4" id="grid-productos">
+    <!-- Skeleton Loaders de inicio -->
+    <div class="card"><div class="skeleton" style="height:180px;margin-bottom:1rem;border-radius:8px"></div><div class="skeleton" style="height:24px;width:70%;margin-bottom:.5rem"></div><div class="skeleton" style="height:16px;width:100%;margin-bottom:.2rem"></div><div class="skeleton" style="height:16px;width:80%"></div></div>
+    <div class="card"><div class="skeleton" style="height:180px;margin-bottom:1rem;border-radius:8px"></div><div class="skeleton" style="height:24px;width:70%;margin-bottom:.5rem"></div><div class="skeleton" style="height:16px;width:100%;margin-bottom:.2rem"></div><div class="skeleton" style="height:16px;width:80%"></div></div>
+    <div class="card"><div class="skeleton" style="height:180px;margin-bottom:1rem;border-radius:8px"></div><div class="skeleton" style="height:24px;width:70%;margin-bottom:.5rem"></div><div class="skeleton" style="height:16px;width:100%;margin-bottom:.2rem"></div><div class="skeleton" style="height:16px;width:80%"></div></div>
+    <div class="card"><div class="skeleton" style="height:180px;margin-bottom:1rem;border-radius:8px"></div><div class="skeleton" style="height:24px;width:70%;margin-bottom:.5rem"></div><div class="skeleton" style="height:16px;width:100%;margin-bottom:.2rem"></div><div class="skeleton" style="height:16px;width:80%"></div></div>
+  </div>
+
+  <div class="pagination" id="pagination">
+    <!-- Paginación JS -->
+  </div>
+</div>
+
+<!-- Modal Detalle Producto -->
 <div class="modal-backdrop" id="modal-detalle">
-  <div class="modal" style="max-width:620px">
+  <div class="modal">
     <div class="modal-header">
-      <h2 class="modal-title" id="m-nombre">Detalle</h2>
+      <h3 class="modal-title" id="md-title">Detalle</h3>
       <button class="modal-close" onclick="Modal.close('modal-detalle')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
-      <p id="m-cat" style="font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem"></p>
-      <p id="m-desc" style="color:var(--muted-light);font-size:.9rem;line-height:1.65;margin-bottom:1rem"></p>
-      <div id="m-alerg" class="prod-alerg" style="margin-bottom:1.25rem"></div>
-      <h6 style="font-family:var(--font-display);font-size:1rem;margin-bottom:0.9rem">Variantes disponibles</h6>
-      <div id="m-variantes"></div>
+      <div style="display:flex;gap:1.5rem">
+        <img id="md-img" src="" alt="Pastel" style="width:200px;height:200px;border-radius:var(--radius);object-fit:cover;background:var(--bg-3)">
+        <div style="flex:1">
+          <p id="md-desc" style="font-size:0.95rem;color:var(--text-2);margin-bottom:0.5rem"></p>
+          <div id="md-alergenos" style="display:flex;gap:0.3rem;flex-wrap:wrap;margin-bottom:1rem"></div>
+          <span style="font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em">Selecciona una porción:</span>
+          <div class="var-list" id="md-vars"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="Modal.close('modal-detalle')">Cancelar</button>
+      <button class="btn btn-primary" id="md-add-btn" onclick="addToCart()"><i class="bi bi-cart-plus"></i> Agregar al carrito</button>
     </div>
   </div>
 </div>
 
 <script src="js/app.js"></script>
 <script>
-  let state = { catId: null, page: 0, size: 12, totalPages: 0 };
-
-  document.addEventListener('DOMContentLoaded', () => {
-    loadCategorias();
-    loadProductos();
-  });
+  let state = {
+    page: 0,
+    size: 12,
+    categoriaId: null,
+    totalElements: 0,
+    totalPages: 0,
+    selectedVariante: null,
+    currentProductId: null
+  };
 
   async function loadCategorias() {
     try {
-      const j = await API.get('/api/catalogo/categorias');
-      const cats = j.data || [];
-      const bar = document.getElementById('filters');
-      cats.forEach(c => {
-        const b = document.createElement('button');
-        b.className = 'btn-cat';
-        b.textContent = c.nombre;
-        b.onclick = () => filtrar(c.id, b);
-        bar.appendChild(b);
-      });
+      const res = await API.get('/api/catalogo/categorias');
+      const fc = document.getElementById('cat-filters');
+      fc.innerHTML = `<button class="btn ${!state.categoriaId ? 'btn-gold' : 'btn-ghost'}" onclick="setCategory(null)">Todos</button>` +
+        res.map(c => `<button class="btn ${state.categoriaId===c.id ? 'btn-gold' : 'btn-ghost'}" onclick="setCategory(${c.id})">${c.nombre}</button>`).join('');
     } catch {}
   }
 
-  function filtrar(catId, el) {
-    state.catId = catId; state.page = 0;
-    document.querySelectorAll('.btn-cat').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
+  function setCategory(id) {
+    state.categoriaId = id;
+    state.page = 0;
+    loadCategorias();
     loadProductos();
   }
 
   async function loadProductos() {
-    showSkeletons();
+    const grid = document.getElementById('grid-productos');
+    grid.innerHTML = Array(4).fill('<div class="card"><div class="skeleton" style="height:180px;margin-bottom:1rem;border-radius:8px"></div><div class="skeleton" style="height:24px;width:70%;margin-bottom:.5rem"></div><div class="skeleton" style="height:16px;width:100%;margin-bottom:.2rem"></div><div class="skeleton" style="height:16px;width:80%"></div></div>').join('');
+    
+    let url = `/api/catalogo?page=${state.page}&size=${state.size}`;
+    if (state.categoriaId) url += `&categoria=${state.categoriaId}`;
+
     try {
-      let url = `/api/catalogo?page=${state.page}&size=${state.size}`;
-      if (state.catId) url += `&categoria=${state.catId}`;
-      const j = await API.get(url);
-      const p = j.data;
-      state.totalPages = p.totalPages;
-      renderGrid(p.content);
-      renderPag(p.totalPages, p.number);
-    } catch {
-      document.getElementById('grid').innerHTML =
-        `<div class="empty" style="grid-column:1/-1"><i class="bi bi-wifi-off"></i><p>Error al cargar el catálogo.</p></div>`;
-    }
-  }
+      const res = await API.get(url);
+      state.totalElements = res.totalElements || 0;
+      state.totalPages = res.totalPages || 0;
+      document.getElementById('cat-counts').textContent = `${state.totalElements} productos`;
 
-  function showSkeletons() {
-    document.getElementById('pag').innerHTML = '';
-    document.getElementById('grid').innerHTML = Array.from({length:8}, () => `
-      <div class="sk-card">
-        <div class="sk-img skeleton"></div>
-        <div class="sk-body">
-          <div class="sk-line skeleton" style="width:40%"></div>
-          <div class="sk-t skeleton"></div>
-          <div class="sk-line skeleton"></div>
-          <div class="sk-line skeleton" style="width:75%"></div>
-          <div class="sk-p skeleton mt-3"></div>
-        </div>
-      </div>`).join('');
-  }
+      if (!res.content || res.content.length === 0) {
+        grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><i class="bi bi-box2"></i><p>No hay productos en esta categoría.</p></div>`;
+        return;
+      }
 
-  function renderGrid(prods) {
-    const g = document.getElementById('grid');
-    if (!prods?.length) {
-      g.innerHTML = `<div class="empty" style="grid-column:1/-1">
-        <i class="bi bi-cake2"></i><p>No hay productos en esta categoría.</p></div>`;
-      return;
-    }
-    g.innerHTML = prods.map(p => `
-      <div class="prod-card" onclick="verDetalle(${p.id})">
-        <div class="prod-img">
-          ${p.urlFotoPortada ? `<img src="${p.urlFotoPortada}" alt="${p.nombre}" loading="lazy">` : '<i class="bi bi-cake2"></i>'}
-        </div>
-        <div class="prod-body">
-          <div class="prod-cat">${p.nombreCategoria || ''}</div>
-          <div class="prod-name">${p.nombre}</div>
-          <div class="prod-desc">${p.descripcion || ''}</div>
-          ${p.listaAlergenos?.length ? `<div class="prod-alerg">${p.listaAlergenos.map(a=>`<span class="alerg-tag"><i class="bi bi-exclamation-triangle"></i> ${a}</span>`).join('')}</div>` : ''}
-          <div class="prod-foot">
-            <div class="prod-price">${fmt.money(p.precioMinimo)} <small>desde</small></div>
-            <span class="badge ${p.hayStock ? 'badge-green' : 'badge-red'}">
-              <i class="bi ${p.hayStock ? 'bi-check-circle' : 'bi-x-circle'}"></i>
-              ${p.hayStock ? 'Disponible' : 'Agotado'}
-            </span>
+      grid.innerHTML = res.content.map(p => `
+        <div class="card card-hover">
+          <div class="product-img-wrapper">
+            <img src="${p.urlFotoPortada || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80'}" class="product-img" alt="${p.nombre}">
+          </div>
+          <div class="badge ${p.hayStock ? 'badge-green' : 'badge-red'}" style="margin-bottom:0.75rem">${p.hayStock ? 'Disponible' : 'Agotado'}</div>
+          <h3 class="product-title">${p.nombre}</h3>
+          <p class="product-desc">${p.descripcion || ''}</p>
+          <div class="flex-between">
+            <span class="product-price">${fmt.money(p.precioMinimo)}</span>
+            <button class="btn btn-outline btn-sm" onclick="openDetalle(${p.id})"><i class="bi bi-eye"></i> Detalle</button>
           </div>
         </div>
-      </div>`).join('');
-  }
-
-  function renderPag(total, cur) {
-    const pag = document.getElementById('pag');
-    if (total <= 1) { pag.innerHTML = ''; return; }
-    let h = `<button class="btn-pag" ${cur===0?'disabled':''} onclick="irPag(${cur-1})"><i class="bi bi-chevron-left"></i></button>`;
-    for (let i = 0; i < total; i++) {
-      if (total > 7 && Math.abs(i-cur) > 2 && i !== 0 && i !== total-1) {
-        if (i===1||i===total-2) h += `<span class="btn-pag" style="cursor:default">…</span>`;
-        continue;
-      }
-      h += `<button class="btn-pag ${i===cur?'active':''}" onclick="irPag(${i})">${i+1}</button>`;
+      `).join('');
+      renderPagination();
+    } catch (e) {
+      grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><i class="bi bi-exclamation-triangle"></i><p>Error cargando catálogo.</p></div>`;
     }
-    h += `<button class="btn-pag" ${cur===total-1?'disabled':''} onclick="irPag(${cur+1})"><i class="bi bi-chevron-right"></i></button>`;
-    pag.innerHTML = h;
   }
 
-  function irPag(p) { state.page = p; loadProductos(); window.scrollTo({top:0,behavior:'smooth'}); }
+  function renderPagination() {
+    const pag = document.getElementById('pagination');
+    if (state.totalPages <= 1) { pag.innerHTML = ''; return; }
+    
+    let html = `<button class="btn btn-outline" ${state.page===0?'disabled':''} onclick="setPage(${state.page-1})"><i class="bi bi-chevron-left"></i> Anteriores</button>`;
+    html += `<span style="padding:0.5rem 1rem;color:var(--text-2)">Pág ${state.page+1} de ${state.totalPages}</span>`;
+    html += `<button class="btn btn-outline" ${state.page===state.totalPages-1?'disabled':''} onclick="setPage(${state.page+1})">Siguientes <i class="bi bi-chevron-right"></i></button>`;
+    pag.innerHTML = html;
+  }
 
-  async function verDetalle(id) {
-    document.getElementById('m-nombre').textContent = 'Cargando…';
-    document.getElementById('m-cat').textContent    = '';
-    document.getElementById('m-desc').textContent   = '';
-    document.getElementById('m-alerg').innerHTML    = '';
-    document.getElementById('m-variantes').innerHTML= '<p style="color:var(--muted)">Cargando variantes…</p>';
+  function setPage(p) {
+    if (p >= 0 && p < state.totalPages) {
+      state.page = p;
+      loadProductos();
+      document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  async function openDetalle(id) {
+    state.currentProductId = id;
+    state.selectedVariante = null;
+    document.getElementById('md-vars').innerHTML = '<div class="spin" style="margin:2rem auto;color:var(--gold);font-size:1.5rem"><i class="bi bi-arrow-repeat"></i></div>';
+    document.getElementById('md-add-btn').disabled = true;
     Modal.open('modal-detalle');
+
     try {
-      const j = await API.get(`/api/catalogo/${id}`);
-      const d = j.data;
-      document.getElementById('m-nombre').textContent = d.nombre;
-      document.getElementById('m-cat').textContent    = d.nombreCategoria;
-      document.getElementById('m-desc').textContent   = d.descripcion || 'Sin descripción.';
-      document.getElementById('m-alerg').innerHTML    =
-        (d.listaAlergenos||[]).map(a=>`<span class="alerg-tag"><i class="bi bi-exclamation-triangle"></i> ${a}</span>`).join('') ||
-        `<span style="font-size:.8rem;color:var(--muted)">Sin alérgenos registrados</span>`;
-      document.getElementById('m-variantes').innerHTML =
-        (d.variantes||[]).map(v => `
-          <div class="var-row">
-            <div>
-              <div class="var-name">${v.nombreVariante}</div>
-              <div class="var-meta">${v.pesoGramos?v.pesoGramos+'g &bull; ':''}Prep: ${v.tiempoPrepMin||60} min &bull; Stock: ${v.stockDisponible}</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:.75rem">
-              <div class="var-price">${fmt.money(v.precio)}</div>
-              ${v.activo && v.stockDisponible > 0
-                ? `<button class="btn btn-gold btn-sm" onclick="addCart(${v.id},event)"><i class="bi bi-cart-plus"></i></button>`
-                : '<span class="badge badge-red">Sin stock</span>'}
-            </div>
-          </div>`).join('') || '<p style="color:var(--muted)">Sin variantes.</p>';
-    } catch { document.getElementById('m-nombre').textContent = 'Error'; }
+      const p = await API.get(`/api/catalogo/${id}`);
+      document.getElementById('md-title').textContent = p.nombre;
+      document.getElementById('md-img').src = p.urlFotoPortada || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80';
+      document.getElementById('md-desc').textContent = p.descripcion || 'Sin descripción';
+      
+      const al = document.getElementById('md-alergenos');
+      al.innerHTML = (p.listaAlergenos || []).map(a => `<span class="badge badge-yellow" style="font-size:0.65rem"><i class="bi bi-exclamation-triangle"></i> ${a}</span>`).join('');
+
+      const vars = p.variantes || [];
+      if (vars.length === 0) {
+        document.getElementById('md-vars').innerHTML = '<p class="text-muted" style="font-size:0.85rem">No hay porciones disponibles.</p>';
+      } else {
+        document.getElementById('md-vars').innerHTML = vars.map(v => `
+          <div class="var-item ${!v.activo || v.stockDisponible<=0 ? 'disabled' : ''}" 
+               id="var-opt-${v.id}" 
+               ${v.activo && v.stockDisponible>0 ? `onclick="selectVar(${v.id}, this)"` : 'style="opacity:0.5;pointer-events:none"'}>
+            <span class="var-item-name">${v.nombreVariante} ${!v.activo || v.stockDisponible<=0 ? '(Agotado)' : ''}</span>
+            <span class="var-item-price">${fmt.money(v.precio)}</span>
+          </div>
+        `).join('');
+      }
+    } catch {
+      document.getElementById('md-vars').innerHTML = '<p style="color:var(--red)">No se pudo cargar el detalle.</p>';
+    }
   }
 
-  async function addCart(varId, e) {
-    e.stopPropagation();
+  function selectVar(vid, el) {
+    state.selectedVariante = vid;
+    document.querySelectorAll('.var-item').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('md-add-btn').disabled = false;
+  }
+
+  async function addToCart() {
     if (!Auth.isLoggedIn()) {
       Toast.info('Inicia sesión para agregar al carrito');
       setTimeout(() => window.location.href = 'pages/auth/login.html', 1500);
       return;
     }
+    if (!state.selectedVariante) return;
     try {
-      const j = await API.post('/api/carrito/items', { varianteId: varId, cantidad: 1 });
-      if (j.success) Toast.ok('✓ Agregado al carrito');
-      else Toast.err(j.message || 'Error al agregar');
-    } catch { Toast.err('Error de conexión'); }
+      document.getElementById('md-add-btn').disabled = true;
+      document.getElementById('md-add-btn').innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Agregando...';
+      
+      await API.post('/api/carrito/items', { varianteId: state.selectedVariante, cantidad: 1 });
+      Toast.ok('Agregado al carrito');
+      Modal.close('modal-detalle');
+    } catch (e) {
+      Toast.err('Error al agregar: ' + e.message);
+    } finally {
+      document.getElementById('md-add-btn').innerHTML = '<i class="bi bi-cart-plus"></i> Agregar al carrito';
+      document.getElementById('md-add-btn').disabled = false;
+    }
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCategorias();
+    loadProductos();
+  });
 </script>
 </body>
 </html>

@@ -3,182 +3,186 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Mi Carrito — Casa Chantilly</title>
+  <title>Mi Carrito — La Casa del Chantilly</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
   <link rel="stylesheet" href="../../css/base.css"/>
   <style>
-    .cart-layout { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; padding: 2rem 0 4rem; }
-    @media(max-width:900px) { .cart-layout { grid-template-columns: 1fr; } }
-
-    .qty-ctrl { display: flex; align-items: center; gap: 0.5rem; }
-    .qty-btn {
-      width: 30px; height: 30px; border-radius: var(--radius-sm);
-      border: 1px solid var(--border); background: var(--bg-card);
-      color: var(--text); cursor: pointer; transition: all var(--fast);
-      display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+    .cart-grid {
+      display: grid; grid-template-columns: 1fr 340px; gap: 2rem;
+      align-items: start; margin-top: 1rem;
     }
-    .qty-btn:hover { background: var(--gold); border-color: var(--gold); color: #000; }
-    .qty-btn:disabled { opacity: 0.3; pointer-events: none; }
-    .qty-val { min-width: 28px; text-align: center; font-weight: 600; }
-
-    .item-name { font-weight: 600; font-size: 0.9rem; }
-    .item-var  { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
-    .item-price { color: var(--gold); font-weight: 700; }
-
-    .del-btn { background:none; border:none; color:var(--muted); font-size:1.05rem; cursor:pointer; transition:color var(--fast); padding:.25rem; }
-    .del-btn:hover { color: var(--red); }
-
-    .summary { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; position: sticky; top: calc(var(--nav-h) + 1rem); }
-    .sum-row { display: flex; justify-content: space-between; padding: 0.4rem 0; font-size: 0.9rem; color: var(--text-2); }
-    .sum-total { font-size: 1.2rem; font-weight: 700; color: var(--gold); border-top: 1px solid var(--border); padding-top: 0.85rem; margin-top: 0.5rem; display: flex; justify-content: space-between; }
+    .cart-items {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.5rem;
+    }
+    .cart-item {
+      display: flex; gap: 1rem; align-items: stretch;
+      padding: 1.25rem 0; border-bottom: 1px solid var(--border);
+    }
+    .cart-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .cart-item:first-child { padding-top: 0; }
+    .ci-img {
+      width: 100px; height: 100px;
+      object-fit: cover; border-radius: var(--radius-sm);
+      background: var(--bg-3);
+    }
+    .ci-details { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .ci-title { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: var(--white); }
+    .ci-var { color: var(--gold); font-size: 0.85rem; font-weight: 500; }
+    .ci-controls { display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem; }
+    .qty-ctl {
+      display: inline-flex; align-items: center; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); overflow: hidden; background: var(--bg-input);
+    }
+    .qty-btn { background: transparent; color: var(--white); border: none; padding: 0.35rem 0.65rem; transition: background var(--fast); }
+    .qty-btn:hover { background: rgba(245,197,24,0.1); color: var(--gold); }
+    .qty-val { width: 40px; text-align: center; font-size: 0.9rem; font-weight: 600; border: none; background: transparent; color: var(--white); }
+    .ci-price { font-weight: 600; font-size: 1.1rem; }
+    
+    .cart-summary {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1.5rem;
+      position: sticky; top: calc(var(--nav-h) + 2rem);
+    }
+    .sum-row { display: flex; justify-content: space-between; margin-bottom: 0.75rem; color: var(--text-2); font-size: 0.95rem; }
+    .sum-total { display: flex; justify-content: space-between; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: 1.4rem; font-weight: 600; color: var(--white); font-family: var(--font-display); }
+    
+    @media (max-width: 900px) {
+      .cart-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+      .cart-item { flex-direction: column; }
+      .ci-img { width: 100%; height: 160px; }
+    }
   </style>
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand">Casa Chantilly</a>
+    <a href="../../index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
     <div class="nav-links">
-      <a href="../../index.html" class="btn btn-ghost btn-sm"><i class="bi bi-arrow-left"></i> Catálogo</a>
-      <span id="nav-user" style="font-size:.8rem;color:var(--muted);padding:0 .5rem"></span>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()" style="display:none"><i class="bi bi-box-arrow-right"></i></button>
+      <a href="../admin/dashboard.html" id="nav-admin" class="btn btn-ghost btn-sm" style="display:none"><i class="bi bi-shield-lock"></i> Panel</a>
+      <a href="carrito.html" class="btn btn-outline btn-sm"><i class="bi bi-cart3"></i> Carrito</a>
+      <a href="perfil.html" id="nav-perfil" class="btn btn-ghost btn-sm"><i class="bi bi-person-circle"></i> Mi Perfil</a>
+      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
     </div>
   </div>
 </nav>
 
-<main class="container">
+<div class="container section">
   <div class="page-header">
-    <h1 class="page-title"><i class="bi bi-cart3" style="font-size:1.8rem;margin-right:.5rem"></i>Mi Carrito</h1>
+    <h1 class="page-title"><i class="bi bi-cart3" style="font-size:1.8rem;margin-right:0.5rem;color:var(--gold)"></i>Mi Carrito</h1>
+    <p class="page-sub">Revisa tus productos elegidos antes de finalizar el pedido.</p>
   </div>
 
-  <!-- Auth wall -->
-  <div id="auth-wall" style="display:none">
-    <div class="empty">
-      <i class="bi bi-lock"></i>
-      <p>Debes iniciar sesión para ver tu carrito</p>
-      <a href="../auth/login.html" class="btn btn-gold mt-2">Iniciar Sesión</a>
-    </div>
+  <div id="cart-content" style="min-height:300px">
+    <div class="spin" style="margin:4rem auto;display:block;text-align:center;font-size:2rem;color:var(--gold)"><i class="bi bi-arrow-repeat"></i></div>
   </div>
-
-  <!-- Cart content -->
-  <div id="cart-content" style="display:none">
-    <div class="cart-layout">
-      <!-- Tabla -->
-      <div>
-        <div class="table-wrap">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Precio unit.</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="cart-body"></tbody>
-          </table>
-        </div>
-        <div id="empty-msg" class="empty" style="display:none">
-          <i class="bi bi-cart-x"></i>
-          <p>Tu carrito está vacío</p>
-          <a href="../../index.html" class="btn btn-gold mt-2">Explorar catálogo</a>
-        </div>
-        <div id="cart-actions" style="display:none; margin-top:1rem; text-align:right">
-          <button class="btn btn-danger btn-sm" onclick="vaciar()">
-            <i class="bi bi-trash3"></i> Vaciar carrito
-          </button>
-        </div>
-      </div>
-
-      <!-- Resumen -->
-      <div class="summary" id="summary" style="display:none">
-        <h6 style="font-family:var(--font-display);font-size:1.1rem;margin-bottom:1.1rem">Resumen del pedido</h6>
-        <div class="sum-row"><span>Subtotal</span><span id="s-sub">S/ 0.00</span></div>
-        <div class="sum-row"><span>IGV (18%)</span><span id="s-igv">S/ 0.00</span></div>
-        <div class="sum-total"><span>Total</span><span id="s-total">S/ 0.00</span></div>
-        <a href="checkout.html" class="btn btn-gold btn-full btn-lg mt-3">
-          <i class="bi bi-credit-card"></i> Proceder al pago
-        </a>
-        <a href="../../index.html" class="btn btn-outline btn-full mt-2">Seguir comprando</a>
-      </div>
-    </div>
-  </div>
-</main>
+</div>
 
 <script src="../../js/app.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    if (!Auth.isLoggedIn()) {
-      document.getElementById('auth-wall').style.display = 'block';
-      return;
-    }
-    document.getElementById('cart-content').style.display = 'block';
-    loadCart();
-  });
+  Auth.requireLogin();
+  let cartData = null;
 
   async function loadCart() {
+    const root = document.getElementById('cart-content');
     try {
-      const j = await API.get('/api/carrito');
-      if (j.success) renderCart(j.data);
-      else if (j.status === 401) { document.getElementById('auth-wall').style.display = 'block'; document.getElementById('cart-content').style.display = 'none'; }
-    } catch { Toast.err('Error al cargar el carrito'); }
+      const res = await API.get('/api/carrito');
+      cartData = res;
+      renderCart(root);
+    } catch (e) {
+      root.innerHTML = `<div class="empty"><i class="bi bi-exclamation-triangle"></i><p>No se pudo cargar tu carrito. ${e.message}</p></div>`;
+    }
   }
 
-  function renderCart(cart) {
-    const body    = document.getElementById('cart-body');
-    const emptyEl = document.getElementById('empty-msg');
-    const summary = document.getElementById('summary');
-    const actions = document.getElementById('cart-actions');
-
-    if (!cart?.items?.length) {
-      body.innerHTML = ''; emptyEl.style.display = 'block';
-      summary.style.display = 'none'; actions.style.display = 'none';
+  function renderCart(root) {
+    if (!cartData || !cartData.items || cartData.items.length === 0) {
+      root.innerHTML = `
+        <div class="empty">
+          <i class="bi bi-cart-x"></i>
+          <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.8rem;margin-bottom:0.5rem">Tu carrito está vacío</h3>
+          <p style="margin-bottom:1.5rem">Anímate a explorar nuestras delicias frescas.</p>
+          <a href="../../index.html" class="btn btn-primary">Ver Catálogo</a>
+        </div>
+      `;
       return;
     }
-    emptyEl.style.display = 'none'; summary.style.display = 'block'; actions.style.display = 'block';
 
-    body.innerHTML = cart.items.map(it => `
-      <tr>
-        <td><div class="item-name">${it.productoNombre}</div><div class="item-var">${it.varianteNombre}</div></td>
-        <td class="item-price">${fmt.money(it.precioUnitario)}</td>
-        <td>
-          <div class="qty-ctrl">
-            <button class="qty-btn" onclick="updateQty(${it.detalleId},${it.cantidad-1})"><i class="bi bi-dash"></i></button>
-            <span class="qty-val">${it.cantidad}</span>
-            <button class="qty-btn" onclick="updateQty(${it.detalleId},${it.cantidad+1})" ${it.cantidad>=it.stockDisponible?'disabled':''}><i class="bi bi-plus"></i></button>
+    const itemsHtml = cartData.items.map(item => `
+      <div class="cart-item">
+        <img src="${item.urlFoto || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&q=80'}" class="ci-img" alt="${item.productoNombre}">
+        <div class="ci-details">
+          <div>
+            <div class="flex-between">
+              <h4 class="ci-title">${item.productoNombre}</h4>
+              <button class="btn btn-ghost btn-sm" style="color:var(--red);padding:0.2rem" onclick="removeItem(${item.detalleId})" title="Eliminar"><i class="bi bi-trash3"></i></button>
+            </div>
+            <p class="ci-var">Porción: ${item.varianteNombre}</p>
           </div>
-        </td>
-        <td class="item-price">${fmt.money(it.subtotal)}</td>
-        <td><button class="del-btn" onclick="removeItem(${it.detalleId})"><i class="bi bi-trash3"></i></button></td>
-      </tr>`).join('');
+          <div class="ci-controls">
+            <div class="qty-ctl">
+              <button class="qty-btn" onclick="updateQty(${item.detalleId}, ${item.cantidad - 1})"><i class="bi bi-dash"></i></button>
+              <input type="text" class="qty-val" value="${item.cantidad}" readonly>
+              <button class="qty-btn" onclick="updateQty(${item.detalleId}, ${item.cantidad + 1})"><i class="bi bi-plus"></i></button>
+            </div>
+            <div class="ci-price">${fmt.money(item.subtotal)}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
 
-    document.getElementById('s-sub').textContent   = fmt.money(cart.subtotal);
-    document.getElementById('s-igv').textContent   = fmt.money(cart.igv);
-    document.getElementById('s-total').textContent = fmt.money(cart.total);
+    root.innerHTML = `
+      <div class="cart-grid">
+        <div class="cart-items">
+          <div class="flex-between" style="margin-bottom:1.25rem;border-bottom:1px solid var(--border);padding-bottom:1rem">
+            <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem">Tus Productos</h3>
+            <button class="btn btn-danger btn-sm" onclick="clearCart()"><i class="bi bi-trash2"></i> Vaciar todo</button>
+          </div>
+          ${itemsHtml}
+        </div>
+        <div class="cart-summary">
+          <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem;margin-bottom:1.5rem">Resumen del pedido</h3>
+          <div class="sum-row"><span>Subtotal</span><span>${fmt.money(cartData.subtotal)}</span></div>
+          <div class="sum-row"><span>IGV (18%)</span><span>${fmt.money(cartData.igv)}</span></div>
+          <div class="sum-total"><span>Total</span><span>${fmt.money(cartData.total || (cartData.subtotal * 1.18))}</span></div>
+          
+          <div class="divider"></div>
+          <a href="checkout.html" class="btn btn-primary btn-full btn-lg">Proceder al Pago <i class="bi bi-credit-card"></i></a>
+          <p style="text-align:center;font-size:0.75rem;color:var(--muted);margin-top:1rem"><i class="bi bi-shield-check" style="color:var(--green)"></i> Pago Seguro y Encriptado</p>
+        </div>
+      </div>
+    `;
   }
 
   async function updateQty(id, qty) {
-    if (qty <= 0) return removeItem(id);
+    if (qty < 1) return removeItem(id);
     try {
-      const j = await API.put(`/api/carrito/items/${id}`, { cantidad: qty });
-      if (j.success) renderCart(j.data);
-      else Toast.err(j.message);
-    } catch { Toast.err('Error al actualizar cantidad'); }
+      await API.put(`/api/carrito/items/${id}`, { cantidad: qty });
+      loadCart();
+    } catch (e) { Toast.err('No hay suficiente stock o error: ' + e.message); }
   }
 
   async function removeItem(id) {
+    if (!confirm('¿Quitar este pastel del carrito?')) return;
     try {
-      const j = await API.delete(`/api/carrito/items/${id}`);
-      if (j.success) { renderCart(j.data); Toast.ok('Ítem eliminado'); }
-    } catch { Toast.err('Error al eliminar'); }
+      await API.delete(`/api/carrito/items/${id}`);
+      Toast.info('Producto retirado');
+      loadCart();
+    } catch (e) {}
   }
 
-  async function vaciar() {
-    if (!confirm('¿Vaciar todo el carrito?')) return;
-    try { await API.delete('/api/carrito'); loadCart(); } catch {}
+  async function clearCart() {
+    if (!confirm('¿Estás seguro de vaciar todo el carrito?')) return;
+    try {
+      await API.delete('/api/carrito');
+      loadCart();
+    } catch {}
   }
+
+  document.addEventListener('DOMContentLoaded', loadCart);
 </script>
 </body>
 </html>

@@ -3,21 +3,18 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Análisis de Productos — Admin Casa Chantilly</title>
+  <title>Análisis — Admin Casa Chantilly</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
   <link rel="stylesheet" href="../../css/base.css"/>
-  <style>
-    .static-note { background:var(--yellow-bg); border:1px solid rgba(255,214,10,.2); border-radius:var(--radius); padding:.65rem 1rem; font-size:.8rem; color:var(--yellow); margin-bottom:1.5rem; }
-  </style>
 </head>
 <body>
 <nav class="nav">
   <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand">Casa Chantilly</a>
+    <a href="../../index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
     <div class="nav-links">
-      <a href="dashboard.html" class="btn btn-ghost btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()" style="display:none"><i class="bi bi-box-arrow-right"></i></button>
+      <span style="color:var(--text-2);font-size:0.85rem;margin-right:1rem">Admin: <span id="nav-user"></span></span>
+      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
     </div>
   </div>
 </nav>
@@ -26,59 +23,88 @@
   <aside class="sidebar">
     <div class="sidebar-section">
       <span class="sidebar-label">Catálogo</span>
-      <a href="dashboard.html"  class="sidebar-link "><i class="bi bi-speedometer2"></i> Dashboard</a>
-      <a href="productos.html"  class="sidebar-link "><i class="bi bi-box-seam"></i> Productos</a>
-      <a href="inventario.html" class="sidebar-link "><i class="bi bi-archive"></i> Inventario</a>
+      <a href="dashboard.html"  class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="productos.html"  class="sidebar-link"><i class="bi bi-box-seam"></i> Productos</a>
+      <a href="inventario.html" class="sidebar-link"><i class="bi bi-archive"></i> Inventario</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Pedidos</span>
-      <a href="pedidos.html" class="sidebar-link "><i class="bi bi-receipt"></i> Todos los pedidos</a>
-      <a href="estados.html" class="sidebar-link "><i class="bi bi-kanban"></i> Estados</a>
+      <a href="pedidos.html" class="sidebar-link"><i class="bi bi-receipt"></i> Todos los pedidos</a>
+      <a href="estados.html" class="sidebar-link"><i class="bi bi-kanban"></i> Estados</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Reportes</span>
-      <a href="reportes.html"   class="sidebar-link "><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
+      <a href="reportes.html"   class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
       <a href="analisis.html"   class="sidebar-link active"><i class="bi bi-graph-up"></i> Análisis</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Config</span>
-      <a href="usuarios.html"    class="sidebar-link "><i class="bi bi-people"></i> Usuarios</a>
-      <a href="promociones.html" class="sidebar-link "><i class="bi bi-tag"></i> Promociones</a>
+      <a href="usuarios.html"    class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
+      <a href="promociones.html" class="sidebar-link"><i class="bi bi-tag"></i> Promociones</a>
     </div>
   </aside>
 
   <main class="admin-main">
     <div class="page-header">
-      <h1 class="page-title"><i class="bi bi-graph-up" style="font-size:1.8rem;margin-right:.5rem"></i>Análisis de Productos</h1>
-      <p class="page-sub">RF25 — Productos más vendidos y horas pico</p>
+      <h1 class="page-title"><i class="bi bi-graph-up" style="color:var(--gold);margin-right:0.5rem"></i>Análisis de Negocio</h1>
+      <p class="page-sub">RF25 — Rendimiento por productos y rotación</p>
     </div>
     
-        <div class="static-note"><i class="bi bi-info-circle"></i> Analítica disponible en <strong>Fase 4 (RF25)</strong>.</div>
-        <div class="grid-2">
-          <div class="card"><h6 style="font-family:var(--font-display);margin-bottom:1.1rem">Top 5 productos más vendidos</h6>
-            <div style="display:flex;flex-direction:column;gap:.75rem">
-              <div style="display:flex;align-items:center;gap:.75rem"><span style="width:22px;height:22px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;font-weight:700;flex-shrink:0">1</span><div style="flex:1"><div style="font-size:.875rem;font-weight:600">Torta de Chocolate Premium</div><div style="height:6px;background:var(--bg-3);border-radius:99px;margin-top:4px;overflow:hidden"><div style="width:90%;height:100%;background:var(--grad)"></div></div></div><span style="color:var(--gold);font-size:.82rem;font-weight:700">142</span></div>
-              <div style="display:flex;align-items:center;gap:.75rem"><span style="width:22px;height:22px;border-radius:50%;background:rgba(201,169,110,.2);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--gold);font-weight:700;flex-shrink:0">2</span><div style="flex:1"><div style="font-size:.875rem;font-weight:600">Cupcakes Red Velvet x6</div><div style="height:6px;background:var(--bg-3);border-radius:99px;margin-top:4px;overflow:hidden"><div style="width:70%;height:100%;background:var(--gold)"></div></div></div><span style="color:var(--gold);font-size:.82rem;font-weight:700">98</span></div>
-              <div style="display:flex;align-items:center;gap:.75rem"><span style="width:22px;height:22px;border-radius:50%;background:rgba(201,169,110,.1);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);font-weight:700;flex-shrink:0">3</span><div style="flex:1"><div style="font-size:.875rem;font-weight:600">Torta Tres Leches</div><div style="height:6px;background:var(--bg-3);border-radius:99px;margin-top:4px;overflow:hidden"><div style="width:55%;height:100%;background:var(--muted)"></div></div></div><span style="color:var(--muted);font-size:.82rem">71</span></div>
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem;margin-bottom:1.5rem"><i class="bi bi-trophy" style="color:var(--gold);margin-right:0.5rem"></i> Top 5 Productos más vendidos</h3>
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>Producto</th><th>Unid. Vendidas</th><th>Tendencia</th></tr></thead>
+            <tbody>
+              <tr><td><div style="font-weight:600;color:var(--white)">Selva Negra Clásica</div><div style="font-size:0.75rem;color:var(--text-2)">Tortas Enteras</div></td><td>145</td><td><span style="color:var(--green)"><i class="bi bi-arrow-up"></i> +12%</span></td></tr>
+              <tr><td><div style="font-weight:600;color:var(--white)">Cheesecake de Maracuyá</div><div style="font-size:0.75rem;color:var(--text-2)">Tortas Enteras</div></td><td>98</td><td><span style="color:var(--green)"><i class="bi bi-arrow-up"></i> +5%</span></td></tr>
+              <tr><td><div style="font-weight:600;color:var(--white)">Porción Tres Leches</div><div style="font-size:0.75rem;color:var(--text-2)">Porciones Pequeñas</div></td><td>87</td><td><span style="color:var(--green)"><i class="bi bi-arrow-up"></i> +2%</span></td></tr>
+              <tr><td><div style="font-weight:600;color:var(--white)">Porción Red Velvet</div><div style="font-size:0.75rem;color:var(--text-2)">Porciones Pequeñas</div></td><td>65</td><td><span style="color:var(--muted)"><i class="bi bi-dash"></i> 0%</span></td></tr>
+              <tr><td><div style="font-weight:600;color:var(--white)">Torta Húmeda Chocolate</div><div style="font-size:0.75rem;color:var(--text-2)">Tortas Enteras</div></td><td>42</td><td><span style="color:var(--red)"><i class="bi bi-arrow-down"></i> -4%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        <div class="card">
+          <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem;margin-bottom:1.5rem"><i class="bi bi-clock-history" style="color:var(--gold);margin-right:0.5rem"></i> Mapa de Horas Pico</h3>
+          <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:1rem;text-align:center">
+            <div style="background:var(--bg-card-hover);padding:1rem;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.1)">
+              <div style="font-size:0.8rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">Mañana</div>
+              <div style="color:var(--text-2);font-size:0.85rem">9:00am - 12:00pm</div>
+              <div style="font-size:1.4rem;font-weight:700;color:var(--white);margin-top:0.5rem">25%</div>
             </div>
-          </div>
-          <div class="card"><h6 style="font-family:var(--font-display);margin-bottom:1.1rem">Horas pico de pedidos</h6>
-            <div style="display:flex;align-items:flex-end;gap:3px;height:100px">
-              <div style="flex:1;background:var(--bg-3);border-radius:3px 3px 0 0;height:10%" title="8am"></div>
-              <div style="flex:1;background:var(--bg-3);border-radius:3px 3px 0 0;height:20%"></div>
-              <div style="flex:1;background:var(--bg-3);border-radius:3px 3px 0 0;height:35%"></div>
-              <div style="flex:1;background:var(--grad);border-radius:3px 3px 0 0;height:75%"></div>
-              <div style="flex:1;background:var(--grad);border-radius:3px 3px 0 0;height:60%"></div>
-              <div style="flex:1;background:var(--bg-3);border-radius:3px 3px 0 0;height:45%"></div>
-              <div style="flex:1;background:var(--bg-3);border-radius:3px 3px 0 0;height:30%"></div>
-              <div style="flex:1;background:var(--grad);border-radius:3px 3px 0 0;height:100%"></div>
-              <div style="flex:1;background:var(--grad);border-radius:3px 3px 0 0;height:90%"></div>
-              <div style="flex:1;background:var(--bg-3);border-radius:3px 3px 0 0;height:40%"></div>
-              <div style="flex:1;background:var(--bg-3);border-radius:3px 3px 0 0;height:20%"></div>
+            <div style="background:rgba(204,32,32,0.1);padding:1rem;border-radius:var(--radius);border:1px solid var(--primary)">
+              <div style="font-size:0.8rem;color:var(--primary);text-transform:uppercase;margin-bottom:0.5rem;font-weight:600">Tarde (Pico)</div>
+              <div style="color:var(--white);font-size:0.85rem">1:00pm - 5:00pm</div>
+              <div style="font-size:1.4rem;font-weight:700;color:var(--gold);margin-top:0.5rem">55%</div>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:.4rem"><span>8am</span><span>12pm</span><span>6pm</span><span>8pm</span><span>10pm</span></div>
+            <div style="background:var(--bg-input);padding:1rem;border-radius:var(--radius);border:1px solid var(--border)">
+              <div style="font-size:0.8rem;color:var(--muted);text-transform:uppercase;margin-bottom:0.5rem">Noche</div>
+              <div style="color:var(--text-2);font-size:0.85rem">6:00pm - 9:00pm</div>
+              <div style="font-size:1.4rem;font-weight:700;color:var(--white);margin-top:0.5rem">20%</div>
+            </div>
           </div>
         </div>
+        
+        <div class="card">
+          <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem;margin-bottom:1rem"><i class="bi bi-pie-chart" style="color:var(--gold);margin-right:0.5rem"></i> Rotación por Categoría</h3>
+          <p style="color:var(--text-2);font-size:0.9rem;margin-bottom:1.5rem">Comparativa de participación en ventas totales del último mes.</p>
+          <div style="display:flex;flex-direction:column;gap:0.75rem">
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem"><span style="color:var(--white)">Tortas Enteras</span><span style="color:var(--gold)">60%</span></div>
+            <div style="width:100%;height:6px;background:var(--bg-3);border-radius:3px;overflow:hidden"><div style="height:100%;width:60%;background:var(--grad-gold)"></div></div>
+            
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;margin-top:0.5rem"><span style="color:var(--white)">Porciones</span><span style="color:var(--gold)">25%</span></div>
+            <div style="width:100%;height:6px;background:var(--bg-3);border-radius:3px;overflow:hidden"><div style="height:100%;width:25%;background:var(--primary)"></div></div>
+            
+            <div style="display:flex;justify-content:space-between;font-size:0.9rem;margin-top:0.5rem"><span style="color:var(--white)">Bocaditos</span><span style="color:var(--gold)">15%</span></div>
+            <div style="width:100%;height:6px;background:var(--bg-3);border-radius:3px;overflow:hidden"><div style="height:100%;width:15%;background:var(--muted)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 

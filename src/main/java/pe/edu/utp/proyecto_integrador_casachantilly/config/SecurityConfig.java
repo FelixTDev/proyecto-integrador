@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/index.html", "/login.html", "/registro.html",
                                 "/carrito.html", "/checkout.html")
                         .permitAll()
+                        .requestMatchers("/pages/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                         // Swagger
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()

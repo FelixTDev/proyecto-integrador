@@ -7,17 +7,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
   <link rel="stylesheet" href="../../css/base.css"/>
-  <style>
-    .static-note { background:var(--yellow-bg); border:1px solid rgba(255,214,10,.2); border-radius:var(--radius); padding:.65rem 1rem; font-size:.8rem; color:var(--yellow); margin-bottom:1.5rem; }
-  </style>
 </head>
 <body>
 <nav class="nav">
   <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand">Casa Chantilly</a>
+    <a href="../../index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
     <div class="nav-links">
-      <a href="dashboard.html" class="btn btn-ghost btn-sm"><i class="bi bi-arrow-left"></i> Dashboard</a>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()" style="display:none"><i class="bi bi-box-arrow-right"></i></button>
+      <span style="color:var(--text-2);font-size:0.85rem;margin-right:1rem">Admin: <span id="nav-user"></span></span>
+      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
     </div>
   </div>
 </nav>
@@ -26,56 +23,120 @@
   <aside class="sidebar">
     <div class="sidebar-section">
       <span class="sidebar-label">Catálogo</span>
-      <a href="dashboard.html"  class="sidebar-link "><i class="bi bi-speedometer2"></i> Dashboard</a>
-      <a href="productos.html"  class="sidebar-link "><i class="bi bi-box-seam"></i> Productos</a>
+      <a href="dashboard.html"  class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="productos.html"  class="sidebar-link"><i class="bi bi-box-seam"></i> Productos</a>
       <a href="inventario.html" class="sidebar-link active"><i class="bi bi-archive"></i> Inventario</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Pedidos</span>
-      <a href="pedidos.html" class="sidebar-link "><i class="bi bi-receipt"></i> Todos los pedidos</a>
-      <a href="estados.html" class="sidebar-link "><i class="bi bi-kanban"></i> Estados</a>
+      <a href="pedidos.html" class="sidebar-link"><i class="bi bi-receipt"></i> Todos los pedidos</a>
+      <a href="estados.html" class="sidebar-link"><i class="bi bi-kanban"></i> Estados</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Reportes</span>
-      <a href="reportes.html"   class="sidebar-link "><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
-      <a href="analisis.html"   class="sidebar-link "><i class="bi bi-graph-up"></i> Análisis</a>
+      <a href="reportes.html"   class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
+      <a href="analisis.html"   class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Config</span>
-      <a href="usuarios.html"    class="sidebar-link "><i class="bi bi-people"></i> Usuarios</a>
-      <a href="promociones.html" class="sidebar-link "><i class="bi bi-tag"></i> Promociones</a>
+      <a href="usuarios.html"    class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
+      <a href="promociones.html" class="sidebar-link"><i class="bi bi-tag"></i> Promociones</a>
     </div>
   </aside>
 
   <main class="admin-main">
-    <div class="page-header">
-      <h1 class="page-title"><i class="bi bi-archive" style="font-size:1.8rem;margin-right:.5rem"></i>Inventario</h1>
-      <p class="page-sub">RF05 — Control de stock de productos terminados</p>
+    <div class="page-header flex-between">
+      <div>
+        <h1 class="page-title"><i class="bi bi-archive" style="color:var(--gold);margin-right:0.5rem"></i>Gestión de Inventario</h1>
+        <p class="page-sub">RF03 — Registra movimientos de stock de variantes en tiempo real</p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="Modal.open('modal-inv')"><i class="bi bi-plus-slash-minus"></i> Ajuste Manual</button>
+      </div>
     </div>
     
-        <div class="static-note"><i class="bi bi-info-circle"></i> Funcionalidad disponible en <strong>Fase 3 (RF05)</strong>. Vista de referencia.</div>
-        <div class="grid-4">
-          <div class="stat-card"><div class="stat-label">Total productos</div><div class="stat-value">24</div><div class="stat-delta">8 categorías</div></div>
-          <div class="stat-card"><div class="stat-label">Stock bajo</div><div class="stat-value" style="color:var(--yellow)">3</div><div class="stat-delta">Requieren atención</div></div>
-          <div class="stat-card"><div class="stat-label">Agotados</div><div class="stat-value" style="color:var(--red)">1</div></div>
-          <div class="stat-card"><div class="stat-label">Disponibles</div><div class="stat-value" style="color:var(--green)">20</div></div>
+    <div class="card">
+      <div class="flex-between" style="margin-bottom:1.5rem">
+        <input type="text" class="input" style="max-width:300px" placeholder="🔍 Buscar SKU o Producto...">
+        <div style="display:flex;gap:0.5rem">
+          <select class="select"><option>Filtrar: Todos</option><option>Stock Crítico</option></select>
         </div>
-        <div class="card mt-3" style="padding:0;overflow:hidden">
-          <table class="table">
-            <thead><tr><th>Producto / Variante</th><th>Stock actual</th><th>Alerta mínima</th><th>Estado</th><th>Último movimiento</th></tr></thead>
-            <tbody>
-              <tr><td><div style="font-weight:600">Torta de Chocolate · Personal</div></td><td>8</td><td>5</td><td><span class="badge badge-green">OK</span></td><td>02/04/2026</td></tr>
-              <tr><td><div style="font-weight:600">Cupcakes Red Velvet · x6</div></td><td>3</td><td>5</td><td><span class="badge badge-yellow">Stock bajo</span></td><td>01/04/2026</td></tr>
-              <tr><td><div style="font-weight:600">Torta Tres Leches · Grande</div></td><td>0</td><td>3</td><td><span class="badge badge-red">Agotado</span></td><td>30/03/2026</td></tr>
-            </tbody>
-          </table>
-        </div>
+      </div>
+      
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>ID Var</th><th>Producto & Variante</th><th>Stock Actual</th><th>Alertas</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--muted)">VAR-101</td>
+              <td><strong>Selva Negra Tradicional</strong> <span style="font-size:0.8rem;color:var(--muted)">| Torta Entera (Top)</span></td>
+              <td><span style="font-size:1.1rem;font-weight:700;color:var(--white)">12</span> un.</td>
+              <td><span class="badge badge-green">Stock Saludable</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="setAjuste(101, 'Selva Negra Tradicional')"><i class="bi bi-tools"></i> Ajustar</button></td>
+            </tr>
+            <tr style="background:rgba(255,59,48,0.05)">
+              <td style="color:var(--muted)">VAR-102</td>
+              <td><strong>Selva Negra Tradicional</strong> <span style="font-size:0.8rem;color:var(--muted)">| Porción</h3></span></td>
+              <td><span style="font-size:1.1rem;font-weight:700;color:var(--red)">0</span> un.</td>
+              <td><span class="badge badge-red">Agotado (RF03)</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="setAjuste(102, 'Porción Selva Negra')"><i class="bi bi-tools"></i> Ajustar</button></td>
+            </tr>
+            <tr>
+              <td style="color:var(--muted)">VAR-205</td>
+              <td><strong>Cheesecake de Maracuyá</strong> <span style="font-size:0.8rem;color:var(--muted)">| Torta Mediana</span></td>
+              <td><span style="font-size:1.1rem;font-weight:700;color:var(--white)">4</span> un.</td>
+              <td><span class="badge badge-yellow">Stock Bajo</span></td>
+              <td><button class="btn btn-outline btn-sm" onclick="setAjuste(205, 'Cheesecake Maracuyá')"><i class="bi bi-tools"></i> Ajustar</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </main>
+</div>
+
+<!-- Modal Ajuste -->
+<div class="modal-backdrop" id="modal-inv">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Ajuste de Inventario</h3>
+      <button class="modal-close" onclick="Modal.close('modal-inv')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body">
+      <form class="field" style="gap:1rem" onsubmit="doAjuste(event)">
+        <div class="field">
+          <label class="label">Variante (ID o Selección)</label>
+          <input type="text" class="input" id="aj-var" value="VAR-102: Porción Selva Negra" readonly>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label class="label">Tipo de Movimiento</label><select class="select" id="aj-tipo"><option value="in">Entrada (+)</option><option value="out">Salida (-)</option></select></div>
+          <div class="field"><label class="label">Cantidad</label><input type="number" class="input" required min="1" value="10"></div>
+        </div>
+        <div class="field"><label class="label">Motivo u Observación</label><input type="text" class="input" placeholder="Producción lote mañana..."></div>
+        <button type="submit" class="btn btn-primary btn-full mt-1"><i class="bi bi-check2-circle"></i> Confirmar Movimiento (RF03)</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <script src="../../js/app.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => { Auth.requireAdmin(); });
+  Auth.requireAdmin();
+  let selectedId = 102;
+  function setAjuste(id, name) {
+    selectedId = id;
+    document.getElementById('aj-var').value = `VAR-${id}: ${name}`;
+    Modal.open('modal-inv');
+  }
+  async function doAjuste(e) {
+    e.preventDefault();
+    try {
+      // Fake API call RF03
+      // await API.post(`/api/admin/variantes/${selectedId}/inventario`, { ... });
+      Toast.ok('Movimiento de inventario registrado correctamente');
+      Modal.close('modal-inv');
+    } catch { Toast.err('Error al actualizar inventario'); }
+  }
 </script>
 </body>
 </html>

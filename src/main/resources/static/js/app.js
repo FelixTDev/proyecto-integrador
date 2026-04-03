@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════
-   CASA CHANTILLY — Shared Utilities
+   LA CASA DEL CHANTILLY — Core App Logic (JS)
    ═══════════════════════════════════════════════ */
 
 const API = {
@@ -14,36 +14,31 @@ const API = {
     return h;
   },
 
-  async get(path) {
-    const r = await fetch(this.BASE + path, { headers: this.headers() });
-    return r.json();
+  async request(method, path, body = null) {
+    const options = { method, headers: this.headers() };
+    if (body) options.body = JSON.stringify(body);
+    
+    try {
+      const res = await fetch(this.BASE + path, options);
+      if (!res.ok) {
+        let msg = `Error ${res.status}`;
+        try { const errObj = await res.json(); msg = errObj.message || msg; } catch(e) {}
+        throw new Error(msg);
+      }
+      // Algunos endpoints pueden no devolver JSON
+      const text = await res.text();
+      return text ? JSON.parse(text) : {};
+    } catch (err) {
+      Toast.err(`API Error: ${err.message}`);
+      throw err;
+    }
   },
 
-  async post(path, body) {
-    const r = await fetch(this.BASE + path, {
-      method: 'POST', headers: this.headers(), body: JSON.stringify(body)
-    });
-    return r.json();
-  },
-
-  async put(path, body) {
-    const r = await fetch(this.BASE + path, {
-      method: 'PUT', headers: this.headers(), body: JSON.stringify(body)
-    });
-    return r.json();
-  },
-
-  async patch(path, body) {
-    const r = await fetch(this.BASE + path, {
-      method: 'PATCH', headers: this.headers(), body: body ? JSON.stringify(body) : undefined
-    });
-    return r.json();
-  },
-
-  async delete(path) {
-    const r = await fetch(this.BASE + path, { method: 'DELETE', headers: this.headers() });
-    return r.json();
-  }
+  async get(path) { return this.request('GET', path); },
+  async post(path, body) { return this.request('POST', path, body); },
+  async put(path, body) { return this.request('PUT', path, body); },
+  async patch(path, body) { return this.request('PATCH', path, body); },
+  async delete(path) { return this.request('DELETE', path); }
 };
 
 /* ── Auth ── */
@@ -61,7 +56,7 @@ const Auth = {
   isLoggedIn: () => !!Auth.token(),
   save: (token, email) => {
     localStorage.setItem('jwt', token);
-    localStorage.setItem('email', email);
+    localStorage.setItem('email', email || '');
   },
   clear: () => {
     localStorage.removeItem('jwt');
@@ -77,7 +72,7 @@ const Auth = {
   }
 };
 
-/* ── Toast ── */
+/* ── Toast Notifications ── */
 const Toast = {
   _container: null,
   _get() {
@@ -89,10 +84,11 @@ const Toast = {
     return this._container;
   },
   show(msg, type = 'info', duration = 3500) {
-    const icons = { ok: 'bi-check-circle-fill', err: 'bi-exclamation-circle-fill', info: 'bi-info-circle-fill' };
+    const icons = { ok: 'bi-check-circle-fill', err: 'bi-x-circle-fill', info: 'bi-info-circle-fill' };
+    const cssColor = type === 'ok' ? 'var(--green)' : type === 'err' ? 'var(--red)' : 'var(--gold)';
     const t = document.createElement('div');
     t.className = `toast toast-${type}`;
-    t.innerHTML = `<i class="bi ${icons[type] || icons.info}" style="color:var(--${type==='ok'?'green':type==='err'?'red':'blue'})"></i>${msg}`;
+    t.innerHTML = `<i class="bi ${icons[type] || icons.info}" style="color:${cssColor};font-size:1.1rem"></i><span>${msg}</span>`;
     this._get().appendChild(t);
     setTimeout(() => {
       t.classList.add('out');
@@ -104,7 +100,7 @@ const Toast = {
   info: (msg) => Toast.show(msg, 'info'),
 };
 
-/* ── Modal helpers ── */
+/* ── Modal Helpers ── */
 const Modal = {
   open(id) {
     const el = document.getElementById(id);
@@ -119,12 +115,12 @@ const Modal = {
   }
 };
 
-// Close modal on backdrop click
+// Cerrar modal al hacer clic en el backdrop
 document.addEventListener('click', e => {
   if (e.target.classList.contains('modal-backdrop')) Modal.closeAll();
 });
 
-/* ── Nav update ── */
+/* ── UI / Navegación Dinámica ── */
 function updateNav() {
   const loggedIn = Auth.isLoggedIn();
   const isAdmin  = Auth.isAdmin();
@@ -151,7 +147,7 @@ async function doLogout() {
   window.location.href = '/';
 }
 
-/* ── Format helpers ── */
+/* ── Formateadores ── */
 const fmt = {
   money: (v) => 'S/ ' + Number(v || 0).toFixed(2),
   date:  (s) => s ? new Date(s).toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' }) : '—',
