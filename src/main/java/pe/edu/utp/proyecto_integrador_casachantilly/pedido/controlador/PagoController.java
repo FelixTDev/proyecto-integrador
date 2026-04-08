@@ -12,6 +12,8 @@ import pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Usuario;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.repositorio.UsuarioRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
+import pe.edu.utp.proyecto_integrador_casachantilly.pedido.dto.PagoCotizacionDTO;
+import pe.edu.utp.proyecto_integrador_casachantilly.pedido.dto.PagoCotizacionRequestDTO;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.dto.PagoRequestDTO;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.dto.PagoResultDTO;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.servicio.PagoService;
@@ -24,6 +26,23 @@ public class PagoController {
 
     @Autowired private PagoService pagoService;
     @Autowired private UsuarioRepository usuarioRepository;
+
+    @Operation(summary = "Cotizar total del checkout (envío + disponibilidad de franja)")
+    @PostMapping("/cotizacion")
+    public ResponseEntity<ApiResponse<PagoCotizacionDTO>> cotizar(
+            Authentication auth,
+            @Valid @RequestBody PagoCotizacionRequestDTO request) {
+        Integer userId = getUserId(auth);
+        PagoCotizacionDTO dto = pagoService.cotizar(
+                request.carritoId(),
+                userId,
+                request.direccionId(),
+                request.esRecojoTienda(),
+                request.franjaHorariaId(),
+                request.zonaEntrega()
+        );
+        return ResponseEntity.ok(ApiResponse.ok("Cotización calculada", dto));
+    }
 
     @Operation(summary = "Procesar pago del carrito")
     @PostMapping("/procesar")
@@ -38,7 +57,7 @@ public class PagoController {
 
     private Integer getUserId(Authentication auth) {
         String email = auth.getName();
-        Usuario u = usuarioRepository.findByEmail(email)
+        Usuario u = usuarioRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         return u.getId();
     }

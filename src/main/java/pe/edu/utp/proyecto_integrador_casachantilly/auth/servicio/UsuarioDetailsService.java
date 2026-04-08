@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Usuario;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.repositorio.UsuarioRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,11 +22,16 @@ public class UsuarioDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        String emailNormalizado = email == null ? "" : email.trim().toLowerCase();
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(emailNormalizado)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
 
         if (!usuario.getActivo()) {
             throw new UsernameNotFoundException("Usuario inactivo: " + email);
+        }
+
+        if (usuario.getBloqueadoHasta() != null && usuario.getBloqueadoHasta().isAfter(LocalDateTime.now())) {
+            throw new UsernameNotFoundException("Usuario bloqueado temporalmente: " + email);
         }
 
         List<GrantedAuthority> authorities = usuario.getRoles().stream()

@@ -27,11 +27,35 @@ public class Usuario {
     @Column(name = "password_hash", length = 255)
     private String passwordHash;
 
+    @Column(length = 25)
+    private String telefono;
+
+    @Column(name = "proveedor_oauth", length = 40)
+    private String proveedorOauth;
+
+    @Column(name = "oauth_id", length = 200)
+    private String oauthId;
+
     @Column(nullable = false)
     private Boolean activo = true;
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+    @Column(name = "fecha_actualizacion")
+    private LocalDateTime fechaActualizacion;
+
+    @Column(name = "fecha_desactivacion")
+    private LocalDateTime fechaDesactivacion;
+
+    @Column(name = "fecha_verificacion_email")
+    private LocalDateTime fechaVerificacionEmail;
+
+    @Column(name = "intentos_fallidos_login", nullable = false)
+    private Integer intentosFallidosLogin = 0;
+
+    @Column(name = "bloqueado_hasta")
+    private LocalDateTime bloqueadoHasta;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

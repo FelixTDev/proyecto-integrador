@@ -16,9 +16,13 @@ import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.AuthService;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.UsuarioDetailsService;
 
 import java.io.IOException;
+import java.util.Set;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
+    private static final Set<String> PROTECTED_PREFIXES = Set.of(
+            "/api/carrito", "/api/pedidos", "/api/pagos", "/api/cliente", "/api/admin"
+    );
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -38,19 +42,57 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            if (jwtUtil.isTokenValid(token) && authService.isSesionActiva(token)) {
-                String email = jwtUtil.extractEmail(token);
-                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = usuarioDetailsService.loadUserByUsername(email);
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
-                            null, userDetails.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authToken);
+            try {
+                String token = authHeader.substring(7);
+                boolean tokenValido = jwtUtil.isTokenValid(token);
+                if (!tokenValido) {
+                    if (isProtectedRequest(request)) {
+                        writeUnauthorized(response, "Token inválido o expirado");
+                        return;
+                    }
+                } else {
+                    AuthService.SesionEstado estado = authService.validarYRenovarSesion(token);
+                    if (estado == AuthService.SesionEstado.ACTIVA) {
+                        String email = jwtUtil.extractEmail(token);
+                        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                            UserDetails userDetails = usuarioDetailsService.loadUserByUsername(email);
+                            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
+                                    null, userDetails.getAuthorities());
+                            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                            SecurityContextHolder.getContext().setAuthentication(authToken);
+                        }
+                    } else if (isProtectedRequest(request)) {
+                        String msg = switch (estado) {
+                            case EXPIRADA -> "Sesión expirada por inactividad";
+                            case REVOCADA -> "Sesión cerrada";
+                            case NO_ENCONTRADA -> "Sesión no válida";
+                            default -> "No autorizado";
+                        };
+                        writeUnauthorized(response, msg);
+                        return;
+                    }
+                }
+            } catch (Exception ex) {
+                SecurityContextHolder.clearContext();
+                if (isProtectedRequest(request)) {
+                    writeUnauthorized(response, "Sesión inválida. Vuelve a iniciar sesión");
+                    return;
                 }
             }
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isProtectedRequest(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return PROTECTED_PREFIXES.stream().anyMatch(path::startsWith);
+    }
+
+    private void writeUnauthorized(HttpServletResponse response, String message) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"success\":false,\"message\":\"" + message + "\",\"data\":null}");
     }
 }

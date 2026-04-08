@@ -33,6 +33,15 @@ public class Pago {
     @Column(name = "referencia_externa", length = 200)
     private String referenciaExterna;
 
+    @Column(nullable = false, length = 3)
+    private String moneda = "PEN";
+
+    @Column(name = "id_transaccion_externa", length = 120)
+    private String idTransaccionExterna;
+
+    @Column(name = "fecha_aprobacion")
+    private LocalDateTime fechaAprobacion;
+
     @Column(nullable = false)
     private Integer intentos = 0;
 

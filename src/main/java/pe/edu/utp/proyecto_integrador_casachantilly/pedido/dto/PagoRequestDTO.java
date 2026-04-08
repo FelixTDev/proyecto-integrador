@@ -18,6 +18,9 @@ public record PagoRequestDTO(
         /** Si es recojo en tienda (no necesita dirección) */
         Boolean esRecojoTienda,
 
+        /** Compatibilidad temporal para clientes antiguos; el checkout MVP usa direccionId */
+        String zonaEntrega,
+
         String email,
 
         /** Método de pago: 1=Tarjeta, 2=Yape, etc. */

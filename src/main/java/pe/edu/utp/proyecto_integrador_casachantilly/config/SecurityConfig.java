@@ -29,12 +29,17 @@ public class SecurityConfig {
 
     @Autowired
     private UsuarioDetailsService usuarioDetailsService;
+    @Autowired private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    @Autowired private RestAccessDeniedHandler restAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(restAuthenticationEntryPoint)
+                        .accessDeniedHandler(restAccessDeniedHandler))
                 .authorizeHttpRequests(auth -> auth
                         // HTML público
                         .requestMatchers("/", "/index.html", "/login.html", "/registro.html",
@@ -52,10 +57,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/catalogo/**").permitAll()
                         // Admin requiere ADMIN
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        // Carrito y pedidos requieren auth
-                        .requestMatchers("/api/carrito/**").authenticated()
+                        // Cliente requiere CLIENTE
+                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
+                        .requestMatchers("/api/carrito/**").hasRole("CLIENTE")
+                        .requestMatchers("/api/pagos/**").hasRole("CLIENTE")
+                        // Pedidos: comprobantes e historial de usuario autenticado
                         .requestMatchers("/api/pedidos/**").authenticated()
-                        .requestMatchers("/api/pagos/**").authenticated()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

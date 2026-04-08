@@ -38,6 +38,12 @@ public class ProductoVariante {
     @Column(name = "stock_disponible", nullable = false)
     private Integer stockDisponible = 0;
 
+    @Column(name = "codigo_sku", length = 60)
+    private String codigoSku;
+
+    @Column(name = "codigo_barras", length = 32)
+    private String codigoBarras;
+
     @Column(nullable = false)
     private Boolean activo = true;
 }

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Avance Técnico del MVP</title>
+  <style>
+    body { font-family: "Times New Roman", serif; font-size: 12pt; line-height: 1.4; color: #111; }
+    h1 { text-align: center; font-size: 18pt; margin-bottom: 16px; }
+    h2 { font-size: 14pt; margin-top: 20px; margin-bottom: 8px; }
+    p { margin: 8px 0; text-align: justify; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0 16px 0; }
+    th, td { border: 1px solid #444; padding: 6px; vertical-align: top; }
+    th { background: #f2f2f2; text-align: left; }
+    ul { margin: 6px 0 10px 20px; }
+  </style>
+</head>
+<body>
+  <h1>Avance Técnico del MVP</h1>
+
+  <h2>Introducción</h2>
+  <p>
+    El presente documento resume el grado de cumplimiento del Producto Mínimo Viable (MVP) respecto al catálogo funcional consolidado del proyecto. Su propósito es dejar trazabilidad entre requerimientos priorizados, evidencia de implementación, estado técnico actual y pendientes reales para la siguiente etapa de evolución del sistema.
+  </p>
+
+  <h2>Estado de cumplimiento de requerimientos del MVP</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>RF</th>
+        <th>Estado</th>
+        <th>Evidencia de implementación</th>
+        <th>Observaciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>RF01</td><td>Completo</td><td>GET /api/catalogo, GET /api/catalogo/{id}, filtrado por categoría, vistas cliente de catálogo.</td><td>Catálogo público operativo con detalle y variantes.</td></tr>
+      <tr><td>RF02</td><td>Completo</td><td>POST/PUT /api/admin/productos y PATCH /api/admin/productos/{id}/toggle.</td><td>Alta, edición y desactivación lógica de productos y variantes en flujo administrativo.</td></tr>
+      <tr><td>RF03</td><td>Parcial</td><td>Disponibilidad visible en catálogo y validación por activo/stock en carrito y pago.</td><td>Falta formalización completa de reglas de capacidad comercial diaria.</td></tr>
+      <tr><td>RF05</td><td>Completo</td><td>Validaciones de stock en CarritoService y PagoService; movimientos en /api/admin/variantes/{id}/inventario.</td><td>Se evita sobreventa en el flujo principal.</td></tr>
+      <tr><td>RF06</td><td>Completo</td><td>GET/POST/PUT/DELETE en /api/carrito y vistas cliente de carrito.</td><td>Gestión de carrito funcional con resumen económico.</td></tr>
+      <tr><td>RF08</td><td>Parcial</td><td>Validación de franja horaria en cotización y pago; control de cupo por franja.</td><td>La programación por fecha/franja está implementada en versión MVP simplificada.</td></tr>
+      <tr><td>RF09</td><td>Parcial</td><td>POST /api/pagos/cotizacion y POST /api/pagos/procesar con registro de pago y pedido.</td><td>Flujo operativo de pago implementado; faltan endurecimientos para entorno productivo real.</td></tr>
+      <tr><td>RF10</td><td>Completo</td><td>Costo de envío por zona/dirección y costo cero para recojo.</td><td>Cálculo integrado al checkout y total del pedido.</td></tr>
+      <tr><td>RF11</td><td>Parcial</td><td>PATCH /api/admin/pedidos/{pedidoId}/validacion (aprobar/rechazar con motivo).</td><td>Se recomienda reforzar validación administrativa explícita de stock/franja al validar.</td></tr>
+      <tr><td>RF12</td><td>Completo</td><td>PATCH /api/admin/pedidos/{pedidoId}/estado con historial de cambios.</td><td>Ciclo de estado con transiciones controladas y trazabilidad.</td></tr>
+      <tr><td>RF13</td><td>Completo</td><td>GET /api/pedidos/{pedidoId}/comprobante.</td><td>Comprobante incluye ítems, montos y datos de entrega/recojo.</td></tr>
+      <tr><td>RF16</td><td>Parcial</td><td>POST /api/auth/registro, POST /api/auth/login, POST /api/auth/logout.</td><td>Registro y autenticación operativos; recuperación de acceso no cerrada.</td></tr>
+      <tr><td>RF17</td><td>Completo</td><td>GET/POST/PUT/PATCH en /api/cliente/direcciones y selección en checkout.</td><td>Múltiples direcciones, desactivación lógica y dirección principal única activa.</td></tr>
+      <tr><td>RF18</td><td>Parcial</td><td>Reglas en SecurityConfig y @PreAuthorize en controladores cliente/admin.</td><td>Segmentación ADMIN/CLIENTE aplicada; matriz total de roles aún pendiente.</td></tr>
+      <tr><td>RF20</td><td>Completo</td><td>JWT + validación de sesión persistida + expiración por inactividad + logout.</td><td>Control de sesión consistente con manejo frontend de 401/403.</td></tr>
+      <tr><td>RF21</td><td>Parcial</td><td>NotificacionService + entidad Notificacion + endpoint /api/cliente/notificaciones.</td><td>Se registra evento transaccional MVP; falta canal real y cobertura ampliada de eventos.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Cobertura funcional y técnica</h2>
+  <p>
+    El MVP cubre de forma integrada los módulos de autenticación y acceso, catálogo, carrito, checkout, pagos, pedidos, direcciones, notificaciones y operación administrativa básica. A nivel de interfaz, se reutilizaron y conectaron vistas en las rutas de cliente y administración (catálogo, carrito, checkout, perfil e interfaces administrativas). A nivel backend, la cobertura se implementa mediante controladores REST, servicios de dominio y repositorios JPA que soportan el flujo comercial principal de punta a punta: exploración de productos, selección, validación, confirmación y trazabilidad del pedido.
+  </p>
+  <p>
+    Endpoints clave del alcance MVP: /api/catalogo/**, /api/carrito/**, /api/pagos/cotizacion, /api/pagos/procesar, /api/pedidos/mis-pedidos, /api/pedidos/{pedidoId}/reordenar, /api/pedidos/{pedidoId}/comprobante, /api/cliente/direcciones/**, /api/cliente/notificaciones, /api/admin/productos/**, /api/admin/pedidos/** y /api/admin/usuarios/**.
+  </p>
+
+  <h2>Seguridad y control de acceso</h2>
+  <p>
+    La seguridad del MVP se basa en JWT con política stateless, control de autorización por rol y validación de sesión activa. Los endpoints administrativos se restringen al rol ADMIN, mientras que los endpoints de cliente se restringen al rol CLIENTE. El filtro de autenticación valida token, estado de sesión y expiración por inactividad (configurada en 30 minutos en el entorno actual). Además, el frontend aplica control de navegación por perfil y maneja respuestas 401/403 con limpieza de sesión y redirección a login cuando corresponde.
+  </p>
+
+  <h2>Riesgos y pendientes</h2>
+  <p><strong>Riesgos funcionales</strong></p>
+  <ul>
+    <li>RF03 y RF08 mantienen reglas operativas simplificadas en la versión MVP.</li>
+    <li>RF11 requiere mayor formalización de validaciones administrativas previas en aprobación/rechazo.</li>
+  </ul>
+
+  <p><strong>Riesgos técnicos</strong></p>
+  <ul>
+    <li>No se cuenta aún con una suite completa de pruebas automatizadas de regresión.</li>
+    <li>El procesamiento de pago está orientado a MVP y requiere endurecimientos para producción real.</li>
+  </ul>
+
+  <p><strong>Riesgos de seguridad</strong></p>
+  <ul>
+    <li>La matriz integral de permisos por todos los perfiles definidos en catálogo aún no está cerrada.</li>
+    <li>Se recomienda fortalecimiento adicional de políticas frontend para mitigar riesgos de sesión/token.</li>
+  </ul>
+
+  <p><strong>Riesgos de consistencia de datos</strong></p>
+  <ul>
+    <li>Permanecen reglas de negocio por formalizar (agenda, transición detallada de estados y tarifas oficiales).</li>
+    <li>Notificaciones en canal MVP trazable, con integración real pendiente.</li>
+  </ul>
+
+  <h2>Estado de compilación</h2>
+  <p>
+    El estado actual de compilación es exitoso: la ejecución de compilación del proyecto con Maven en modo sin pruebas finaliza sin errores (mvn -q -DskipTests compile). Durante la estabilización se corrigió la configuración de procesamiento de anotaciones en el archivo pom.xml, incorporando la configuración explícita de Lombok en dependencias y en el maven-compiler-plugin. Esta corrección resolvió el problema global de símbolos no encontrados asociado a getters/setters generados por Lombok.
+  </p>
+
+  <h2>Casos de prueba recomendados</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Tipo de prueba</th>
+        <th>Caso</th>
+        <th>Resultado esperado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Acceso por rol</td><td>Cliente intenta acceder a endpoint administrativo (/api/admin/pedidos).</td><td>Respuesta 403 (acceso denegado).</td></tr>
+      <tr><td>Acceso por rol</td><td>Usuario no cliente intenta operar endpoints de cliente (/api/carrito).</td><td>Bloqueo por permisos según perfil.</td></tr>
+      <tr><td>Sesión expirada</td><td>Token vigente pero sesión caducada por inactividad.</td><td>Respuesta 401 y redirección a login.</td></tr>
+      <tr><td>Carrito</td><td>Agregar variante con stock suficiente.</td><td>Ítem agregado y resumen actualizado.</td></tr>
+      <tr><td>Carrito</td><td>Actualizar cantidad por encima del stock.</td><td>Rechazo por stock insuficiente.</td></tr>
+      <tr><td>Checkout delivery</td><td>Cotizar y pagar con dirección activa y franja válida.</td><td>Cotización correcta y pedido consistente.</td></tr>
+      <tr><td>Checkout recojo</td><td>Cotizar y pagar en modalidad recojo.</td><td>Costo de envío igual a cero y confirmación consistente.</td></tr>
+      <tr><td>Validación de stock</td><td>Intentar pagar cuando stock cambió y ya no alcanza.</td><td>Bloqueo de pago previo a confirmación.</td></tr>
+      <tr><td>Reordenación</td><td>Reordenar pedido con ítems no disponibles.</td><td>Resultado parcial/rechazado con mensaje por ítem.</td></tr>
+      <tr><td>Notificaciones</td><td>Crear/confirmar/cambiar estado de pedido.</td><td>Registro de notificación asociado a cliente y pedido.</td></tr>
+      <tr><td>Endpoints admin</td><td>Solicitar transición de estado no permitida.</td><td>Rechazo de transición inválida.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Conclusión</h2>
+  <p>
+    Con base en la verificación técnica y funcional realizada, el MVP se considera cubierto en su alcance principal y en condición revisable para sustentación académica. No obstante, persisten pendientes de siguiente etapa relacionados con formalización de reglas de negocio específicas, fortalecimiento de seguridad integral por matriz de permisos completa y robustecimiento del flujo de pago para operación productiva. Este estado permite continuar hacia una fase de estabilización avanzada y preparación de release con criterios de calidad ampliados.
+  </p>
+</body>
+</html>

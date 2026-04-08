@@ -31,6 +31,12 @@ public class Pedido {
     @Column(name = "promocion_id")
     private Integer promocionId;
 
+    @Column(name = "codigo_pedido", length = 30)
+    private String codigoPedido;
+
+    @Column(name = "estado_actual_id")
+    private Integer estadoActualId;
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal subtotal;
 
@@ -51,6 +57,9 @@ public class Pedido {
 
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+    @Column(name = "fecha_actualizacion")
+    private LocalDateTime fechaActualizacion;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<DetallePedido> detalles = new ArrayList<>();

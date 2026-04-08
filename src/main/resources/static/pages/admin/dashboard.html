@@ -4,17 +4,25 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Dashboard — Admin Casa Chantilly</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
   <link rel="stylesheet" href="../../css/base.css"/>
+  <link rel="stylesheet" href="../../css/cliente-theme.css"/>
+  <link rel="stylesheet" href="../../css/admin-theme.css"/>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
-    <div class="nav-links">
-      <span style="color:var(--muted);font-size:0.85rem;margin-right:1rem">Admin: <span id="nav-user"></span></span>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+<nav class="navbar navbar-expand-lg sticky-top brand-navbar py-3">
+  <div class="container-fluid px-3 px-lg-4">
+    <a href="../../index.html" class="navbar-brand fw-bold"><i class="bi bi-shop me-2"></i>Casa Chantilly Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminTopNav" aria-controls="adminTopNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="adminTopNav">
+      <div class="navbar-nav ms-auto align-items-lg-center gap-2 pt-3 pt-lg-0">
+        <span class="small text-white-50">Admin: <strong id="nav-user" class="text-white"></strong></span>
+        <button id="nav-logout" class="btn btn-sm btn-soft" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -34,69 +42,77 @@
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Reportes</span>
-      <a href="reportes.html"   class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
-      <a href="analisis.html"   class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
+      <a href="reportes.html" class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
+      <a href="analisis.html" class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Config</span>
-      <a href="usuarios.html"    class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
+      <a href="usuarios.html" class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
       <a href="promociones.html" class="sidebar-link"><i class="bi bi-tag"></i> Promociones</a>
     </div>
   </aside>
 
   <main class="admin-main">
     <div class="page-header">
-      <h1 class="page-title">Bienvenido al Panel de Control</h1>
-      <p class="page-sub">Resumen operativo de hoy.</p>
+      <h1 class="page-title mb-1">Dashboard operativo</h1>
+      <p class="page-sub mb-0">Resumen rápido del desempeño diario de la operación.</p>
     </div>
-    
-    <div class="grid-4 mb-3">
-      <div class="stat-card"><div class="stat-label">Pedidos Hoy</div><div class="stat-value">14</div><div class="stat-delta" style="color:var(--green)">+3 vs ayer</div></div>
-      <div class="stat-card"><div class="stat-label">Ingresos Hoy</div><div class="stat-value">S/ 450</div><div class="stat-delta" style="color:var(--green)">+12%</div></div>
-      <div class="stat-card"><div class="stat-label">Stock Crítico</div><div class="stat-value" style="color:var(--red)">3</div><div class="stat-delta">Productos a reponer</div></div>
-      <div class="stat-card"><div class="stat-label">Nuevos Usuarios</div><div class="stat-value">5</div><div class="stat-delta">En la última semana</div></div>
-    </div>
-    
-    <div class="grid-2">
-      <!-- Pedidos Recientes -->
-      <div class="card">
-        <div class="flex-between" style="margin-bottom:1.5rem">
-          <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem"><i class="bi bi-bell alert-icon" style="color:var(--gold);margin-right:0.5rem"></i> Pedidos Urgentes (RF23)</h3>
-          <a href="pedidos.html" class="btn btn-ghost btn-sm">Ver todos</a>
-        </div>
-        <div class="table-wrap">
-          <table class="table">
-            <thead><tr><th># Pedido</th><th>Estado</th><th>Monto</th></tr></thead>
-            <tbody>
-              <tr><td><strong style="color:var(--white)">ORD-1049</strong><br><span style="font-size:0.75rem;color:var(--text-2)">Hace 10 min</span></td><td><span class="badge badge-yellow">Pendiente</span></td><td>S/ 85.00</td></tr>
-              <tr><td><strong style="color:var(--white)">ORD-1048</strong><br><span style="font-size:0.75rem;color:var(--text-2)">Hace 45 min</span></td><td><span class="badge badge-blue">En prep.</span></td><td>S/ 120.00</td></tr>
-              <tr><td><strong style="color:var(--white)">ORD-1047</strong><br><span style="font-size:0.75rem;color:var(--text-2)">Hace 2 horas</span></td><td><span class="badge badge-green">Listo</span></td><td>S/ 45.00</td></tr>
-            </tbody>
-          </table>
+
+    <section class="summary-grid">
+      <article class="stat-card">
+        <div class="stat-label">Pedidos hoy</div>
+        <div class="stat-value" id="kpi-pedidos-hoy">0</div>
+        <div class="stat-delta" id="kpi-pedidos-hoy-delta">Comparado con ayer</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-label">Ingresos hoy</div>
+        <div class="stat-value" id="kpi-ingresos-hoy">S/ 0.00</div>
+        <div class="stat-delta" id="kpi-ingresos-hoy-delta">Comparado con ayer</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-label">Stock crítico</div>
+        <div class="stat-value text-danger" id="kpi-stock-critico">0</div>
+        <div class="stat-delta">Productos sin stock</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-label">Pedidos completados</div>
+        <div class="stat-value" id="kpi-completados-7d">0</div>
+        <div class="stat-delta">Últimos 7 días</div>
+      </article>
+    </section>
+
+    <section class="row g-3">
+      <div class="col-xl-7">
+        <div class="card p-3 p-lg-4 h-100">
+          <div class="admin-toolbar">
+            <h2 class="h5 m-0 section-title"><i class="bi bi-bell me-2"></i>Pedidos urgentes</h2>
+            <a href="pedidos.html" class="btn btn-outline btn-sm">Ver todos</a>
+          </div>
+          <div class="table-wrap p-2">
+            <table class="table mb-0">
+              <thead>
+                <tr><th># Pedido</th><th>Estado</th><th>Monto</th></tr>
+              </thead>
+              <tbody id="dash-urgentes-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
-      
-      <!-- Alertas de Stock -->
-      <div class="card" style="border-color:rgba(255,59,48,0.3)">
-        <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem;margin-bottom:1.5rem"><i class="bi bi-exclamation-triangle" style="color:var(--red);margin-right:0.5rem"></i> Alerta de Stock Bajo (RF23)</h3>
-        <div style="display:flex;flex-direction:column;gap:1rem">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem;background:rgba(255,59,48,0.05);border-radius:var(--radius);border:1px solid rgba(255,59,48,0.2)">
-            <div><strong style="color:var(--white)">Selva Negra Entera</strong><br><span style="font-size:0.8rem;color:var(--text-2)">Cat: Tortas Clásicas</span></div>
-            <div style="text-align:right"><span style="color:var(--red);font-weight:700;font-size:1.2rem">2 un.</span><br><a href="inventario.html" style="font-size:0.75rem;color:var(--gold)">Reponer</a></div>
+      <div class="col-xl-5">
+        <div class="card p-3 p-lg-4 h-100">
+          <div class="admin-toolbar">
+            <h2 class="h5 m-0 section-title"><i class="bi bi-exclamation-triangle me-2"></i>Alertas de stock</h2>
+            <a href="inventario.html" class="btn btn-outline btn-sm">Ir a inventario</a>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem;background:rgba(255,59,48,0.05);border-radius:var(--radius);border:1px solid rgba(255,59,48,0.2)">
-            <div><strong style="color:var(--white)">Porción Tres Leches</strong><br><span style="font-size:0.8rem;color:var(--text-2)">Cat: Porciones</span></div>
-            <div style="text-align:right"><span style="color:var(--red);font-weight:700;font-size:1.2rem">0 un.</span><br><a href="inventario.html" style="font-size:0.75rem;color:var(--gold)">Reponer</a></div>
-          </div>
+          <div class="d-flex flex-column gap-2" id="dash-stock-alerts"></div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/app.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => { Auth.requireAdmin(); });
-</script>
+<script src="../../js/admin/dashboard.js"></script>
 </body>
 </html>

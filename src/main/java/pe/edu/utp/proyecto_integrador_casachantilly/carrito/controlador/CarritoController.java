@@ -73,7 +73,7 @@ public class CarritoController {
 
     private Integer getUserId(Authentication auth) {
         String email = auth.getName();
-        Usuario u = usuarioRepository.findByEmail(email)
+        Usuario u = usuarioRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         return u.getId();
     }

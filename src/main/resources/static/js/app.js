@@ -15,22 +15,62 @@ const API = {
   },
 
   async request(method, path, body = null) {
+    const normalizedPath = String(path || '').startsWith('/') ? String(path) : `/${String(path || '')}`;
     const options = { method, headers: this.headers() };
     if (body) options.body = JSON.stringify(body);
     
     try {
-      const res = await fetch(this.BASE + path, options);
+      const res = await fetch(this.BASE + normalizedPath, options);
       if (!res.ok) {
         let msg = `Error ${res.status}`;
-        try { const errObj = await res.json(); msg = errObj.message || msg; } catch(e) {}
+        try {
+          const errObj = await res.json();
+          msg = errObj.message || msg;
+          if (errObj.data && typeof errObj.data === 'object') {
+            const firstError = Object.values(errObj.data)[0];
+            if (firstError) msg = `${msg}: ${firstError}`;
+          }
+        } catch(e) {}
+        this.handleAuthError(res.status, normalizedPath, msg);
         throw new Error(msg);
       }
       // Algunos endpoints pueden no devolver JSON
       const text = await res.text();
-      return text ? JSON.parse(text) : {};
+      if (!text) return {};
+      const parsed = JSON.parse(text);
+      // Normaliza respuestas backend envueltas en ApiResponse<T>
+      if (parsed && typeof parsed === 'object' && Object.prototype.hasOwnProperty.call(parsed, 'data')) {
+        return parsed.data;
+      }
+      return parsed;
     } catch (err) {
       Toast.err(`API Error: ${err.message}`);
       throw err;
+    }
+  },
+
+  handleAuthError(status, path, message) {
+    const isAuthPath = String(path || '').startsWith('/api/auth/');
+    const isProtectedPath = /^\/api\/(admin|cliente|carrito|pedido|pedidos|pago|pagos)\b/.test(String(path || ''));
+    if (isAuthPath) return;
+
+    if (status === 401) {
+      Auth.clear();
+      if (isProtectedPath) {
+        const current = window.location.pathname || '';
+        if (!current.includes('/pages/auth/login.html')) {
+          setTimeout(() => {
+            window.location.href = '/pages/auth/login.html?reason=expired';
+          }, 250);
+        }
+      }
+    } else if (status === 403 && isProtectedPath) {
+      const current = window.location.pathname || '';
+      if (current.includes('/pages/admin/') && !Auth.isAdmin()) {
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 250);
+      }
     }
   },
 
@@ -45,14 +85,19 @@ const API = {
 const Auth = {
   token: ()  => localStorage.getItem('jwt'),
   email: ()  => localStorage.getItem('email'),
-  isAdmin: () => {
+  roles: () => {
     const token = Auth.token();
-    if (!token) return false;
+    if (!token) return [];
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      return (payload.roles || []).includes('ROLE_ADMIN');
-    } catch { return false; }
+      return payload.roles || [];
+    } catch { return []; }
   },
+  hasRole: (role) => Auth.roles().includes(role),
+  isAdmin: () => {
+    return Auth.hasRole('ROLE_ADMIN');
+  },
+  isClient: () => Auth.hasRole('ROLE_CLIENTE'),
   isLoggedIn: () => !!Auth.token(),
   save: (token, email) => {
     localStorage.setItem('jwt', token);
@@ -68,6 +113,14 @@ const Auth = {
   },
   requireAdmin: () => {
     if (!Auth.isAdmin()) { window.location.href = '/'; return false; }
+    return true;
+  },
+  requireClient: () => {
+    if (!Auth.isLoggedIn()) { window.location.href = '/pages/auth/login.html'; return false; }
+    if (!Auth.isClient()) {
+      window.location.href = Auth.isAdmin() ? '/pages/admin/dashboard.html' : '/';
+      return false;
+    }
     return true;
   }
 };
@@ -138,6 +191,23 @@ function updateNav() {
   if (navPerfil) navPerfil.style.display = loggedIn ? '' : 'none';
 }
 
+function enforcePageAccessByRole() {
+  const path = window.location.pathname || '';
+  if (path.includes('/pages/admin/') && !Auth.isAdmin()) {
+    window.location.href = '/';
+    return;
+  }
+  if (path.includes('/pages/cliente/')) {
+    if (!Auth.isLoggedIn()) {
+      window.location.href = '/pages/auth/login.html';
+      return;
+    }
+    if (!Auth.isClient()) {
+      window.location.href = Auth.isAdmin() ? '/pages/admin/dashboard.html' : '/';
+    }
+  }
+}
+
 async function doLogout() {
   const jwt = Auth.token();
   if (jwt) {
@@ -155,4 +225,7 @@ const fmt = {
 };
 
 /* ── Run on DOM ready ── */
-document.addEventListener('DOMContentLoaded', updateNav);
+document.addEventListener('DOMContentLoaded', () => {
+  enforcePageAccessByRole();
+  updateNav();
+});

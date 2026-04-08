@@ -26,6 +26,9 @@ public class Sesion {
     @Column(name = "ip_origen", length = 45)
     private String ipOrigen;
 
+    @Column(name = "agente_usuario", length = 255)
+    private String agenteUsuario;
+
     @Column(nullable = false)
     private Boolean activo = true;
 
@@ -34,4 +37,10 @@ public class Sesion {
 
     @Column(name = "fecha_expiracion", nullable = false)
     private LocalDateTime fechaExpiracion;
+
+    @Column(name = "fecha_revocacion")
+    private LocalDateTime fechaRevocacion;
+
+    @Column(name = "motivo_revocacion", length = 120)
+    private String motivoRevocacion;
 }

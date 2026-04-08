@@ -33,8 +33,14 @@ public class Producto {
     @Column(nullable = false)
     private Boolean activo = true;
 
+    @Column(length = 160)
+    private String slug;
+
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
+
+    @Column(name = "fecha_actualizacion")
+    private LocalDateTime fechaActualizacion;
 
     /** Join table: producto_alergeno */
     @ManyToMany(fetch = FetchType.LAZY)

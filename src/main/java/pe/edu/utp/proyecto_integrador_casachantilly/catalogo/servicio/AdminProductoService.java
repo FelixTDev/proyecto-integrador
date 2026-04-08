@@ -12,7 +12,9 @@ import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.BadRequestEx
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
+import java.time.LocalDateTime;
 
 @Service
 public class AdminProductoService {
@@ -36,6 +38,8 @@ public class AdminProductoService {
         producto.setDescripcion(req.descripcion());
         producto.setCategoria(categoria);
         producto.setActivo(req.activo() != null ? req.activo() : true);
+        producto.setSlug(slugify(req.nombre()));
+        producto.setFechaActualizacion(LocalDateTime.now());
 
         if (req.alergenoIds() != null && !req.alergenoIds().isEmpty()) {
             Set<Alergeno> alergenos = new HashSet<>(alergenoRepository.findAllById(req.alergenoIds()));
@@ -69,6 +73,8 @@ public class AdminProductoService {
         producto.setDescripcion(req.descripcion());
         producto.setCategoria(categoria);
         if (req.activo() != null) producto.setActivo(req.activo());
+        producto.setSlug(slugify(req.nombre()));
+        producto.setFechaActualizacion(LocalDateTime.now());
 
         if (req.alergenoIds() != null) {
             Set<Alergeno> alergenos = new HashSet<>(alergenoRepository.findAllById(req.alergenoIds()));
@@ -79,7 +85,8 @@ public class AdminProductoService {
 
         // Reemplazar variantes si se envían
         if (req.variantes() != null && !req.variantes().isEmpty()) {
-            varianteRepository.deleteAll(varianteRepository.findByProductoId(id));
+            // No se elimina físicamente para conservar trazabilidad/histórico
+            varianteRepository.desactivarPorProductoId(id);
             for (CrearProductoRequest.VarianteRequest vReq : req.variantes()) {
                 varianteRepository.save(buildVariante(vReq, producto));
             }
@@ -97,6 +104,7 @@ public class AdminProductoService {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado: " + id));
         producto.setActivo(!producto.getActivo());
+        producto.setFechaActualizacion(LocalDateTime.now());
         productoRepository.save(producto);
         return producto.getActivo();
     }
@@ -144,6 +152,23 @@ public class AdminProductoService {
         v.setTiempoPrepMin(vReq.tiempoPrepMin() != null ? vReq.tiempoPrepMin() : 60);
         v.setStockDisponible(vReq.stockDisponible() != null ? vReq.stockDisponible() : 0);
         v.setActivo(vReq.activo() != null ? vReq.activo() : true);
+        String base = slugify(producto.getNombre()) + "-" + slugify(vReq.nombreVariante());
+        if (base.length() > 50) {
+            base = base.substring(0, 50);
+        }
+        v.setCodigoSku("SKU-" + base.toUpperCase(Locale.ROOT));
         return v;
+    }
+
+    private String slugify(String input) {
+        if (input == null || input.isBlank()) {
+            return null;
+        }
+        return input
+                .toLowerCase(Locale.ROOT)
+                .replaceAll("[^a-z0-9\\s-]", "")
+                .trim()
+                .replaceAll("\\s+", "-")
+                .replaceAll("-{2,}", "-");
     }
 }

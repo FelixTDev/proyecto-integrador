@@ -4,148 +4,129 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Mi Perfil — La Casa del Chantilly</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
   <link rel="stylesheet" href="../../css/base.css"/>
-  <style>
-    .perfil-grid { display: grid; grid-template-columns: 260px 1fr; gap: 2rem; align-items: start; }
-    .p-nav { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; }
-    .p-nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem; border-radius: var(--radius); color: var(--text-2); font-weight: 500; cursor: pointer; transition: all var(--fast); margin-bottom: 0.25rem; }
-    .p-nav-link:hover { color: var(--gold); background: rgba(245,197,24,0.06); }
-    .p-nav-link.active { background: rgba(204,32,32,0.15); color: var(--white); border-left: 3px solid var(--primary); border-radius: 0 var(--radius) var(--radius) 0; }
-    
-    .p-content { display: none; animation: toastIn 0.3s var(--ease); }
-    .p-content.active { display: block; }
-    
-    .order-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; transition: background var(--fast); }
-    .order-card:hover { background: var(--bg-card-hover); }
-    .order-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .order-grid { display: grid; grid-template-columns: 1fr 150px; gap: 1rem; font-size: 0.9rem; }
-    
-    .dir-card { background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1rem; position: relative; }
-    .dir-card.main { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
-    .dir-badge { position: absolute; top: 1.25rem; right: 1.25rem; }
-    
-    @media (max-width: 768px) { .perfil-grid { grid-template-columns: 1fr; } }
-  </style>
+  <link rel="stylesheet" href="../../css/cliente-theme.css"/>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
-    <div class="nav-links">
-      <a href="carrito.html" class="btn btn-ghost btn-sm"><i class="bi bi-cart3"></i> Carrito</a>
-      <a href="perfil.html" class="btn btn-outline btn-sm"><i class="bi bi-person-circle"></i> Mi Perfil</a>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+<nav class="navbar navbar-expand-lg sticky-top brand-navbar py-3">
+  <div class="container">
+    <a href="../../index.html" class="navbar-brand fw-bold"><i class="bi bi-shop me-2"></i>Casa Chantilly</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#perfilNav" aria-controls="perfilNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="perfilNav">
+      <div class="navbar-nav ms-auto gap-2 align-items-lg-center pt-3 pt-lg-0">
+        <a href="carrito.html" class="btn btn-sm btn-soft"><i class="bi bi-cart3"></i> Carrito</a>
+        <a href="perfil.html" class="btn btn-sm btn-gold"><i class="bi bi-person-circle"></i> Mi Perfil</a>
+        <button id="nav-logout" class="btn btn-sm btn-soft" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+      </div>
     </div>
   </div>
 </nav>
 
-<div class="container section">
-  <div class="page-header" style="display:flex;align-items:center;gap:1.5rem">
-    <div style="width:80px;height:80px;border-radius:50%;background:var(--grad-gold);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;font-family:var(--font-display)">FC</div>
-    <div>
-      <h1 class="page-title" id="p-name">Cargando...</h1>
-      <p class="page-sub" id="p-email">cargando@email.com</p>
-      <div style="margin-top:0.5rem"><span class="badge badge-gold"><i class="bi bi-star-fill"></i> 150 Puntos Oro (RF19)</span></div>
+<section class="py-4 py-md-5">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center gap-3 gap-md-4 mb-4">
+      <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold profile-avatar">FC</div>
+      <div>
+        <h1 class="page-title mb-1" id="p-name">Cargando...</h1>
+        <p class="text-secondary mb-1" id="p-email">cargando@email.com</p>
+        <span class="badge badge-gold"><i class="bi bi-star-fill me-1"></i>150 Puntos Oro</span>
+      </div>
+    </div>
+
+    <div class="perfil-grid">
+      <aside class="p-nav p-3">
+        <div class="p-nav-link active" onclick="switchTab('historial', this)"><i class="bi bi-receipt"></i> Mis Pedidos</div>
+        <div class="p-nav-link" onclick="switchTab('direcciones', this)"><i class="bi bi-geo-alt"></i> Mis Direcciones</div>
+        <div class="p-nav-link" onclick="switchTab('reclamos', this)"><i class="bi bi-exclamation-square"></i> Reclamos</div>
+        <hr/>
+        <div class="p-nav-link text-danger" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</div>
+      </aside>
+
+      <main>
+        <div id="tab-historial" class="p-content active">
+          <h2 class="h3 mb-3 section-title">Historial de pedidos</h2>
+          <div id="historial-list"></div>
+
+          <h3 class="h4 mt-4 mb-3 section-title">Notificaciones transaccionales</h3>
+          <div id="notif-list"></div>
+        </div>
+
+        <div id="tab-direcciones" class="p-content">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <h2 class="h3 mb-0 section-title">Mis direcciones</h2>
+            <button class="btn btn-brand btn-sm" onclick="openDireccionModal()"><i class="bi bi-plus-lg"></i> Agregar nueva</button>
+          </div>
+          <div id="dir-list"></div>
+        </div>
+
+        <div id="tab-reclamos" class="p-content">
+          <h2 class="h3 mb-3 section-title">Libro de Reclamos</h2>
+          <div class="card p-4">
+            <form class="field field-gap-md" onsubmit="event.preventDefault(); Toast.ok('Reclamo enviado correctamente'); this.reset();">
+              <div class="field">
+                <label class="label">Pedido relacionado</label>
+                <select class="form-select"><option>#ORD-0892 (12 May)</option><option>Ninguno</option></select>
+              </div>
+              <div class="field">
+                <label class="label">Motivo del reclamo</label>
+                <input type="text" class="form-control" required>
+              </div>
+              <div class="field">
+                <label class="label">Descripción detallada</label>
+                <textarea class="form-control" rows="4" required></textarea>
+              </div>
+              <div class="field">
+                <label class="label">Evidencia fotográfica</label>
+                <input type="file" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-brand">Enviar reclamo</button>
+            </form>
+          </div>
+        </div>
+      </main>
     </div>
   </div>
+</section>
 
-  <div class="perfil-grid">
-    <div class="p-nav">
-      <div class="p-nav-link active" onclick="switchTab('historial', this)"><i class="bi bi-receipt"></i> Mis Pedidos</div>
-      <div class="p-nav-link" onclick="switchTab('direcciones', this)"><i class="bi bi-geo-alt"></i> Mis Direcciones</div>
-      <div class="p-nav-link" onclick="switchTab('reclamos', this)"><i class="bi bi-exclamation-square"></i> Reclamos (RF15)</div>
-      <div class="divider"></div>
-      <div class="p-nav-link" style="color:var(--red)" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</div>
+<div class="modal-backdrop" id="modal-dir">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="dir-modal-title">Nueva dirección</h3>
+      <button class="modal-close" onclick="Modal.close('modal-dir')"><i class="bi bi-x-lg"></i></button>
     </div>
-    
-    <div>
-      <!-- Historial -->
-      <div id="tab-historial" class="p-content active">
-        <h2 style="font-family:var(--font-display);font-size:1.6rem;color:var(--white);margin-bottom:1.5rem">Historial de Pedidos (RF14)</h2>
-        
-        <div class="order-card">
-          <div class="order-header">
-            <div><span class="badge badge-green" style="margin-bottom:0.5rem">Entregado</span><h3 style="color:var(--white);font-size:1.1rem">Pedido #ORD-0892</h3><p style="color:var(--muted);font-size:0.8rem">12 May 2026</p></div>
-            <div style="text-align:right"><div style="font-size:1.4rem;font-weight:600;color:var(--gold)">S/ 115.00</div><button class="btn btn-primary btn-sm mt-1" onclick="Toast.info('Repitiendo pedido...')"><i class="bi bi-arrow-repeat"></i> Repetir Pedido</button></div>
-          </div>
-          <div class="order-grid">
-            <div style="color:var(--text-2)">1x Selva Negra Tradicional<br>2x Porción 3 Leches Vainilla</div>
-            <div style="text-align:right"><button class="btn btn-ghost btn-sm" onclick="Toast.ok('Comprobante descargado')"><i class="bi bi-file-earmark-pdf"></i> Boleta PDF</button></div>
-          </div>
+    <div class="modal-body">
+      <form id="dir-form" class="field field-gap-sm">
+        <input type="hidden" id="dir-id">
+        <div class="row g-3">
+          <div class="col-md-6 field"><label class="label">Etiqueta</label><input class="form-control" id="dir-etiqueta" placeholder="Casa / Oficina"></div>
+          <div class="col-md-6 field"><label class="label">Zona de envío</label><select class="form-select" id="dir-zona"></select></div>
         </div>
-        
-        <div class="order-card">
-          <div class="order-header">
-            <div><span class="badge badge-blue" style="margin-bottom:0.5rem">En ruta</span><h3 style="color:var(--white);font-size:1.1rem">Pedido #ORD-0914</h3><p style="color:var(--muted);font-size:0.8rem">Hoy (Hace 2h)</p></div>
-            <div style="text-align:right"><div style="font-size:1.4rem;font-weight:600;color:var(--gold)">S/ 85.00</div><button class="btn btn-outline btn-sm mt-1" onclick="Toast.info('Visualizando mapa...')"><i class="bi bi-geo-alt"></i> Rastrear</button></div>
-          </div>
-          <div class="order-grid">
-            <div style="color:var(--text-2)">1x Cheesecake de Fresa Entero</div>
-          </div>
+        <div class="field"><label class="label">Dirección completa</label><input class="form-control" id="dir-direccion" required></div>
+        <div class="field"><label class="label">Referencia</label><input class="form-control" id="dir-ref"></div>
+        <div class="row g-3">
+          <div class="col-md-6 field"><label class="label">Destinatario</label><input class="form-control" id="dir-dest"></div>
+          <div class="col-md-6 field"><label class="label">Teléfono</label><input class="form-control" id="dir-tel"></div>
         </div>
-      </div>
-      
-      <!-- Direcciones -->
-      <div id="tab-direcciones" class="p-content">
-        <div class="flex-between" style="margin-bottom:1.5rem">
-          <h2 style="font-family:var(--font-display);font-size:1.6rem;color:var(--white)">Mis Direcciones (RF17)</h2>
-          <button class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Agregar nueva</button>
-        </div>
-        
-        <div class="dir-card main">
-          <div class="badge badge-gold dir-badge">Predeterminada</div>
-          <h4 style="color:var(--white);margin-bottom:0.25rem">Casa</h4>
-          <p style="color:var(--text-2);font-size:0.9rem">Av. Los Fresnos 123, Dpto 401<br>Lince, Lima</p>
-          <div style="margin-top:1rem;display:flex;gap:0.5rem">
-            <button class="btn btn-ghost btn-sm">Editar</button>
-            <button class="btn btn-ghost btn-sm" style="color:var(--red)">Eliminar</button>
-          </div>
-        </div>
-        
-        <div class="dir-card">
-          <h4 style="color:var(--white);margin-bottom:0.25rem">Oficina</h4>
-          <p style="color:var(--text-2);font-size:0.9rem">Calle Las Orquídeas 444, Empresa XYZ<br>San Isidro, Lima</p>
-          <div style="margin-top:1rem;display:flex;gap:0.5rem">
-            <button class="btn btn-ghost btn-sm">Editar</button>
-            <button class="btn btn-ghost btn-sm" style="color:var(--red)">Eliminar</button>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Reclamos -->
-      <div id="tab-reclamos" class="p-content">
-        <h2 style="font-family:var(--font-display);font-size:1.6rem;color:var(--white);margin-bottom:1.5rem">Libro de Reclamos (RF15)</h2>
-        <div class="card">
-          <form class="field" style="gap:1rem" onsubmit="event.preventDefault(); Toast.ok('Reclamo enviado correctamente'); this.reset();">
-            <div class="field"><label class="label">Pedido relacionado</label><select class="select"><option>#ORD-0892 (12 May)</option><option>Ninguno</option></select></div>
-            <div class="field"><label class="label">Motivo del reclamo</label><input type="text" class="input" required></div>
-            <div class="field"><label class="label">Descripción Detallada</label><textarea class="textarea" required></textarea></div>
-            <div class="field"><label class="label">Evidencia Fotográfica</label><input type="file" class="input" style="padding-top:0.5rem"></div>
-            <button type="submit" class="btn btn-danger mt-1">Enviar Reclamo a Soporte</button>
-          </form>
-        </div>
-      </div>
+        <label class="d-flex align-items-center gap-2 text-secondary">
+          <input type="checkbox" id="dir-principal"> Marcar como dirección principal
+        </label>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline-brand" onclick="Modal.close('modal-dir')">Cancelar</button>
+      <button class="btn btn-brand" onclick="guardarDireccion()">Guardar</button>
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/app.js"></script>
-<script>
-  Auth.requireLogin();
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('p-name').textContent = Auth.email().split('@')[0] || 'Cliente VIP';
-    document.getElementById('p-email').textContent = Auth.email();
-  });
-
-  function switchTab(id, el) {
-    document.querySelectorAll('.p-content').forEach(x => x.classList.remove('active'));
-    document.getElementById('tab-' + id).classList.add('active');
-    document.querySelectorAll('.p-nav-link').forEach(x => x.classList.remove('active'));
-    el.classList.add('active');
-  }
-</script>
+<script src="../../js/cliente/perfil.js"></script>
 </body>
 </html>

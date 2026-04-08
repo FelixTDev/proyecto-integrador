@@ -4,17 +4,25 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Inventario — Admin Casa Chantilly</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
   <link rel="stylesheet" href="../../css/base.css"/>
+  <link rel="stylesheet" href="../../css/cliente-theme.css"/>
+  <link rel="stylesheet" href="../../css/admin-theme.css"/>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
-    <div class="nav-links">
-      <span style="color:var(--text-2);font-size:0.85rem;margin-right:1rem">Admin: <span id="nav-user"></span></span>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+<nav class="navbar navbar-expand-lg sticky-top brand-navbar py-3">
+  <div class="container-fluid px-3 px-lg-4">
+    <a href="../../index.html" class="navbar-brand fw-bold"><i class="bi bi-shop me-2"></i>Casa Chantilly Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminTopNav" aria-controls="adminTopNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="adminTopNav">
+      <div class="navbar-nav ms-auto align-items-lg-center gap-2 pt-3 pt-lg-0">
+        <span class="small text-white-50">Admin: <strong id="nav-user" class="text-white"></strong></span>
+        <button id="nav-logout" class="btn btn-sm btn-soft" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -23,8 +31,8 @@
   <aside class="sidebar">
     <div class="sidebar-section">
       <span class="sidebar-label">Catálogo</span>
-      <a href="dashboard.html"  class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
-      <a href="productos.html"  class="sidebar-link"><i class="bi bi-box-seam"></i> Productos</a>
+      <a href="dashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="productos.html" class="sidebar-link"><i class="bi bi-box-seam"></i> Productos</a>
       <a href="inventario.html" class="sidebar-link active"><i class="bi bi-archive"></i> Inventario</a>
     </div>
     <div class="sidebar-section">
@@ -34,58 +42,54 @@
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Reportes</span>
-      <a href="reportes.html"   class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
-      <a href="analisis.html"   class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
+      <a href="reportes.html" class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
+      <a href="analisis.html" class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Config</span>
-      <a href="usuarios.html"    class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
+      <a href="usuarios.html" class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
       <a href="promociones.html" class="sidebar-link"><i class="bi bi-tag"></i> Promociones</a>
     </div>
   </aside>
 
   <main class="admin-main">
-    <div class="page-header flex-between">
-      <div>
-        <h1 class="page-title"><i class="bi bi-archive" style="color:var(--gold);margin-right:0.5rem"></i>Gestión de Inventario</h1>
-        <p class="page-sub">RF03 — Registra movimientos de stock de variantes en tiempo real</p>
-      </div>
-      <div>
-        <button class="btn btn-primary" onclick="Modal.open('modal-inv')"><i class="bi bi-plus-slash-minus"></i> Ajuste Manual</button>
-      </div>
+    <div class="page-header">
+      <h1 class="page-title mb-1"><i class="bi bi-archive me-2"></i>Gestión de inventario</h1>
+      <p class="page-sub mb-0">Movimientos de stock y control de alertas por variante.</p>
     </div>
-    
-    <div class="card">
-      <div class="flex-between" style="margin-bottom:1.5rem">
-        <input type="text" class="input" style="max-width:300px" placeholder="🔍 Buscar SKU o Producto...">
-        <div style="display:flex;gap:0.5rem">
-          <select class="select"><option>Filtrar: Todos</option><option>Stock Crítico</option></select>
+
+    <div class="card p-3 p-lg-4">
+      <div class="admin-toolbar">
+        <input type="text" class="form-control inventory-search" placeholder="Buscar SKU o producto...">
+        <div class="actions">
+          <select class="form-select admin-select-role"><option>Filtrar: Todos</option><option>Stock Crítico</option></select>
+          <button class="btn btn-primary" onclick="Modal.open('modal-inv')"><i class="bi bi-plus-slash-minus"></i> Ajuste manual</button>
         </div>
       </div>
-      
-      <div class="table-wrap">
-        <table class="table">
-          <thead><tr><th>ID Var</th><th>Producto & Variante</th><th>Stock Actual</th><th>Alertas</th><th>Acciones</th></tr></thead>
+
+      <div class="table-wrap p-2">
+        <table class="table align-middle mb-0">
+          <thead><tr><th>ID Var</th><th>Producto y Variante</th><th>Stock Actual</th><th>Alertas</th><th>Acciones</th></tr></thead>
           <tbody>
             <tr>
-              <td style="color:var(--muted)">VAR-101</td>
-              <td><strong>Selva Negra Tradicional</strong> <span style="font-size:0.8rem;color:var(--muted)">| Torta Entera (Top)</span></td>
-              <td><span style="font-size:1.1rem;font-weight:700;color:var(--white)">12</span> un.</td>
-              <td><span class="badge badge-green">Stock Saludable</span></td>
+              <td class="inv-id">VAR-101</td>
+              <td><strong class="text-brand-strong">Selva Negra Tradicional</strong> <span class="inv-meta">| Torta Entera (Top)</span></td>
+              <td><span class="inv-stock-healthy">12</span> un.</td>
+              <td><span class="badge badge-green">Stock saludable</span></td>
               <td><button class="btn btn-outline btn-sm" onclick="setAjuste(101, 'Selva Negra Tradicional')"><i class="bi bi-tools"></i> Ajustar</button></td>
             </tr>
-            <tr style="background:rgba(255,59,48,0.05)">
-              <td style="color:var(--muted)">VAR-102</td>
-              <td><strong>Selva Negra Tradicional</strong> <span style="font-size:0.8rem;color:var(--muted)">| Porción</h3></span></td>
-              <td><span style="font-size:1.1rem;font-weight:700;color:var(--red)">0</span> un.</td>
-              <td><span class="badge badge-red">Agotado (RF03)</span></td>
+            <tr class="inventory-low-row">
+              <td class="inv-id">VAR-102</td>
+              <td><strong class="text-brand-strong">Selva Negra Tradicional</strong> <span class="inv-meta">| Porción</span></td>
+              <td><span class="inv-stock-low">0</span> un.</td>
+              <td><span class="badge badge-red">Agotado</span></td>
               <td><button class="btn btn-outline btn-sm" onclick="setAjuste(102, 'Porción Selva Negra')"><i class="bi bi-tools"></i> Ajustar</button></td>
             </tr>
             <tr>
-              <td style="color:var(--muted)">VAR-205</td>
-              <td><strong>Cheesecake de Maracuyá</strong> <span style="font-size:0.8rem;color:var(--muted)">| Torta Mediana</span></td>
-              <td><span style="font-size:1.1rem;font-weight:700;color:var(--white)">4</span> un.</td>
-              <td><span class="badge badge-yellow">Stock Bajo</span></td>
+              <td class="inv-id">VAR-205</td>
+              <td><strong class="text-brand-strong">Cheesecake de Maracuyá</strong> <span class="inv-meta">| Torta Mediana</span></td>
+              <td><span class="inv-stock-low">4</span> un.</td>
+              <td><span class="badge badge-yellow">Stock bajo</span></td>
               <td><button class="btn btn-outline btn-sm" onclick="setAjuste(205, 'Cheesecake Maracuyá')"><i class="bi bi-tools"></i> Ajustar</button></td>
             </tr>
           </tbody>
@@ -95,30 +99,30 @@
   </main>
 </div>
 
-<!-- Modal Ajuste -->
 <div class="modal-backdrop" id="modal-inv">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">Ajuste de Inventario</h3>
+      <h3 class="modal-title">Ajuste de inventario</h3>
       <button class="modal-close" onclick="Modal.close('modal-inv')"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
-      <form class="field" style="gap:1rem" onsubmit="doAjuste(event)">
+      <form class="field admin-form-gap" onsubmit="doAjuste(event)">
         <div class="field">
-          <label class="label">Variante (ID o Selección)</label>
-          <input type="text" class="input" id="aj-var" value="VAR-102: Porción Selva Negra" readonly>
+          <label class="label">Variante (ID o selección)</label>
+          <input type="text" class="form-control" id="aj-var" value="VAR-102: Porción Selva Negra" readonly>
         </div>
-        <div class="grid-2">
-          <div class="field"><label class="label">Tipo de Movimiento</label><select class="select" id="aj-tipo"><option value="in">Entrada (+)</option><option value="out">Salida (-)</option></select></div>
-          <div class="field"><label class="label">Cantidad</label><input type="number" class="input" required min="1" value="10"></div>
+        <div class="row g-3">
+          <div class="col-md-6 field"><label class="label">Tipo de movimiento</label><select class="form-select" id="aj-tipo"><option value="in">Entrada (+)</option><option value="out">Salida (-)</option></select></div>
+          <div class="col-md-6 field"><label class="label">Cantidad</label><input type="number" class="form-control" required min="1" value="10"></div>
         </div>
-        <div class="field"><label class="label">Motivo u Observación</label><input type="text" class="input" placeholder="Producción lote mañana..."></div>
-        <button type="submit" class="btn btn-primary btn-full mt-1"><i class="bi bi-check2-circle"></i> Confirmar Movimiento (RF03)</button>
+        <div class="field"><label class="label">Motivo u observación</label><input type="text" class="form-control" placeholder="Producción lote mañana..."></div>
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check2-circle"></i> Confirmar movimiento</button>
       </form>
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/app.js"></script>
 <script>
   Auth.requireAdmin();
@@ -131,8 +135,6 @@
   async function doAjuste(e) {
     e.preventDefault();
     try {
-      // Fake API call RF03
-      // await API.post(`/api/admin/variantes/${selectedId}/inventario`, { ... });
       Toast.ok('Movimiento de inventario registrado correctamente');
       Modal.close('modal-inv');
     } catch { Toast.err('Error al actualizar inventario'); }

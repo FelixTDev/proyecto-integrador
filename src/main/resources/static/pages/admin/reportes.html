@@ -4,26 +4,25 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Reportes de Ventas — Admin Casa Chantilly</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
   <link rel="stylesheet" href="../../css/base.css"/>
-  <style>
-    .static-note { background:var(--yellow-bg); border:1px solid rgba(255,204,0,.3); border-radius:var(--radius); padding:.85rem 1rem; font-size:.85rem; color:var(--yellow); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem; }
-    .bar-chart { display:flex; align-items:flex-end; gap:.5rem; height:160px; padding-bottom:10px; border-bottom:1px solid var(--border); }
-    .bar { flex:1; background:var(--grad); border-radius:4px 4px 0 0; position:relative; transition:background 0.2s; }
-    .bar:hover { background:var(--gold); }
-    .bar-label { position:absolute; bottom:-25px; left:50%; transform:translateX(-50%); font-size:0.65rem; color:var(--muted); white-space:nowrap; }
-    .donut-chart { width:140px; height:140px; border-radius:50%; background:conic-gradient(var(--primary) 0% 65%, var(--gold) 65% 90%, var(--bg-3) 90% 100%); margin:0 auto; position:relative; }
-    .donut-inner { position:absolute; inset:20px; background:var(--bg-card); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:1.2rem; color:var(--white); }
-  </style>
+  <link rel="stylesheet" href="../../css/cliente-theme.css"/>
+  <link rel="stylesheet" href="../../css/admin-theme.css"/>
 </head>
 <body>
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand"><i class="bi bi-shop"></i> Casa Chantilly</a>
-    <div class="nav-links">
-      <span style="color:var(--text-2);font-size:0.85rem;margin-right:1rem">Admin: <span id="nav-user"></span></span>
-      <button id="nav-logout" class="btn btn-ghost btn-sm" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+<nav class="navbar navbar-expand-lg sticky-top brand-navbar py-3">
+  <div class="container-fluid px-3 px-lg-4">
+    <a href="../../index.html" class="navbar-brand fw-bold"><i class="bi bi-shop me-2"></i>Casa Chantilly Admin</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminTopNav" aria-controls="adminTopNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="adminTopNav">
+      <div class="navbar-nav ms-auto align-items-lg-center gap-2 pt-3 pt-lg-0">
+        <span class="small text-white-50">Admin: <strong id="nav-user" class="text-white"></strong></span>
+        <button id="nav-logout" class="btn btn-sm btn-soft" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -32,8 +31,8 @@
   <aside class="sidebar">
     <div class="sidebar-section">
       <span class="sidebar-label">Catálogo</span>
-      <a href="dashboard.html"  class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
-      <a href="productos.html"  class="sidebar-link"><i class="bi bi-box-seam"></i> Productos</a>
+      <a href="dashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="productos.html" class="sidebar-link"><i class="bi bi-box-seam"></i> Productos</a>
       <a href="inventario.html" class="sidebar-link"><i class="bi bi-archive"></i> Inventario</a>
     </div>
     <div class="sidebar-section">
@@ -43,99 +42,80 @@
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Reportes</span>
-      <a href="reportes.html"   class="sidebar-link active"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
-      <a href="analisis.html"   class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
+      <a href="reportes.html" class="sidebar-link active"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
+      <a href="analisis.html" class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Config</span>
-      <a href="usuarios.html"    class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
+      <a href="usuarios.html" class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
       <a href="promociones.html" class="sidebar-link"><i class="bi bi-tag"></i> Promociones</a>
     </div>
   </aside>
 
   <main class="admin-main">
-    <div class="page-header flex-between" style="align-items:flex-end">
+    <div class="page-header admin-toolbar admin-toolbar-end">
       <div>
-        <h1 class="page-title"><i class="bi bi-bar-chart-line" style="color:var(--gold);margin-right:0.5rem"></i>Reportes de Ventas</h1>
-        <p class="page-sub">RF24 — Dashboard de ventas y rendimiento comercial</p>
+        <h1 class="page-title mb-1"><i class="bi bi-bar-chart-line me-2"></i>Reportes de ventas</h1>
+        <p class="page-sub mb-0">Panel comercial de seguimiento de ingresos y comportamiento de pedidos.</p>
       </div>
       <div>
-        <select class="select" style="width:200px">
+        <select class="form-select admin-filter-select" id="rep-rango">
           <option>Últimos 14 días</option>
+          <option>Últimos 30 días</option>
+          <option>Últimos 60 días</option>
           <option>Este mes</option>
-          <option>Mes anterior</option>
-          <option>Año actual</option>
         </select>
       </div>
     </div>
-    
-    <div class="static-note"><i class="bi bi-info-circle-fill"></i> Esta vista es una maqueta estática (Fase 3). Los datos a continuación son simulados.</div>
-    
-    <div class="grid-4 mb-3">
-      <div class="stat-card"><div class="stat-label">Ventas Brutas</div><div class="stat-value">S/ 12,450</div><div class="stat-delta" style="color:var(--green)"><i class="bi bi-arrow-up-right"></i> 12.5% vs periodo ant.</div></div>
-      <div class="stat-card"><div class="stat-label">Pedidos Completados</div><div class="stat-value">187</div><div class="stat-delta" style="color:var(--green)"><i class="bi bi-arrow-up-right"></i> 8.2%</div></div>
-      <div class="stat-card"><div class="stat-label">Ticket Promedio</div><div class="stat-value" style="color:var(--text)">S/ 66.58</div><div class="stat-delta" style="color:var(--muted)">Estable</div></div>
-      <div class="stat-card"><div class="stat-label">Cancelaciones</div><div class="stat-value" style="color:var(--red)">3.4%</div><div class="stat-delta" style="color:var(--red)"><i class="bi bi-arrow-down-right"></i> +1.2%</div></div>
-    </div>
-    
-    <div class="grid-2">
-      <!-- Barras -->
-      <div class="card" style="grid-column:1 / -1">
-        <div class="flex-between" style="margin-bottom:2rem">
-          <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem">Evolución de Ventas por Día (S/)</h3>
-          <button class="btn btn-outline btn-sm"><i class="bi bi-download"></i> Exportar CSV</button>
-        </div>
-        
-        <div class="bar-chart">
-          <!-- Datos estaticos -->
-          <div class="bar" style="height:40%"><div class="bar-label">19 Mar</div></div>
-          <div class="bar" style="height:60%"><div class="bar-label">20 Mar</div></div>
-          <div class="bar" style="height:35%"><div class="bar-label">21 Mar</div></div>
-          <div class="bar" style="height:80%"><div class="bar-label">22 Mar</div></div>
-          <div class="bar" style="height:55%"><div class="bar-label">23 Mar</div></div>
-          <div class="bar" style="height:90%"><div class="bar-label">24 Mar</div></div>
-          <div class="bar" style="height:70%"><div class="bar-label">25 Mar</div></div>
-          <div class="bar" style="height:45%"><div class="bar-label">26 Mar</div></div>
-          <div class="bar" style="height:65%"><div class="bar-label">27 Mar</div></div>
-          <div class="bar" style="height:100%"><div class="bar-label">28 Mar</div></div>
-          <div class="bar" style="height:75%"><div class="bar-label">29 Mar</div></div>
-          <div class="bar" style="height:50%"><div class="bar-label">30 Mar</div></div>
-          <div class="bar" style="height:85%"><div class="bar-label">31 Mar</div></div>
-          <div class="bar" style="height:60%"><div class="bar-label">01 Abr</div></div>
+
+    <div class="report-note" id="rep-note"><i class="bi bi-info-circle-fill"></i> Cargando reportes desde base de datos...</div>
+
+    <section class="summary-grid">
+      <article class="stat-card"><div class="stat-label">Ventas Brutas</div><div class="stat-value" id="rep-kpi-ventas">S/ 0.00</div><div class="stat-delta" id="rep-kpi-ventas-sub">Rango actual</div></article>
+      <article class="stat-card"><div class="stat-label">Pedidos Completados</div><div class="stat-value" id="rep-kpi-completados">0</div><div class="stat-delta" id="rep-kpi-completados-sub">Entregados</div></article>
+      <article class="stat-card"><div class="stat-label">Ticket Promedio</div><div class="stat-value" id="rep-kpi-ticket">S/ 0.00</div><div class="stat-delta">Promedio por pedido</div></article>
+      <article class="stat-card"><div class="stat-label">Cancelaciones</div><div class="stat-value text-danger" id="rep-kpi-cancel">0.00%</div><div class="stat-delta">Cancelado + rechazado</div></article>
+    </section>
+
+    <section class="row g-3">
+      <div class="col-12">
+        <div class="card p-3 p-lg-4 report-chart-card">
+          <div class="admin-toolbar">
+            <h2 class="h5 m-0 section-title">Evolución de ventas por día (S/)</h2>
+            <button class="btn btn-outline btn-sm" id="rep-refresh"><i class="bi bi-arrow-repeat"></i> Actualizar</button>
+          </div>
+          <div class="bar-chart" id="rep-bars"></div>
         </div>
       </div>
-      
-      <!-- Dona de métodos de pago -->
-      <div class="card flex-center" style="gap:3rem;padding:3rem">
-        <div class="donut-chart"><div class="donut-inner">100%</div></div>
-        <div>
-          <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem;margin-bottom:1.5rem">Métodos de Cobro</h3>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:1rem">
-            <li style="display:flex;align-items:center;gap:0.5rem;color:var(--text-2)"><div style="width:12px;height:12px;background:var(--primary);border-radius:2px"></div> Tarjeta Crédito/Débito (65%)</li>
-            <li style="display:flex;align-items:center;gap:0.5rem;color:var(--text-2)"><div style="width:12px;height:12px;background:var(--gold);border-radius:2px"></div> Billetera Móvil (Yape/Plin) (25%)</li>
-            <li style="display:flex;align-items:center;gap:0.5rem;color:var(--text-2)"><div style="width:12px;height:12px;background:var(--bg-3);border-radius:2px"></div> Efectivo en Tienda (10%)</li>
-          </ul>
+
+      <div class="col-xl-6">
+        <div class="card p-3 p-lg-4 h-100">
+          <h3 class="h5 section-title mb-3">Tipos de entrega</h3>
+          <div class="d-flex flex-column gap-3">
+            <div>
+              <div class="kpi-pair mb-1"><span>Delivery a domicilio</span><strong id="rep-delivery-pct">0%</strong></div>
+              <div class="kpi-track"><div class="kpi-fill-primary" id="rep-delivery-fill"></div></div>
+            </div>
+            <div>
+              <div class="kpi-pair mb-1"><span>Recojo en tienda</span><strong id="rep-recojo-pct">0%</strong></div>
+              <div class="kpi-track"><div class="kpi-fill-gold" id="rep-recojo-fill"></div></div>
+            </div>
+          </div>
         </div>
       </div>
-      
-      <!-- Metricas secundarias -->
-      <div class="card">
-         <h3 style="color:var(--white);font-family:var(--font-display);font-size:1.4rem;margin-bottom:1.5rem">Tipos de Entrega</h3>
-         <div style="display:flex;flex-direction:column;gap:1rem">
-           <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text-2)">Delivery a domicilio</span><strong style="color:var(--white)">78%</strong></div>
-           <div style="width:100%;height:8px;background:var(--bg-3);border-radius:4px;overflow:hidden"><div style="height:100%;width:78%;background:var(--primary)"></div></div>
-           
-           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem"><span style="color:var(--text-2)">Recojo en Tienda</span><strong style="color:var(--white)">22%</strong></div>
-           <div style="width:100%;height:8px;background:var(--bg-3);border-radius:4px;overflow:hidden"><div style="height:100%;width:22%;background:var(--gold)"></div></div>
-         </div>
+
+      <div class="col-xl-6">
+        <div class="card p-3 p-lg-4 h-100">
+          <h3 class="h5 section-title mb-3">Métodos de cobro</h3>
+          <ul class="list-unstyled d-flex flex-column gap-2 mb-0" id="rep-metodos"></ul>
+        </div>
       </div>
-    </div>
+    </section>
   </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../../js/app.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => { Auth.requireAdmin(); });
-</script>
+<script src="../../js/admin/reportes.js"></script>
 </body>
 </html>

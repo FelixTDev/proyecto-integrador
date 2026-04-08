@@ -36,7 +36,8 @@ public class AuthController {
             @Valid @RequestBody LoginRequest request,
             HttpServletRequest httpRequest) {
         String ip = httpRequest.getRemoteAddr();
-        AuthResponse result = authService.login(request, ip);
+        String agenteUsuario = httpRequest.getHeader("User-Agent");
+        AuthResponse result = authService.login(request, ip, agenteUsuario);
         return ResponseEntity.ok(ApiResponse.ok("Login exitoso", result));
     }
 
