@@ -9,6 +9,7 @@ public record ProductoDetalleDTO(
         Boolean activo,
         Integer categoriaId,
         String nombreCategoria,
+        String imagenUrl,
         List<String> listaAlergenos,
         List<ProductoVarianteDTO> variantes
 ) {}

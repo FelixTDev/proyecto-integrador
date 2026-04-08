@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AuthResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.LoginRequest;
+import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.RecuperarPasswordRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.RegistroRequest;
+import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.ResetPasswordRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.AuthService;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
 
@@ -49,5 +51,19 @@ public class AuthController {
             authService.logout(authHeader.substring(7));
         }
         return ResponseEntity.ok(ApiResponse.ok("Sesión cerrada", null));
+    }
+
+    @Operation(summary = "Solicitar link de recuperación de contraseña")
+    @PostMapping("/recuperar-password")
+    public ResponseEntity<ApiResponse<Void>> recuperarPassword(@Valid @RequestBody RecuperarPasswordRequest request) {
+        authService.solicitarRecuperacionPassword(request.email());
+        return ResponseEntity.ok(ApiResponse.ok("Si el correo existe, se enviarán las instrucciones para recuperar la contraseña.", null));
+    }
+
+    @Operation(summary = "Establecer nueva contraseña usando el token de recuperación")
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        authService.resetPassword(request.token(), request.nuevaPassword());
+        return ResponseEntity.ok(ApiResponse.ok("Contraseña actualizada exitosamente", null));
     }
 }

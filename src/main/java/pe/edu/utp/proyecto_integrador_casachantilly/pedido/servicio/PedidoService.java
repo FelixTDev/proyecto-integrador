@@ -39,7 +39,7 @@ public class PedidoService {
             throw new BadRequestException("El carrito está vacío");
         }
 
-        // Crear pedido
+
         Pedido pedido = new Pedido();
         pedido.setUsuarioId(usuarioId);
         pedido.setDireccionId(direccionId);
@@ -55,7 +55,7 @@ public class PedidoService {
         pedidoRepository.save(pedido);
         pedido.setCodigoPedido(String.format("PED-%06d", pedido.getId()));
 
-        // Crear detalles con precio snapshot
+
         for (CarritoItemDTO item : resumen.items()) {
             DetallePedido det = new DetallePedido();
             det.setPedido(pedido);
@@ -69,7 +69,7 @@ public class PedidoService {
 
         pedidoRepository.save(pedido);
 
-        // Registrar estado "Pendiente de pago" (orden=1)
+
         EstadoPedido estadoPendiente = estadoPedidoRepository.findByOrden(1)
                 .orElseThrow(() -> new ResourceNotFoundException("Estado 'Pendiente de pago' no encontrado"));
 

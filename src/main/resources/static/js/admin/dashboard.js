@@ -47,7 +47,7 @@ async function cargarTodosProductos() {
   const acumulado = [];
 
   while (page < totalPages) {
-    const data = await API.get(`/api/catalogo?page=${page}&size=${size}`);
+    const data = await API.get(`/api/admin/productos?page=${page}&size=${size}`);
     const content = Array.isArray(data.content) ? data.content : [];
     acumulado.push(...content);
     totalPages = Number(data.totalPages || 1);
@@ -155,6 +155,8 @@ function renderStockAlertas(productos) {
 }
 
 async function initDashboard() {
+  document.getElementById('dash-urgentes-body').innerHTML = '<tr><td colspan="3" class="text-center py-4"><div class="spinner-border text-danger spinner-border-sm" role="status"></div> Cargando...</td></tr>';
+  document.getElementById('dash-stock-alerts').innerHTML = '<div class="text-center py-3"><div class="spinner-border text-danger spinner-border-sm" role="status"></div></div>';
   try {
     const [pedidosRes, productos] = await Promise.all([
       API.get('/api/admin/pedidos'),

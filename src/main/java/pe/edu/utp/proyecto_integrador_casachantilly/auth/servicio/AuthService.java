@@ -18,6 +18,8 @@ import pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Usuario;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.repositorio.RolRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.repositorio.SesionRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.repositorio.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.BadRequestException;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
 import pe.edu.utp.proyecto_integrador_casachantilly.config.JwtUtil;
@@ -27,6 +29,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.HexFormat;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -34,6 +38,8 @@ public class AuthService {
     public enum SesionEstado {
         ACTIVA, EXPIRADA, REVOCADA, NO_ENCONTRADA
     }
+
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     @Autowired private AuthenticationManager authenticationManager;
     @Autowired private UsuarioRepository usuarioRepository;
@@ -45,7 +51,7 @@ public class AuthService {
     @org.springframework.beans.factory.annotation.Value("${app.session.inactivity-minutes:30}")
     private long inactividadMinutos;
 
-    // ─── Registro ──────────────────────────────────────────────
+
 
     @Transactional
     public AuthResponse registro(RegistroRequest req) {
@@ -84,11 +90,11 @@ public class AuthService {
         usuario.getRoles().add(rolCliente);
         usuarioRepository.save(usuario);
 
-        // Generar token
+
         UserDetails ud = usuarioDetailsService.loadUserByUsername(email);
         String token = jwtUtil.generarToken(ud.getUsername(), ud.getAuthorities());
 
-        // Guardar sesión
+
         guardarSesion(usuario, token, null, null);
 
         return AuthResponse.of(token, email);
@@ -137,7 +143,7 @@ public class AuthService {
         return usuario.getId();
     }
 
-    // ─── Login ─────────────────────────────────────────────────
+
 
     @Transactional
     public AuthResponse login(LoginRequest req, String ipOrigen, String agenteUsuario) {
@@ -149,7 +155,7 @@ public class AuthService {
         UserDetails ud = (UserDetails) auth.getPrincipal();
         String token = jwtUtil.generarToken(ud.getUsername(), ud.getAuthorities());
 
-        // Guardar sesión con hash del token
+
         Usuario usuario = usuarioRepository.findByEmailIgnoreCase(emailNormalizado)
                 .orElseThrow(() -> new BadRequestException("Usuario no encontrado"));
         usuario.setIntentosFallidosLogin(0);
@@ -161,7 +167,7 @@ public class AuthService {
         return AuthResponse.of(token, ud.getUsername());
     }
 
-    // ─── Logout ────────────────────────────────────────────────
+
 
     @Transactional
     public void logout(String token) {
@@ -174,7 +180,7 @@ public class AuthService {
         });
     }
 
-    // ─── Verificar sesión activa ───────────────────────────────
+
 
     public boolean isSesionActiva(String token) {
         return validarYRenovarSesion(token) == SesionEstado.ACTIVA;
@@ -202,8 +208,8 @@ public class AuthService {
             return SesionEstado.EXPIRADA;
         }
 
-        // Evita escribir en cada request para reducir contención y deadlocks.
-        // Solo renueva cuando la sesión está próxima a vencer.
+
+
         long ventanaRenovacion = Math.max(1L, Math.min(5L, inactividadMinutos / 3L));
         LocalDateTime umbralRenovacion = ahora.plusMinutes(ventanaRenovacion);
         if (!sesion.getFechaExpiracion().isAfter(umbralRenovacion)) {
@@ -213,7 +219,7 @@ public class AuthService {
         return SesionEstado.ACTIVA;
     }
 
-    // ─── Desactivación lógica de usuarios ──────────────────────
+
 
     @Transactional
     public void desactivarUsuario(Integer usuarioId) {
@@ -250,7 +256,60 @@ public class AuthService {
         usuarioRepository.save(usuario);
     }
 
-    // ─── Helpers ───────────────────────────────────────────────
+
+
+    @Transactional
+    public void solicitarRecuperacionPassword(String email) {
+        String emailNormalizado = email.trim().toLowerCase();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByEmailIgnoreCase(emailNormalizado);
+        
+        if (usuarioOpt.isEmpty()) {
+
+            return;
+        }
+        
+        Usuario usuario = usuarioOpt.get();
+        if (!Boolean.TRUE.equals(usuario.getActivo())) {
+            return;
+        }
+        
+        String token = UUID.randomUUID().toString();
+        usuario.setResetToken(token);
+        usuario.setResetTokenExpiration(LocalDateTime.now().plusHours(1));
+        usuarioRepository.save(usuario);
+        
+
+        log.info("Simulación de envío de correo de recuperación para: {}. Token: {}", emailNormalizado, token);
+    }
+
+    @Transactional
+    public void resetPassword(String token, String nuevaPassword) {
+        Usuario usuario = usuarioRepository.findByResetToken(token)
+                .orElseThrow(() -> new BadRequestException("Token inválido o expirado"));
+                
+        if (usuario.getResetTokenExpiration() == null || usuario.getResetTokenExpiration().isBefore(LocalDateTime.now())) {
+            throw new BadRequestException("El token ha expirado");
+        }
+        
+        usuario.setPasswordHash(passwordEncoder.encode(nuevaPassword));
+        usuario.setResetToken(null);
+        usuario.setResetTokenExpiration(null);
+        usuario.setFechaActualizacion(LocalDateTime.now());
+
+        usuario.setIntentosFallidosLogin(0);
+        usuario.setBloqueadoHasta(null);
+        
+        usuarioRepository.save(usuario);
+        
+
+        sesionRepository.desactivarSesionesActivasPorUsuarioId(
+                usuario.getId(),
+                LocalDateTime.now(),
+                "CAMBIO_PASSWORD"
+        );
+    }
+
+
 
     private void guardarSesion(Usuario usuario, String token, String ip, String agenteUsuario) {
         Sesion sesion = new Sesion();

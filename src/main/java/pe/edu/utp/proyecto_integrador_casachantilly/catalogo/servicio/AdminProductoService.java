@@ -26,7 +26,12 @@ public class AdminProductoService {
     @Autowired private InventarioMovimientoRepository inventarioRepository;
     @Autowired private CatalogoService catalogoService;
 
-    // ─── Crear producto (RF02) ────────────────────────────────────────────────
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.ProductoCardDTO> getTodosProductosPaginados(org.springframework.data.domain.Pageable pageable) {
+        return productoRepository.findAll(pageable).map(catalogoService::toCardDTO);
+    }
+
+
 
     @Transactional
     public ProductoDetalleDTO crearProducto(CrearProductoRequest req) {
@@ -53,13 +58,13 @@ public class AdminProductoService {
             varianteRepository.save(variante);
         }
 
-        // Reload to get full relationships
+
         Producto reloaded = productoRepository.findById(saved.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Error al recargar producto"));
         return catalogoService.toDetalleDTO(reloaded);
     }
 
-    // ─── Editar producto (RF02) ────────────────────────────────────────────────
+
 
     @Transactional
     public ProductoDetalleDTO editarProducto(Integer id, CrearProductoRequest req) {
@@ -83,9 +88,9 @@ public class AdminProductoService {
 
         productoRepository.save(producto);
 
-        // Reemplazar variantes si se envían
+
         if (req.variantes() != null && !req.variantes().isEmpty()) {
-            // No se elimina físicamente para conservar trazabilidad/histórico
+
             varianteRepository.desactivarPorProductoId(id);
             for (CrearProductoRequest.VarianteRequest vReq : req.variantes()) {
                 varianteRepository.save(buildVariante(vReq, producto));
@@ -97,7 +102,7 @@ public class AdminProductoService {
         return catalogoService.toDetalleDTO(reloaded);
     }
 
-    // ─── Toggle activo/inactivo (RF05) ─────────────────────────────────────────
+
 
     @Transactional
     public boolean toggleProducto(Integer id) {
@@ -109,7 +114,7 @@ public class AdminProductoService {
         return producto.getActivo();
     }
 
-    // ─── Movimiento de inventario (RF05) ───────────────────────────────────────
+
 
     @Transactional
     public void registrarMovimientoInventario(Integer varianteId, InventarioMovimientoRequest req) {
@@ -140,7 +145,7 @@ public class AdminProductoService {
         inventarioRepository.save(mov);
     }
 
-    // ─── Helper ──────────────────────────────────────────────────────────────
+
 
     private ProductoVariante buildVariante(CrearProductoRequest.VarianteRequest vReq, Producto producto) {
         ProductoVariante v = new ProductoVariante();

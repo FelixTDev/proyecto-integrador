@@ -17,6 +17,7 @@
   border-radius: 1rem;
   box-shadow: 0 18px 34px rgba(95, 64, 64, 0.14);
   padding: 2rem 1.5rem;
+  animation: fadeInUp 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
 .auth-card.auth-register {

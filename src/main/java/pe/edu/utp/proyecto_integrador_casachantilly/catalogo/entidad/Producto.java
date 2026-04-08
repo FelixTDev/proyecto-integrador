@@ -36,6 +36,9 @@ public class Producto {
     @Column(length = 160)
     private String slug;
 
+    @Column(name = "imagen_url", length = 500)
+    private String imagenUrl;
+
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 

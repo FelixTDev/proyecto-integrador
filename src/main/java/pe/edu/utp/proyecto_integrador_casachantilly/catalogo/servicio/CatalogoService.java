@@ -23,7 +23,7 @@ public class CatalogoService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    // ─── Catálogo público ──────────────────────────────────────────────────────
+
 
     /**
      * RF01 — Listado paginado de productos activos.
@@ -48,7 +48,7 @@ public class CatalogoService {
         return toDetalleDTO(p);
     }
 
-    // ─── Mappers ──────────────────────────────────────────────────────────────
+
 
     public ProductoCardDTO toCardDTO(Producto p) {
         List<ProductoVariante> variantes = p.getVariantes();
@@ -76,8 +76,9 @@ public class CatalogoService {
 
         return new ProductoCardDTO(
                 p.getId(), p.getNombre(), desc, precioMinimo,
-                null,  // urlFotoPortada — campo opcional, no implementado en BD actual
-                p.getCategoria().getNombre(), alergenos, hayStock
+                p.getImagenUrl(),  // Map imagenUrl a urlFotoPortada
+                p.getCategoria().getNombre(), alergenos, hayStock,
+                p.getActivo()
         );
     }
 
@@ -96,7 +97,7 @@ public class CatalogoService {
         return new ProductoDetalleDTO(
                 p.getId(), p.getNombre(), p.getDescripcion(), p.getActivo(),
                 p.getCategoria().getId(), p.getCategoria().getNombre(),
-                alergenos, variantes
+                p.getImagenUrl(), alergenos, variantes
         );
     }
 }

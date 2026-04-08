@@ -27,6 +27,17 @@ public class AdminProductoController {
     @Autowired
     private AdminProductoService adminProductoService;
 
+    /** RF01/RF02 — Listado completo para administrador. GET /api/admin/productos */
+    @Operation(summary = "Obtener todos los productos (activos e inactivos)")
+    @GetMapping("/productos")
+    public ResponseEntity<ApiResponse<org.springframework.data.domain.Page<pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.ProductoCardDTO>>> getTodos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size) {
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by("id").descending());
+        org.springframework.data.domain.Page<pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.ProductoCardDTO> result = adminProductoService.getTodosProductosPaginados(pageable);
+        return ResponseEntity.ok(ApiResponse.ok("Listado completo", result));
+    }
+
     /** RF02 — Crear producto con variantes. POST /api/admin/productos */
     @Operation(summary = "Crear nuevo producto con variantes")
     @PostMapping("/productos")

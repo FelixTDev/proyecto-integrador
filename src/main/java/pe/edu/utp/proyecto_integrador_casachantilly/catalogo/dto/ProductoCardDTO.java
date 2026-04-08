@@ -11,5 +11,6 @@ public record ProductoCardDTO(
         String urlFotoPortada,
         String nombreCategoria,
         List<String> listaAlergenos,
-        boolean hayStock
+        boolean hayStock,
+        Boolean activo
 ) {}

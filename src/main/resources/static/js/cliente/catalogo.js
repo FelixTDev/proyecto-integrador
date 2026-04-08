@@ -89,7 +89,7 @@ function renderProductos() {
     <div class="col">
       <div class="card card-hover h-100 p-3">
         <div class="product-img-wrapper mb-3">
-          <img src="${p.urlFotoPortada || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80'}" class="product-img" alt="${p.nombre}">
+          <img src="${p.imagenUrl || p.urlFotoPortada || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80'}" class="product-img" alt="${p.nombre}">
         </div>
         <div class="badge ${p.hayStock ? 'badge-green' : 'badge-red'} mb-2">${p.hayStock ? 'Disponible' : 'No disponible'}</div>
         <h3 class="product-title">${p.nombre}</h3>
@@ -136,7 +136,7 @@ async function openDetalle(id) {
   try {
     const p = await API.get(`/api/catalogo/${id}`);
     document.getElementById('md-title').textContent = p.nombre;
-    document.getElementById('md-img').src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80';
+    document.getElementById('md-img').src = p.imagenUrl || p.urlFotoPortada || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80';
     document.getElementById('md-desc').textContent = p.descripcion || 'Sin descripción';
 
     const al = document.getElementById('md-alergenos');

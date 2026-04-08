@@ -29,7 +29,7 @@ function renderCart(root) {
     .map(
       (item) => `
       <div class="cart-item">
-        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&q=80" class="ci-img" alt="${item.productoNombre}">
+        <img src="${item.imagenUrl || 'https://images.unsplash.com/photo-1542826438-bd32f43d626f?w=200&q=80'}" class="ci-img" alt="${item.productoNombre}">
         <div class="ci-details">
           <div>
             <div class="flex-between">

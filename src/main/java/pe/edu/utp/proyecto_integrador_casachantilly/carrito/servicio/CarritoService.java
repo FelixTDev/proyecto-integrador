@@ -31,7 +31,7 @@ public class CarritoService {
     @Autowired private ProductoVarianteRepository varianteRepository;
     @Autowired private UsuarioRepository usuarioRepository;
 
-    // ─── Obtener o crear carrito ────────────────────────────────
+
 
     @Transactional
     public Carrito getCarritoActivo(Integer usuarioId) {
@@ -45,7 +45,7 @@ public class CarritoService {
                 });
     }
 
-    // ─── Agregar ítem ───────────────────────────────────────────
+
 
     @Transactional
     public CarritoDTO addItem(Integer carritoId, Integer varianteId, int cantidad) {
@@ -59,14 +59,14 @@ public class CarritoService {
             throw new BadRequestException("Esta variante no está activa");
         }
 
-        // Valida stock antes de agregar
+
         if (variante.getStockDisponible() < cantidad) {
             throw new BadRequestException(
                     "Stock insuficiente. Disponible: " + variante.getStockDisponible()
                             + ", solicitado: " + cantidad);
         }
 
-        // Si ya existe la variante en el carrito, suma la cantidad
+
         var existente = detalleRepository.findByCarritoIdAndVarianteId(carritoId, varianteId);
         if (existente.isPresent()) {
             CarritoDetalle det = existente.get();
@@ -92,7 +92,7 @@ public class CarritoService {
         return calcularResumen(carritoId);
     }
 
-    // ─── Actualizar cantidad de un ítem ─────────────────────────
+
 
     @Transactional
     public CarritoDTO updateItem(Integer detalleId, int cantidad) {
@@ -113,7 +113,7 @@ public class CarritoService {
         return calcularResumen(det.getCarrito().getId());
     }
 
-    // ─── Eliminar ítem ──────────────────────────────────────────
+
 
     @Transactional
     public CarritoDTO removeItem(Integer detalleId) {
@@ -124,7 +124,7 @@ public class CarritoService {
         return calcularResumen(carritoId);
     }
 
-    // ─── Calcular resumen ──────────────────────────────────────
+
 
     @Transactional(readOnly = true)
     public CarritoDTO calcularResumen(Integer carritoId) {
@@ -140,7 +140,8 @@ public class CarritoService {
                     d.getId(), v.getId(),
                     v.getProducto().getNombre(), v.getNombreVariante(),
                     v.getPrecio(), d.getCantidad(), sub,
-                    v.getStockDisponible()
+                    v.getStockDisponible(),
+                    v.getProducto().getImagenUrl()
             );
         }).toList();
 
@@ -157,7 +158,7 @@ public class CarritoService {
         );
     }
 
-    // ─── Vaciar carrito ─────────────────────────────────────────
+
 
     @Transactional
     public void vaciarCarrito(Integer carritoId) {

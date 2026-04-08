@@ -183,12 +183,14 @@ function updateNav() {
   const navAdmin   = document.getElementById('nav-admin');
   const navUser    = document.getElementById('nav-user');
   const navPerfil  = document.getElementById('nav-perfil');
+  const navReclamos = document.getElementById('nav-reclamos');
 
   if (navLogin)  navLogin.style.display  = loggedIn ? 'none' : '';
   if (navLogout) navLogout.style.display = loggedIn ? '' : 'none';
   if (navAdmin)  navAdmin.style.display  = isAdmin  ? '' : 'none';
   if (navUser)   navUser.textContent     = Auth.email() || '';
   if (navPerfil) navPerfil.style.display = loggedIn ? '' : 'none';
+  if (navReclamos) navReclamos.style.display = (loggedIn && Auth.isClient()) ? '' : 'none';
 }
 
 function enforcePageAccessByRole() {

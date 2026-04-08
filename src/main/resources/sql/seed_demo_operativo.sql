@@ -54,17 +54,17 @@ WHERE NOT EXISTS (
 );
 
 /* 4) PRODUCTOS */
-INSERT INTO producto (categoria_id, nombre, descripcion, activo, slug)
+INSERT INTO producto (categoria_id, nombre, descripcion, activo, slug, imagen_url)
 SELECT
   (SELECT id FROM categoria WHERE slug = s.cat_slug LIMIT 1) AS categoria_id,
-  s.nombre, s.descripcion, 1, s.slug
+  s.nombre, s.descripcion, 1, s.slug, s.imagen_url
 FROM (
-  SELECT 'tortas-enteras' AS cat_slug, 'Selva Negra Clasica' AS nombre, 'Torta de chocolate con crema y cerezas.' AS descripcion, 'selva-negra-clasica' AS slug
-  UNION ALL SELECT 'tortas-enteras', 'Cheesecake de Maracuya', 'Cheesecake cremoso con coulis de maracuya.', 'cheesecake-maracuya'
-  UNION ALL SELECT 'porciones', 'Porcion Tres Leches', 'Bizcocho humedo con mezcla de tres leches.', 'porcion-tres-leches'
-  UNION ALL SELECT 'porciones', 'Porcion Red Velvet', 'Porcion individual de red velvet con frosting.', 'porcion-red-velvet'
-  UNION ALL SELECT 'bocaditos', 'Brownie Clasico', 'Brownie artesanal de cacao intenso.', 'brownie-clasico'
-  UNION ALL SELECT 'postres-especiales', 'Tarta de Frutas', 'Base crocante con crema pastelera y frutas frescas.', 'tarta-de-frutas'
+  SELECT 'tortas-enteras' AS cat_slug, 'Selva Negra Clasica' AS nombre, 'Torta de chocolate con crema y cerezas.' AS descripcion, 'selva-negra-clasica' AS slug, 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' AS imagen_url
+  UNION ALL SELECT 'tortas-enteras', 'Cheesecake de Maracuya', 'Cheesecake cremoso con coulis de maracuya.', 'cheesecake-maracuya', 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  UNION ALL SELECT 'porciones', 'Porcion Tres Leches', 'Bizcocho humedo con mezcla de tres leches.', 'porcion-tres-leches', 'https://images.unsplash.com/photo-1542826438-bd32f43d626f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  UNION ALL SELECT 'porciones', 'Porcion Red Velvet', 'Porcion individual de red velvet con frosting.', 'porcion-red-velvet', 'https://images.unsplash.com/photo-1586788224331-9a74aa9a7810?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  UNION ALL SELECT 'bocaditos', 'Brownie Clasico', 'Brownie artesanal de cacao intenso.', 'brownie-clasico', 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  UNION ALL SELECT 'postres-especiales', 'Tarta de Frutas', 'Base crocante con crema pastelera y frutas frescas.', 'tarta-de-frutas', 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
 ) s
 WHERE NOT EXISTS (
   SELECT 1 FROM producto p WHERE p.slug = s.slug

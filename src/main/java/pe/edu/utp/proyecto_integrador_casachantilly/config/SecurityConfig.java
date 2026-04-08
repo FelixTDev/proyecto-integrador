@@ -41,27 +41,27 @@ public class SecurityConfig {
                         .authenticationEntryPoint(restAuthenticationEntryPoint)
                         .accessDeniedHandler(restAccessDeniedHandler))
                 .authorizeHttpRequests(auth -> auth
-                        // HTML público
+
                         .requestMatchers("/", "/index.html", "/login.html", "/registro.html",
                                 "/carrito.html", "/checkout.html")
                         .permitAll()
                         .requestMatchers("/pages/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
-                        // Swagger
+
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        // Actuator
+
                         .requestMatchers("/actuator/health").permitAll()
-                        // Auth pública
+
                         .requestMatchers("/api/auth/**").permitAll()
-                        // Catálogo público (RF01)
+
                         .requestMatchers("/api/catalogo/**").permitAll()
-                        // Admin requiere ADMIN
+
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        // Cliente requiere CLIENTE
+
                         .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
                         .requestMatchers("/api/carrito/**").hasRole("CLIENTE")
                         .requestMatchers("/api/pagos/**").hasRole("CLIENTE")
-                        // Pedidos: comprobantes e historial de usuario autenticado
+
                         .requestMatchers("/api/pedidos/**").authenticated()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())

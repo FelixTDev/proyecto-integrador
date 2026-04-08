@@ -39,7 +39,7 @@ public class NotificacionService {
         if (destino == null || destino.isBlank()) {
             n.setEstadoEnvio(Notificacion.EstadoEnvio.ERROR);
         } else {
-            // MVP: marcamos como enviada de forma trazable y dejamos canal real para fase siguiente
+
             n.setEstadoEnvio(Notificacion.EstadoEnvio.ENVIADA);
         }
         notificacionRepository.save(n);

@@ -27,13 +27,12 @@ public class CulqiService {
      * @return Mapa con resultado de la operación
      */
     public Map<String, Object> crearCargo(String tokenTarjeta, int montoCentimos, String email) {
-        log.info("🔐 [CULQI MOCK] Procesando cargo: token={}, monto={} céntimos, email={}",
+        log.info("[CULQI MOCK] Procesando cargo: token={}, monto={} céntimos, email={}",
                 tokenTarjeta.substring(0, Math.min(8, tokenTarjeta.length())) + "***",
                 montoCentimos, email);
 
-        // Simular: tokens que empiezan con "fail" se rechazan
         if (tokenTarjeta.toLowerCase().startsWith("fail")) {
-            log.warn("❌ [CULQI MOCK] Cargo RECHAZADO");
+            log.warn("[CULQI MOCK] Cargo RECHAZADO");
             return Map.of(
                     "aprobado", false,
                     "mensaje", "Tarjeta rechazada por el banco emisor",
@@ -41,9 +40,8 @@ public class CulqiService {
             );
         }
 
-        // Montos > S/ 10,000 se rechazan (simulación de límite)
         if (montoCentimos > 1_000_000) {
-            log.warn("❌ [CULQI MOCK] Cargo RECHAZADO — monto excede límite");
+            log.warn("[CULQI MOCK] Cargo RECHAZADO — monto excede límite");
             return Map.of(
                     "aprobado", false,
                     "mensaje", "Monto excede el límite permitido por la tarjeta",
@@ -51,9 +49,8 @@ public class CulqiService {
             );
         }
 
-        // Aprobado
         String referencia = "culqi_ok_" + UUID.randomUUID().toString().substring(0, 12);
-        log.info("✅ [CULQI MOCK] Cargo APROBADO — ref: {}", referencia);
+        log.info("[CULQI MOCK] Cargo APROBADO — ref: {}", referencia);
 
         return Map.of(
                 "aprobado", true,
