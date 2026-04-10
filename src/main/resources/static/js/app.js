@@ -95,7 +95,7 @@ const Auth = {
   },
   hasRole: (role) => Auth.roles().includes(role),
   isAdmin: () => {
-    return Auth.hasRole('ROLE_ADMIN');
+    return Auth.hasRole('ROLE_ADMIN') || Auth.hasRole('ROLE_VENDEDOR');
   },
   isClient: () => Auth.hasRole('ROLE_CLIENTE'),
   isLoggedIn: () => !!Auth.token(),

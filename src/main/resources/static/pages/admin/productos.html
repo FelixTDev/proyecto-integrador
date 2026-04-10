@@ -49,6 +49,7 @@
       <span class="sidebar-label">Config</span>
       <a href="usuarios.html" class="sidebar-link"><i class="bi bi-people"></i> Usuarios</a>
       <a href="promociones.html" class="sidebar-link"><i class="bi bi-tag"></i> Promociones</a>
+      <a href="reclamos.html" class="sidebar-link"><i class="bi bi-exclamation-square"></i> Reclamos</a>
     </div>
   </aside>
 
@@ -90,7 +91,7 @@
         <div class="field"><label class="label">Nombre</label><input type="text" class="form-control" id="f-nombre" required></div>
         <div class="field"><label class="label">Descripción</label><textarea class="form-control" id="f-desc" rows="3"></textarea></div>
         <div class="row g-3">
-          <div class="col-md-6 field"><label class="label">Categoría ID</label><input type="number" class="form-control" id="f-cat" required min="1"></div>
+          <div class="col-md-6 field"><label class="label">Categoría</label><select class="form-select" id="f-cat" required></select></div>
           <div class="col-md-6 field"><label class="label">URL Imagen Portada</label><input type="url" class="form-control" id="f-img"></div>
         </div>
         <button type="submit" class="btn btn-primary w-100 mt-2" id="v-btn">Guardar información</button>
@@ -127,6 +128,15 @@
 <script>
   Auth.requireAdmin();
   let state = { page: 0, size: 10, totalPages: 0 };
+  let allCategorias = [];
+
+  async function loadCategoriasAdmin() {
+    try {
+      allCategorias = await API.get('/api/catalogo/categorias');
+      const sel = document.getElementById('f-cat');
+      sel.innerHTML = allCategorias.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+    } catch {}
+  }
 
   async function loadData() {
     const tb = document.getElementById('tbody-prods');
@@ -223,7 +233,10 @@
     } catch { Toast.err('Error al cambiar estado'); }
   }
 
-  document.addEventListener('DOMContentLoaded', loadData);
+  document.addEventListener('DOMContentLoaded', () => {
+    loadCategoriasAdmin();
+    loadData();
+  });
 </script>
 </body>
 </html>

@@ -39,11 +39,11 @@
 <section class="py-4 py-md-5">
   <div class="container">
     <div class="d-flex flex-wrap align-items-center gap-3 gap-md-4 mb-4">
-      <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold profile-avatar">FC</div>
+      <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold profile-avatar" id="p-avatar">CC</div>
       <div>
         <h1 class="page-title mb-1" id="p-name">Cargando...</h1>
         <p class="text-secondary mb-1" id="p-email">cargando@email.com</p>
-        <span class="badge badge-gold"><i class="bi bi-star-fill me-1"></i>150 Puntos Oro</span>
+        <span class="badge badge-gold" id="p-puntos"><i class="bi bi-star-fill me-1"></i>— Puntos</span>
       </div>
     </div>
 
@@ -51,7 +51,9 @@
       <aside class="p-nav p-3">
         <div class="p-nav-link active" onclick="switchTab('historial', this)"><i class="bi bi-receipt"></i> Mis Pedidos</div>
         <div class="p-nav-link" onclick="switchTab('direcciones', this)"><i class="bi bi-geo-alt"></i> Mis Direcciones</div>
+        <div class="p-nav-link" onclick="switchTab('puntos', this)"><i class="bi bi-star"></i> Mis Puntos</div>
         <div class="p-nav-link" onclick="switchTab('reclamos', this)"><i class="bi bi-exclamation-square"></i> Reclamos</div>
+        <div class="p-nav-link" onclick="switchTab('notificaciones', this)"><i class="bi bi-bell"></i> Notificaciones</div>
         <hr/>
         <div class="p-nav-link text-danger" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</div>
       </aside>
@@ -60,9 +62,6 @@
         <div id="tab-historial" class="p-content active">
           <h2 class="h3 mb-3 section-title">Historial de pedidos</h2>
           <div id="historial-list"></div>
-
-          <h3 class="h4 mt-4 mb-3 section-title">Notificaciones transaccionales</h3>
-          <div id="notif-list"></div>
         </div>
 
         <div id="tab-direcciones" class="p-content">
@@ -73,29 +72,63 @@
           <div id="dir-list"></div>
         </div>
 
+        <div id="tab-puntos" class="p-content">
+          <h2 class="h3 mb-3 section-title">Programa de Fidelidad</h2>
+          <div class="row g-4 mb-4">
+            <div class="col-md-4">
+              <div class="card p-4 text-center">
+                <i class="bi bi-star-fill text-warning fs-1 mb-2"></i>
+                <h3 class="fw-bold" id="puntos-saldo">0</h3>
+                <p class="text-secondary mb-0">Puntos disponibles</p>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card p-4">
+                <h4 class="h5 mb-2">¿Cómo funciona?</h4>
+                <p class="text-secondary small mb-1">• Gana 1 punto por cada S/ 10 de compra.</p>
+                <p class="text-secondary small mb-1">• Canjea 100 puntos por S/ 10 de descuento.</p>
+                <p class="text-secondary small mb-0">• Los puntos se asignan al confirmar tu pedido.</p>
+              </div>
+            </div>
+          </div>
+          <h4 class="h5 mb-3">Historial de movimientos</h4>
+          <div id="puntos-list"></div>
+        </div>
+
         <div id="tab-reclamos" class="p-content">
-          <h2 class="h3 mb-3 section-title">Libro de Reclamos</h2>
-          <div class="card p-4">
-            <form class="field field-gap-md" onsubmit="event.preventDefault(); Toast.ok('Reclamo enviado correctamente'); this.reset();">
-              <div class="field">
-                <label class="label">Pedido relacionado</label>
-                <select class="form-select"><option>#ORD-0892 (12 May)</option><option>Ninguno</option></select>
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <h2 class="h3 mb-0 section-title">Libro de Reclamos</h2>
+            <button class="btn btn-brand btn-sm" onclick="toggleReclamoForm()"><i class="bi bi-plus-lg"></i> Nuevo Reclamo</button>
+          </div>
+          <div class="card p-4 mb-4" id="reclamo-form-card" style="display:none">
+            <form id="reclamo-form" onsubmit="event.preventDefault(); enviarReclamo();">
+              <div class="row g-3 mb-3">
+                <div class="col-md-6 field">
+                  <label class="label">Pedido relacionado</label>
+                  <select class="form-select" id="reclamo-pedido" required></select>
+                </div>
+                <div class="col-md-6 field">
+                  <label class="label">Tipo</label>
+                  <select class="form-select" id="reclamo-tipo" required>
+                    <option value="QUEJA">Queja</option>
+                    <option value="REEMBOLSO">Reembolso</option>
+                    <option value="REPOSICION">Reposición</option>
+                  </select>
+                </div>
               </div>
-              <div class="field">
-                <label class="label">Motivo del reclamo</label>
-                <input type="text" class="form-control" required>
-              </div>
-              <div class="field">
+              <div class="field mb-3">
                 <label class="label">Descripción detallada</label>
-                <textarea class="form-control" rows="4" required></textarea>
-              </div>
-              <div class="field">
-                <label class="label">Evidencia fotográfica</label>
-                <input type="file" class="form-control">
+                <textarea class="form-control" id="reclamo-desc" rows="4" required></textarea>
               </div>
               <button type="submit" class="btn btn-brand">Enviar reclamo</button>
             </form>
           </div>
+          <div id="reclamos-list"></div>
+        </div>
+
+        <div id="tab-notificaciones" class="p-content">
+          <h2 class="h3 mb-3 section-title">Notificaciones</h2>
+          <div id="notif-list"></div>
         </div>
       </main>
     </div>

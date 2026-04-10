@@ -13,6 +13,7 @@ import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotF
 import pe.edu.utp.proyecto_integrador_casachantilly.direccion.entidad.Direccion;
 import pe.edu.utp.proyecto_integrador_casachantilly.direccion.repositorio.ZonaEnvioRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.direccion.servicio.DireccionService;
+import pe.edu.utp.proyecto_integrador_casachantilly.entrega.repositorio.FranjaHorariaRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.notificacion.servicio.NotificacionService;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.dto.PagoCotizacionDTO;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.dto.PagoRequestDTO;
@@ -30,25 +31,26 @@ import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.PedidoRep
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Locale;
-import java.util.Map;
 
 @Service
 public class PagoService {
 
     private static final int CUPO_MAXIMO_FRANJA = 20;
 
-    @Autowired private CulqiService culqiService;
+    @Autowired private PagoGateway pagoGateway;
     @Autowired private PedidoService pedidoService;
     @Autowired private CarritoService carritoService;
     @Autowired private ProductoVarianteRepository varianteRepository;
     @Autowired private DireccionService direccionService;
     @Autowired private ZonaEnvioRepository zonaEnvioRepository;
+    @Autowired private FranjaHorariaRepository franjaHorariaRepository;
     @Autowired private PagoRepository pagoRepository;
     @Autowired private MetodoPagoRepository metodoPagoRepository;
     @Autowired private EstadoPedidoRepository estadoPedidoRepository;
     @Autowired private EstadoPedidoHistorialRepository historialRepository;
     @Autowired private PedidoRepository pedidoRepository;
     @Autowired private NotificacionService notificacionService;
+    @Autowired private CapacidadProduccionService capacidadProduccionService;
 
     @Transactional(readOnly = true)
     public PagoCotizacionDTO cotizar(Integer carritoId, Integer usuarioId, Integer direccionId,
@@ -63,6 +65,7 @@ public class PagoService {
         }
 
         boolean franjaDisponible = isFranjaDisponible(franjaHorariaId);
+        validarCapacidadOperativa(franjaHorariaId);
         BigDecimal costoEnvio = resolverCostoEnvio(usuarioId, direccionId, esRecojoTienda, zonaEntrega);
 
         return new PagoCotizacionDTO(
@@ -99,6 +102,7 @@ public class PagoService {
         if (!isFranjaDisponible(req.franjaHorariaId())) {
             throw new BadRequestException("La franja horaria seleccionada ya no tiene cupos disponibles");
         }
+        validarCapacidadOperativa(req.franjaHorariaId());
 
         validarStockDisponible(resumen.items());
         BigDecimal costoEnvio = resolverCostoEnvio(usuarioId, req.direccionId(), req.esRecojoTienda(), req.zonaEntrega());
@@ -114,11 +118,10 @@ public class PagoService {
         int montoCentimos = totalConEnvio.multiply(BigDecimal.valueOf(100)).intValue();
 
         String email = req.email() != null ? req.email() : "cliente@casachantilly.pe";
-        Map<String, Object> culqiResult = culqiService.crearCargo(req.tokenTarjeta(), montoCentimos, email);
-
-        boolean aprobado = (boolean) culqiResult.get("aprobado");
-        String referencia = (String) culqiResult.get("referencia");
-        String mensaje = (String) culqiResult.get("mensaje");
+        PagoGateway.ResultadoCargo cargo = pagoGateway.crearCargo(req.tokenTarjeta(), montoCentimos, email);
+        boolean aprobado = cargo.aprobado();
+        String referencia = cargo.referencia();
+        String mensaje = cargo.mensaje();
 
         Pago pago = new Pago();
         pago.setPedidoId(pedido.getId());
@@ -218,10 +221,19 @@ public class PagoService {
         if (franjaHorariaId == null || franjaHorariaId <= 0) {
             return false;
         }
-        LocalDateTime inicio = LocalDateTime.now().toLocalDate().atStartOfDay();
-        LocalDateTime fin = inicio.plusDays(1);
-        long pedidosEnFranja = pedidoRepository.countByFranjaHorariaIdAndFechaCreacionBetween(franjaHorariaId, inicio, fin);
+        if (franjaHorariaRepository.findById(franjaHorariaId).isEmpty()) {
+            return false;
+        }
+        long pedidosEnFranja = pedidoRepository.countPedidosActivosPorFranja(franjaHorariaId);
         return pedidosEnFranja < CUPO_MAXIMO_FRANJA;
+    }
+
+    private void validarCapacidadOperativa(Integer franjaHorariaId) {
+        var franja = franjaHorariaRepository.findById(franjaHorariaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Franja horaria no encontrada"));
+        if (!capacidadProduccionService.hayCapacidadParaFecha(franja.getFecha())) {
+            throw new BadRequestException("No hay capacidad de producción disponible para la fecha seleccionada");
+        }
     }
 
     private void validarStockDisponible(Iterable<CarritoItemDTO> items) {

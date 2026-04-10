@@ -5,6 +5,7 @@ let cartId = null;
 let cotizacionActual = null;
 let direccionesActivas = [];
 let direccionSeleccionadaId = null;
+let cuponAplicado = null;
 
 function getFranjaId() {
   return parseInt(document.getElementById('f-hora').value, 10);
@@ -34,6 +35,7 @@ async function initCheckout() {
     cartId = carrito.id;
     renderResumenItems(carrito.items);
     renderDirecciones();
+    loadFranjas();
     await recotizar();
 
     document.querySelectorAll('input[name="pago"]').forEach((r) =>
@@ -41,9 +43,57 @@ async function initCheckout() {
         document.getElementById('card-mock').style.display = e.target.value === '1' ? 'block' : 'none';
       })
     );
+
+    // Coupon handler
+    const cuponBtn = document.getElementById('btn-cupon');
+    if (cuponBtn) cuponBtn.addEventListener('click', validarCupon);
   } catch (e) {
     Toast.err(e.message || 'Error al cargar checkout');
   }
+}
+
+async function loadFranjas() {
+  const sel = document.getElementById('f-hora');
+  if (!sel) return;
+  try {
+    const hoy = new Date().toISOString().split('T')[0];
+    const manana = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    const [franjasHoy, franjasManana] = await Promise.all([
+      API.get(`/api/entregas/franjas?fecha=${hoy}`).catch(() => []),
+      API.get(`/api/entregas/franjas?fecha=${manana}`).catch(() => [])
+    ]);
+    const todas = [...(franjasHoy||[]), ...(franjasManana||[])];
+    if (todas.length === 0) {
+      sel.innerHTML = '<option value="1">09:00 - 12:00 (Mañana)</option><option value="2">14:00 - 17:00 (Tarde)</option><option value="3">17:00 - 20:00 (Noche)</option>';
+      return;
+    }
+    sel.innerHTML = todas.map(f => {
+      const disp = f.disponible ? `(${f.cuposDisponibles} cupos)` : '(Agotado)';
+      return `<option value="${f.id}" ${!f.disponible?'disabled':''}>${f.fecha} ${f.horaInicio}-${f.horaFin} ${disp}</option>`;
+    }).join('');
+  } catch {
+    sel.innerHTML = '<option value="1">09:00 - 12:00</option><option value="2">14:00 - 17:00</option>';
+  }
+}
+
+async function validarCupon() {
+  const input = document.getElementById('input-cupon');
+  if (!input || !input.value.trim()) { Toast.info('Ingresa un código de cupón'); return; }
+  try {
+    const result = await API.post('/api/promociones/validar-cupon', {
+      codigoCupon: input.value.trim(),
+      subtotal: cotizacionActual?.subtotal || 0
+    });
+    if (result.aplicado) {
+      cuponAplicado = result;
+      Toast.ok(result.mensaje);
+      const badge = document.getElementById('cupon-badge');
+      if (badge) badge.innerHTML = `<span class="badge bg-success"><i class="bi bi-check"></i> ${result.nombrePromocion} (-${fmt.money(result.descuento)})</span>`;
+    } else {
+      cuponAplicado = null;
+      Toast.err(result.mensaje);
+    }
+  } catch { cuponAplicado = null; }
 }
 
 function renderResumenItems(items) {
@@ -179,6 +229,15 @@ async function doProcess() {
     });
 
     if (result.aprobado) {
+      document.getElementById('modal-ok').innerHTML = `
+        <div class="modal text-center modal-success">
+          <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle modal-success-icon"><i class="bi bi-check-lg"></i></div>
+          <h2 class="h3 mb-2">¡Pedido confirmado!</h2>
+          <p class="text-secondary mb-4">Enviamos el comprobante a tu correo. ¿Quieres añadir diseño, colores o un mensaje especial a tu torta?</p>
+          <a href="personalizar.html?pedidoId=${result.pedidoId}" class="btn btn-brand w-100 mb-2"><i class="bi bi-magic"></i> ¡Sí, personalizar diseño!</a>
+          <a href="../../index.html" class="btn btn-outline-secondary w-100">No gracias, volver al inicio</a>
+        </div>
+      `;
       Modal.open('modal-ok');
       return;
     }

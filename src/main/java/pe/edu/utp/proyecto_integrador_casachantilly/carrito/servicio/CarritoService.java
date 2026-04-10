@@ -95,9 +95,9 @@ public class CarritoService {
 
 
     @Transactional
-    public CarritoDTO updateItem(Integer detalleId, int cantidad) {
-        CarritoDetalle det = detalleRepository.findById(detalleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ítem no encontrado"));
+    public CarritoDTO updateItem(Integer detalleId, Integer usuarioId, int cantidad) {
+        CarritoDetalle det = detalleRepository.findByIdAndCarritoUsuarioId(detalleId, usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ítem no encontrado para el usuario"));
 
         if (cantidad <= 0) {
             detalleRepository.delete(det);
@@ -116,9 +116,9 @@ public class CarritoService {
 
 
     @Transactional
-    public CarritoDTO removeItem(Integer detalleId) {
-        CarritoDetalle det = detalleRepository.findById(detalleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Ítem no encontrado"));
+    public CarritoDTO removeItem(Integer detalleId, Integer usuarioId) {
+        CarritoDetalle det = detalleRepository.findByIdAndCarritoUsuarioId(detalleId, usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ítem no encontrado para el usuario"));
         Integer carritoId = det.getCarrito().getId();
         detalleRepository.delete(det);
         return calcularResumen(carritoId);

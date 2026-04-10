@@ -114,6 +114,12 @@
         <h3 class="h4 mb-3">Resumen del pedido</h3>
         <div id="sum-items" class="border-bottom pb-3 mb-3"></div>
 
+        <div class="d-flex gap-2 mb-3">
+          <input type="text" class="form-control form-control-sm" id="input-cupon" placeholder="Código de cupón"/>
+          <button class="btn btn-sm btn-outline-brand" id="btn-cupon"><i class="bi bi-tag"></i></button>
+        </div>
+        <div id="cupon-badge" class="mb-2"></div>
+
         <div class="d-flex justify-content-between mb-2"><span class="text-secondary">Subtotal</span><strong id="sum-sub">S/ 0.00</strong></div>
         <div class="d-flex justify-content-between mb-2"><span class="text-secondary">IGV (18%)</span><strong id="sum-igv">S/ 0.00</strong></div>
         <div class="d-flex justify-content-between mb-2" id="row-envio"><span class="text-secondary">Costo envío</span><strong id="sum-envio">S/ 0.00</strong></div>

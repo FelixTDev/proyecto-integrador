@@ -3,6 +3,7 @@ package pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.BadRequestException;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
+import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.UnauthorizedException;
 import pe.edu.utp.proyecto_integrador_casachantilly.config.JwtUtil;
 
 import java.nio.charset.StandardCharsets;
@@ -52,6 +54,10 @@ public class AuthService {
     private long inactividadMinutos;
 
 
+
+    public UsuarioRepository getUsuarioRepository() {
+        return usuarioRepository;
+    }
 
     @Transactional
     public AuthResponse registro(RegistroRequest req) {
@@ -149,9 +155,14 @@ public class AuthService {
     public AuthResponse login(LoginRequest req, String ipOrigen, String agenteUsuario) {
         String emailNormalizado = req.email() == null ? "" : req.email().trim().toLowerCase();
 
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(emailNormalizado, req.password())
-        );
+        Authentication auth;
+        try {
+            auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(emailNormalizado, req.password())
+            );
+        } catch (AuthenticationException ex) {
+            throw new UnauthorizedException("Credenciales invalidas");
+        }
         UserDetails ud = (UserDetails) auth.getPrincipal();
         String token = jwtUtil.generarToken(ud.getUsername(), ud.getAuthorities());
 
@@ -178,6 +189,38 @@ public class AuthService {
             sesion.setMotivoRevocacion("LOGOUT");
             sesionRepository.save(sesion);
         });
+    }
+
+    @Transactional
+    public AuthResponse refreshToken(String bearerToken, String ipOrigen, String agenteUsuario) {
+        if (bearerToken == null || bearerToken.isBlank()) {
+            throw new UnauthorizedException("Token requerido");
+        }
+        String token = bearerToken.startsWith("Bearer ") ? bearerToken.substring(7) : bearerToken;
+        if (!jwtUtil.isTokenValid(token)) {
+            throw new UnauthorizedException("Token invalido o expirado");
+        }
+
+        SesionEstado estado = validarYRenovarSesion(token);
+        if (estado != SesionEstado.ACTIVA) {
+            throw new UnauthorizedException("Sesion no valida");
+        }
+
+        String email = jwtUtil.extractEmail(token);
+        UserDetails ud = usuarioDetailsService.loadUserByUsername(email);
+        String nuevoToken = jwtUtil.generarToken(ud.getUsername(), ud.getAuthorities());
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        String hashActual = hashToken(token);
+        sesionRepository.findByTokenHashAndActivoTrue(hashActual).ifPresent(sesion -> {
+            sesion.setActivo(false);
+            sesion.setFechaRevocacion(LocalDateTime.now());
+            sesion.setMotivoRevocacion("REFRESH_ROTATION");
+            sesionRepository.save(sesion);
+        });
+        guardarSesion(usuario, nuevoToken, ipOrigen, agenteUsuario);
+        return AuthResponse.of(nuevoToken, email);
     }
 
 
@@ -279,7 +322,7 @@ public class AuthService {
         usuarioRepository.save(usuario);
         
 
-        log.info("Simulación de envío de correo de recuperación para: {}. Token: {}", emailNormalizado, token);
+        log.info("Solicitud de recuperacion de password registrada para {}", emailNormalizado);
     }
 
     @Transactional

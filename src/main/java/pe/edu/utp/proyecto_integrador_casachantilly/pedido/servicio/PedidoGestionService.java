@@ -242,6 +242,7 @@ public class PedidoGestionService {
 
     private ComprobanteItemDTO toComprobanteItem(DetallePedido d) {
         return new ComprobanteItemDTO(
+                d.getId(),
                 d.getVarianteId(),
                 d.getNombreSnapshot(),
                 d.getPrecioUnitarioSnapshot(),

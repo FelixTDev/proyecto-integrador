@@ -28,4 +28,26 @@ public interface SesionRepository extends JpaRepository<Sesion, Integer> {
             @Param("usuarioId") Integer usuarioId,
             @Param("fechaRevocacion") LocalDateTime fechaRevocacion,
             @Param("motivo") String motivo);
+
+    @Modifying
+    @Query("""
+        update Sesion s
+           set s.activo = false,
+               s.fechaRevocacion = :ahora,
+               s.motivoRevocacion = :motivo
+         where s.activo = true
+           and s.fechaExpiracion <= :ahora
+        """)
+    int expirarSesionesActivas(
+            @Param("ahora") LocalDateTime ahora,
+            @Param("motivo") String motivo);
+
+    @Modifying
+    @Query("""
+        delete from Sesion s
+         where s.activo = false
+           and s.fechaRevocacion is not null
+           and s.fechaRevocacion < :fechaCorte
+        """)
+    int eliminarSesionesRevocadasAntiguas(@Param("fechaCorte") LocalDateTime fechaCorte);
 }

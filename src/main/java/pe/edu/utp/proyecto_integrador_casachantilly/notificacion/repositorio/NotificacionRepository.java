@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface NotificacionRepository extends JpaRepository<Notificacion, Integer> {
     List<Notificacion> findTop20ByUsuarioIdOrderByFechaEnvioDesc(Integer usuarioId);
+    long countByUsuarioIdAndLeidaFalse(Integer usuarioId);
+    java.util.Optional<Notificacion> findByIdAndUsuarioId(Integer id, Integer usuarioId);
 }

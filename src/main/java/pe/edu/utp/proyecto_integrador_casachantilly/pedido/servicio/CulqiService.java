@@ -27,8 +27,7 @@ public class CulqiService {
      * @return Mapa con resultado de la operación
      */
     public Map<String, Object> crearCargo(String tokenTarjeta, int montoCentimos, String email) {
-        log.info("[CULQI MOCK] Procesando cargo: token={}, monto={} céntimos, email={}",
-                tokenTarjeta.substring(0, Math.min(8, tokenTarjeta.length())) + "***",
+        log.info("[CULQI MOCK] Procesando cargo: monto={} centimos, email={}",
                 montoCentimos, email);
 
         if (tokenTarjeta.toLowerCase().startsWith("fail")) {

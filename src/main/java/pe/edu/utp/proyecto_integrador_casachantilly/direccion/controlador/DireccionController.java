@@ -88,6 +88,22 @@ public class DireccionController {
         return ResponseEntity.ok(ApiResponse.ok("OK", data));
     }
 
+    @Operation(summary = "Alias de compatibilidad: listar zonas de envío activas")
+    @GetMapping("/direcciones/zonas")
+    public ResponseEntity<ApiResponse<List<ZonaEnvioDTO>>> listarZonasEnvioCompat() {
+        return listarZonasEnvio();
+    }
+
+    @Operation(summary = "Eliminar dirección (desactivación lógica)")
+    @DeleteMapping("/direcciones/{direccionId}")
+    public ResponseEntity<ApiResponse<Void>> eliminarDireccion(
+            Authentication auth,
+            @PathVariable Integer direccionId) {
+        Integer userId = getUserId(auth);
+        direccionService.desactivarDireccion(userId, direccionId);
+        return ResponseEntity.ok(ApiResponse.ok("Dirección desactivada", null));
+    }
+
     private Integer getUserId(Authentication auth) {
         String email = auth.getName();
         Usuario usuario = usuarioRepository.findByEmailIgnoreCase(email)

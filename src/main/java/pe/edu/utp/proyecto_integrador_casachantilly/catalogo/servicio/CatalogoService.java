@@ -13,8 +13,10 @@ import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.Producto;
 import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.ProductoVariante;
 import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.repositorio.ProductoRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
+import pe.edu.utp.proyecto_integrador_casachantilly.pedido.servicio.CapacidadProduccionService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,6 +24,8 @@ public class CatalogoService {
 
     @Autowired
     private ProductoRepository productoRepository;
+    @Autowired
+    private CapacidadProduccionService capacidadProduccionService;
 
 
 
@@ -35,7 +39,8 @@ public class CatalogoService {
                 ? productoRepository.findByCategoriaIdAndActivoTrue(categoriaId, pageable)
                 : productoRepository.findByActivoTrue(pageable);
 
-        return page.map(this::toCardDTO);
+        boolean hayCapacidadProduccion = capacidadProduccionService.hayCapacidadParaFecha(LocalDate.now());
+        return page.map(p -> toCardDTO(p, hayCapacidadProduccion));
     }
 
     /**
@@ -45,12 +50,17 @@ public class CatalogoService {
     public ProductoDetalleDTO getDetalleProducto(Integer productoId) {
         Producto p = productoRepository.findById(productoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado: " + productoId));
-        return toDetalleDTO(p);
+        boolean hayCapacidadProduccion = capacidadProduccionService.hayCapacidadParaFecha(LocalDate.now());
+        return toDetalleDTO(p, hayCapacidadProduccion);
     }
 
 
 
     public ProductoCardDTO toCardDTO(Producto p) {
+        return toCardDTO(p, true);
+    }
+
+    public ProductoCardDTO toCardDTO(Producto p, boolean hayCapacidadProduccion) {
         List<ProductoVariante> variantes = p.getVariantes();
 
         BigDecimal precioMinimo = variantes.stream()
@@ -62,8 +72,9 @@ public class CatalogoService {
                         .min(BigDecimal::compareTo)
                         .orElse(BigDecimal.ZERO));
 
-        boolean hayStock = variantes.stream()
+        boolean hayStockVariante = variantes.stream()
                 .anyMatch(v -> Boolean.TRUE.equals(v.getActivo()) && v.getStockDisponible() > 0);
+        boolean hayStock = hayStockVariante && hayCapacidadProduccion;
 
         String desc = p.getDescripcion();
         if (desc != null && desc.length() > 150) {
@@ -83,6 +94,10 @@ public class CatalogoService {
     }
 
     public ProductoDetalleDTO toDetalleDTO(Producto p) {
+        return toDetalleDTO(p, true);
+    }
+
+    public ProductoDetalleDTO toDetalleDTO(Producto p, boolean hayCapacidadProduccion) {
         List<String> alergenos = p.getAlergenos().stream()
                 .map(Alergeno::getNombre)
                 .toList();
@@ -90,7 +105,8 @@ public class CatalogoService {
         List<ProductoVarianteDTO> variantes = p.getVariantes().stream()
                 .map(v -> new ProductoVarianteDTO(
                         v.getId(), v.getNombreVariante(), v.getPrecio(), v.getCosto(),
-                        v.getPesoGramos(), v.getTiempoPrepMin(), v.getStockDisponible(), v.getActivo()
+                        v.getPesoGramos(), v.getTiempoPrepMin(), v.getStockDisponible(),
+                        Boolean.TRUE.equals(v.getActivo()) && hayCapacidadProduccion
                 ))
                 .toList();
 

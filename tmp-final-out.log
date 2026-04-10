@@ -1,0 +1,102 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------< pe.edu.utp:proyecto-integrador-casachantilly >------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.5.13:run (default-cli) > test-compile @ proyecto-integrador-casachantilly >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ proyecto-integrador-casachantilly ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] Copying 42 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ proyecto-integrador-casachantilly ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ proyecto-integrador-casachantilly ---
+[INFO] skip non existing resourceDirectory C:\Users\felix\Downloads\proyecto-integrador-casachantilly\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ proyecto-integrador-casachantilly ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:3.5.13:run (default-cli) < test-compile @ proyecto-integrador-casachantilly <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.5.13:run (default-cli) @ proyecto-integrador-casachantilly ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.13)
+
+2026-04-10T01:20:25.341-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] oyectoIntegradorCasachantillyApplication : Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 12632 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-10T01:20:25.343-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] oyectoIntegradorCasachantillyApplication : No active profile set, falling back to 1 default profile: "default"
+2026-04-10T01:20:26.409-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-10T01:20:26.523-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 106 ms. Found 24 JPA repository interfaces.
+2026-04-10T01:20:26.950-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 18083 (http)
+2026-04-10T01:20:26.961-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-10T01:20:26.961-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-10T01:20:27.017-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-04-10T01:20:27.019-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1640 ms
+2026-04-10T01:20:27.291-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-10T01:20:27.420-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@794d28a3
+2026-04-10T01:20:27.422-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-10T01:20:27.813-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-10T01:20:27.850-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.020s)
+2026-04-10T01:20:27.859-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema `prueba_db`: 1
+2026-04-10T01:20:27.861-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.f.core.internal.command.DbMigrate      : Schema `prueba_db` is up to date. No migration necessary.
+2026-04-10T01:20:27.942-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-10T01:20:27.978-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-10T01:20:28.009-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-10T01:20:28.220-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-10T01:20:28.264-05:00  WARN 12632 --- [proyecto-integrador-casachantilly] [           main] org.hibernate.dialect.Dialect            : HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-10T01:20:28.264-05:00  WARN 12632 --- [proyecto-integrador-casachantilly] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-10T01:20:28.276-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-10T01:20:29.256-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-10T01:20:29.256-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-10T01:20:29.648-05:00  WARN 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.aop.framework.CglibAopProxy          : Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-10T01:20:29.688-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-10T01:20:29.689-05:00  WARN 12632 --- [proyecto-integrador-casachantilly] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-10T01:20:29.726-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-10T01:20:30.843-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-04-10T01:20:31.053-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
+2026-04-10T01:20:31.543-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 18083 (http) with context path '/'
+2026-04-10T01:20:31.557-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [           main] oyectoIntegradorCasachantillyApplication : Started ProyectoIntegradorCasachantillyApplication in 6.523 seconds (process running for 6.79)
+2026-04-10T01:20:31.608-05:00  WARN 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-04-10T01:20:31.608-05:00  WARN 12632 --- [proyecto-integrador-casachantilly] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-04-10T01:20:31.633-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [   scheduling-1] p.e.u.p.n.s.EmailNotificacionGatewayMock : [NOTIF MOCK][EMAIL] to=admin@casachantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 2 uds
+- Cheesecake de Maracuya (Mini): 2 uds
+- Porcion Red Velvet (Porcion Individual): 5 uds
+- Tarta de Frutas (Mediana): 2 uds
+
+2026-04-10T01:20:31.671-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [   scheduling-1] p.e.u.p.config.AlertaOperativaScheduler  : Alerta de stock bajo enviada a 1 administradores para 4 productos
+2026-04-10T01:20:31.889-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [io-18083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-10T01:20:31.889-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [io-18083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-10T01:20:31.891-05:00  INFO 12632 --- [proyecto-integrador-casachantilly] [io-18083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  20.666 s
+[INFO] Finished at: 2026-04-10T01:20:43-05:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.5.13:run (default-cli) on project proyecto-integrador-casachantilly: Process terminated with exit code: -1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

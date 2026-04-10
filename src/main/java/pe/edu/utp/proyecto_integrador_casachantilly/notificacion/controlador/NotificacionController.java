@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Usuario;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.repositorio.UsuarioRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
@@ -18,6 +16,7 @@ import pe.edu.utp.proyecto_integrador_casachantilly.notificacion.dto.Notificacio
 import pe.edu.utp.proyecto_integrador_casachantilly.notificacion.servicio.NotificacionService;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Cliente — Notificaciones", description = "Consulta de notificaciones transaccionales")
 @SecurityRequirement(name = "bearerAuth")
@@ -35,6 +34,22 @@ public class NotificacionController {
         Integer usuarioId = getUserId(auth);
         List<NotificacionDTO> data = notificacionService.listarNotificacionesUsuario(usuarioId);
         return ResponseEntity.ok(ApiResponse.ok("OK", data));
+    }
+
+    @Operation(summary = "Marcar notificación como leída")
+    @PatchMapping("/{id}/leida")
+    public ResponseEntity<ApiResponse<Void>> marcarLeida(@PathVariable Integer id, Authentication auth) {
+        Integer usuarioId = getUserId(auth);
+        notificacionService.marcarLeida(id, usuarioId);
+        return ResponseEntity.ok(ApiResponse.ok("Notificación marcada como leída", null));
+    }
+
+    @Operation(summary = "Contar notificaciones no leídas")
+    @GetMapping("/no-leidas/count")
+    public ResponseEntity<ApiResponse<Map<String, Long>>> contarNoLeidas(Authentication auth) {
+        Integer usuarioId = getUserId(auth);
+        long count = notificacionService.contarNoLeidas(usuarioId);
+        return ResponseEntity.ok(ApiResponse.ok("OK", Map.of("noLeidas", count)));
     }
 
     private Integer getUserId(Authentication auth) {

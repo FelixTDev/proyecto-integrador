@@ -7,63 +7,118 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AuthResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.LoginRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.RecuperarPasswordRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.RegistroRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.ResetPasswordRequest;
+import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.AuthRateLimitService;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.AuthService;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
+import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
 
-@Tag(name = "Autenticación", description = "Registro, login y logout con JWT")
+import java.util.HashMap;
+import java.util.Map;
+
+@Tag(name = "Autenticacion", description = "Registro, login y logout con JWT")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    private AuthRateLimitService authRateLimitService;
 
     @Operation(summary = "Registrar nuevo usuario (rol CLIENTE)")
     @PostMapping("/registro")
     public ResponseEntity<ApiResponse<AuthResponse>> registro(@Valid @RequestBody RegistroRequest request) {
         AuthResponse result = authService.registro(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.ok("Registro exitoso", result));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok("Registro exitoso", result));
     }
 
-    @Operation(summary = "Iniciar sesión y obtener token JWT")
+    @Operation(summary = "Iniciar sesion y obtener token JWT")
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(
             @Valid @RequestBody LoginRequest request,
             HttpServletRequest httpRequest) {
         String ip = httpRequest.getRemoteAddr();
-        String agenteUsuario = httpRequest.getHeader("User-Agent");
-        AuthResponse result = authService.login(request, ip, agenteUsuario);
+        String userAgent = httpRequest.getHeader("User-Agent");
+        String emailNormalizado = request.email() == null ? "" : request.email().trim().toLowerCase();
+        String key = emailNormalizado + "|" + ip;
+
+        authRateLimitService.assertLoginAllowed(key);
+        AuthResponse result;
+        try {
+            result = authService.login(request, ip, userAgent);
+        } catch (RuntimeException ex) {
+            authRateLimitService.recordLoginFailure(key);
+            throw ex;
+        }
+        authRateLimitService.clearLoginFailures(key);
         return ResponseEntity.ok(ApiResponse.ok("Login exitoso", result));
     }
 
-    @Operation(summary = "Cerrar sesión (invalidar token)")
+    @Operation(summary = "Cerrar sesion (invalidar token)")
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
+    public ResponseEntity<ApiResponse<Void>> logout(@RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             authService.logout(authHeader.substring(7));
         }
-        return ResponseEntity.ok(ApiResponse.ok("Sesión cerrada", null));
+        return ResponseEntity.ok(ApiResponse.ok("Sesion cerrada", null));
     }
 
-    @Operation(summary = "Solicitar link de recuperación de contraseña")
+    @Operation(summary = "Refrescar token JWT y rotar sesion")
+    @PostMapping("/refresh")
+    public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
+            HttpServletRequest httpRequest) {
+        AuthResponse result = authService.refreshToken(authHeader, httpRequest.getRemoteAddr(), httpRequest.getHeader("User-Agent"));
+        return ResponseEntity.ok(ApiResponse.ok("Token refrescado", result));
+    }
+
+    @Operation(summary = "Solicitar recuperacion de password")
     @PostMapping("/recuperar-password")
-    public ResponseEntity<ApiResponse<Void>> recuperarPassword(@Valid @RequestBody RecuperarPasswordRequest request) {
+    public ResponseEntity<ApiResponse<Void>> recuperarPassword(
+            @Valid @RequestBody RecuperarPasswordRequest request,
+            HttpServletRequest httpRequest) {
+        String ip = httpRequest.getRemoteAddr();
+        String emailNormalizado = request.email() == null ? "" : request.email().trim().toLowerCase();
+        authRateLimitService.consumeResetRequest("ip:" + ip);
+        authRateLimitService.consumeResetRequest("email:" + emailNormalizado);
+
         authService.solicitarRecuperacionPassword(request.email());
-        return ResponseEntity.ok(ApiResponse.ok("Si el correo existe, se enviarán las instrucciones para recuperar la contraseña.", null));
+        return ResponseEntity.ok(ApiResponse.ok("Si el correo existe, se enviaran instrucciones para recuperar la password.", null));
     }
 
-    @Operation(summary = "Establecer nueva contraseña usando el token de recuperación")
+    @Operation(summary = "Establecer nueva password usando token de recuperacion")
     @PostMapping("/reset-password")
     public ResponseEntity<ApiResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         authService.resetPassword(request.token(), request.nuevaPassword());
-        return ResponseEntity.ok(ApiResponse.ok("Contraseña actualizada exitosamente", null));
+        return ResponseEntity.ok(ApiResponse.ok("Password actualizada exitosamente", null));
+    }
+
+    @Operation(summary = "Obtener datos del usuario logueado")
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> me(org.springframework.security.core.Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("No autenticado"));
+        }
+        var usuario = authService.getUsuarioRepository().findByEmailIgnoreCase(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("id", usuario.getId());
+        resp.put("nombre", usuario.getNombre());
+        resp.put("email", usuario.getEmail());
+        resp.put("telefono", usuario.getTelefono());
+        resp.put("roles", usuario.getRoles().stream().map(r -> r.getNombre()).toList());
+        return ResponseEntity.ok(ApiResponse.ok("OK", resp));
     }
 }
