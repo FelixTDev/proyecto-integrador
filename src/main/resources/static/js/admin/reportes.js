@@ -22,19 +22,18 @@ function badgeClaseByIndex(i) {
   return 'badge-ghost';
 }
 
-async function loadReportes() {
-  const rangoEl = document.getElementById('rep-rango');
-  const note = document.getElementById('rep-note');
+function getDays() {
+  return Number(document.getElementById('rep-rango')?.value || 14);
+}
 
-  const label = (rangoEl.value || 'Últimos 14 días').toLowerCase();
-  let days = 14;
-  if (label.includes('30')) days = 30;
-  if (label.includes('60')) days = 60;
+async function loadReportes() {
+  const note = document.getElementById('rep-note');
+  const days = getDays();
 
   try {
     note.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Cargando indicadores desde BD...';
 
-    const data = await API.get(`/api/admin/insights/reportes?days=${days}`);
+    const data = await API.get('/api/admin/insights/reportes?days=' + days);
     const kpis = data.kpis || {};
     const ventas = Array.isArray(data.ventasDiarias) ? data.ventasDiarias : [];
     const tiposEntrega = data.tiposEntrega || {};
@@ -45,7 +44,7 @@ async function loadReportes() {
     document.getElementById('rep-kpi-ticket').textContent = fmt.money(kpis.ticketPromedio || 0);
     document.getElementById('rep-kpi-cancel').textContent = `${toNum(kpis.cancelacionesPct).toFixed(2)}%`;
 
-    document.getElementById('rep-kpi-ventas-sub').textContent = `Rango actual (${days} días)`;
+    document.getElementById('rep-kpi-ventas-sub').textContent = `Rango actual (${days} dias)`;
     document.getElementById('rep-kpi-completados-sub').textContent = `${kpis.pedidosTotales || 0} pedidos totales`;
 
     const barsRoot = document.getElementById('rep-bars');
@@ -68,7 +67,7 @@ async function loadReportes() {
 
     const metodosRoot = document.getElementById('rep-metodos');
     if (!metodos.length) {
-      metodosRoot.innerHTML = '<li class="admin-note">No hay métodos de pago registrados.</li>';
+      metodosRoot.innerHTML = '<li class="admin-note">No hay metodos de pago registrados.</li>';
     } else {
       metodosRoot.innerHTML = metodos.slice(0, 5).map((m, i) => {
         const p = toNum(m.porcentaje_uso);
@@ -76,7 +75,7 @@ async function loadReportes() {
       }).join('');
     }
 
-    note.innerHTML = `<i class="bi bi-check-circle"></i> Datos reales cargados para ${days} días.`;
+    note.innerHTML = `<i class="bi bi-check-circle"></i> Datos reales cargados para ${days} dias.`;
   } catch (e) {
     note.innerHTML = `<i class="bi bi-exclamation-triangle"></i> Error cargando reportes: ${e.message}`;
   }

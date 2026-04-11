@@ -1,88 +1,92 @@
-if (Auth.isLoggedIn()) {
-  window.location.href = '../../index.html';
-}
-
-const regForm = document.getElementById('regForm');
-const btnSubmit = document.getElementById('btn-submit');
-const telInput = document.getElementById('f-tel');
-const nombreInput = document.getElementById('f-nombre');
-
-function validarRegistro({ nombre, email, pwd, tel }) {
-  if (!nombre) return 'Ingresa tus nombres completos.';
-  if (/\d/.test(nombre)) return 'El nombre no debe contener números.';
-  if (!/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/.test(nombre)) {
-    return 'El nombre solo debe contener letras y espacios.';
+(function () {
+  function validarRegistro(data) {
+    if (!data.nombre) return 'Ingresa tus nombres completos.';
+    if (/\d/.test(data.nombre)) return 'El nombre no debe contener numeros.';
+    if (!/^[A-Za-z\u00C0-\u024F\s]+$/.test(data.nombre)) return 'El nombre solo debe contener letras y espacios.';
+    if (!data.email) return 'Ingresa tu correo electronico.';
+    if (!data.password || data.password.length < 6) return 'La contrasena debe tener al menos 6 caracteres.';
+    if (data.telefono && !/^\d{9}$/.test(data.telefono)) return 'El celular debe tener 9 digitos.';
+    return null;
   }
 
-  if (!email) return 'Ingresa tu correo electrónico.';
-
-  if (!pwd || pwd.length < 6) {
-    return 'La contraseña debe tener al menos 6 caracteres.';
+  function setLoading(button, loading) {
+    if (!button) return;
+    button.disabled = loading;
+    button.innerHTML = loading
+      ? '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Registrando...'
+      : 'Crear mi cuenta';
   }
 
-  if (tel && !/^\d{9}$/.test(tel)) {
-    return 'El número de celular debe tener 9 dígitos.';
+  function bindInputMasks() {
+    const telInput = document.getElementById('f-tel');
+    const nombreInput = document.getElementById('f-nombre');
+
+    if (telInput) {
+      telInput.addEventListener('input', function () {
+        telInput.value = telInput.value.replace(/\D/g, '').slice(0, 9);
+      });
+    }
+
+    if (nombreInput) {
+      nombreInput.addEventListener('input', function () {
+        nombreInput.value = nombreInput.value.replace(/\d/g, '');
+      });
+    }
   }
 
-  return null;
-}
+  async function submitRegistro(event) {
+    event.preventDefault();
 
-async function doRegistro(e) {
-  e.preventDefault();
+    const nombre = (document.getElementById('f-nombre')?.value || '').trim();
+    const email = (document.getElementById('f-email')?.value || '').trim().toLowerCase();
+    const password = (document.getElementById('f-pwd')?.value || '').trim();
+    const telefono = (document.getElementById('f-tel')?.value || '').trim();
+    const button = document.getElementById('btn-submit');
 
-  const nombre = document.getElementById('f-nombre').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const pwd = document.getElementById('f-pwd').value.trim();
-  const tel = telInput.value.trim();
-
-  const error = validarRegistro({ nombre, email, pwd, tel });
-  if (error) {
-    Toast.err(error);
-    return;
-  }
-
-  try {
-    btnSubmit.disabled = true;
-    btnSubmit.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Registrando...';
-
-    const res = await API.post('/api/auth/registro', {
-      nombre,
-      email,
-      password: pwd,
-      telefono: tel || null,
-    });
-
-    const token = typeof res === 'string' ? res : (res.data?.token || res.token);
-    if (token && token.length > 20) {
-      Auth.save(token, email);
-      Toast.ok('¡Tu cuenta ha sido creada exitosamente!');
-      setTimeout(() => {
-        window.location.href = '../../index.html';
-      }, 1000);
+    const error = validarRegistro({ nombre, email, password, telefono });
+    if (error) {
+      Toast.err(error);
       return;
     }
 
-    throw new Error('Token no recibido');
-  } catch (err) {
-    Toast.err('Error en el registro. Quizá el correo ya está en uso.');
-  } finally {
-    btnSubmit.disabled = false;
-    btnSubmit.innerHTML = 'Crear mi cuenta';
+    setLoading(button, true);
+
+    try {
+      const res = await API.post('/api/auth/registro', {
+        nombre,
+        email,
+        password,
+        telefono: telefono || null
+      }, { auth: false, retryOn401: false });
+
+      const authPayload = parseLoginResponse(res);
+      if (!authPayload?.token) {
+        throw new Error('Registro sin token');
+      }
+
+      Auth.save(authPayload.token, authPayload.email || email);
+      Toast.ok('Cuenta creada correctamente.');
+      setTimeout(function () {
+        window.location.href = '/index.html';
+      }, 350);
+    } catch (apiError) {
+      Toast.err(apiError.message || 'No se pudo completar el registro.');
+      setLoading(button, false);
+    }
   }
-}
 
-if (telInput) {
-  telInput.addEventListener('input', () => {
-    telInput.value = telInput.value.replace(/\D/g, '').slice(0, 9);
-  });
-}
+  function initRegistro() {
+    if (Auth.isLoggedIn()) {
+      window.location.href = '/index.html';
+      return;
+    }
 
-if (nombreInput) {
-  nombreInput.addEventListener('input', () => {
-    nombreInput.value = nombreInput.value.replace(/[0-9]/g, '');
-  });
-}
+    bindInputMasks();
 
-if (regForm) {
-  regForm.addEventListener('submit', doRegistro);
-}
+    const form = document.getElementById('regForm');
+    if (!form) return;
+    form.addEventListener('submit', submitRegistro);
+  }
+
+  document.addEventListener('DOMContentLoaded', initRegistro);
+})();

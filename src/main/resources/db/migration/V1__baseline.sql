@@ -1,2 +1,1 @@
--- Baseline migration placeholder.
--- Existing schemas can be adopted with flyway.baseline-on-migrate=true.
+SELECT 1;

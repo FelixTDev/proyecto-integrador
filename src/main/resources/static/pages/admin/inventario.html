@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Inventario — Admin Casa Chantilly</title>
+  <title>Inventario - Admin Casa Chantilly</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
@@ -20,8 +20,8 @@
     </button>
     <div class="collapse navbar-collapse" id="adminTopNav">
       <div class="navbar-nav ms-auto align-items-lg-center gap-2 pt-3 pt-lg-0">
-        <span class="small text-white-50">Admin: <strong id="nav-user" class="text-white"></strong></span>
-        <button id="nav-logout" class="btn btn-sm btn-soft" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+        <span class="small text-white-50">Usuario: <strong id="nav-user" class="text-white"></strong></span>
+        <button id="nav-logout" class="btn btn-sm btn-soft" ><i class="bi bi-box-arrow-right"></i> Salir</button>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
 <div class="layout-admin">
   <aside class="sidebar">
     <div class="sidebar-section">
-      <span class="sidebar-label">Catálogo</span>
+      <span class="sidebar-label">Catalogo</span>
       <a href="dashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
       <a href="productos.html" class="sidebar-link"><i class="bi bi-box-seam"></i> Productos</a>
       <a href="inventario.html" class="sidebar-link active"><i class="bi bi-archive"></i> Inventario</a>
@@ -43,7 +43,7 @@
     <div class="sidebar-section">
       <span class="sidebar-label">Reportes</span>
       <a href="reportes.html" class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
-      <a href="analisis.html" class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
+      <a href="analisis.html" class="sidebar-link"><i class="bi bi-graph-up"></i> Analisis</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Config</span>
@@ -55,45 +55,36 @@
 
   <main class="admin-main">
     <div class="page-header">
-      <h1 class="page-title mb-1"><i class="bi bi-archive me-2"></i>Gestión de inventario</h1>
-      <p class="page-sub mb-0">Movimientos de stock y control de alertas por variante.</p>
+      <h1 class="page-title mb-1"><i class="bi bi-archive me-2"></i>Gestion de inventario</h1>
+      <p class="page-sub mb-0">Stock final por variante con movimientos reales y trazables.</p>
     </div>
 
     <div class="card p-3 p-lg-4">
       <div class="admin-toolbar">
-        <input type="text" class="form-control inventory-search" placeholder="Buscar SKU o producto...">
+        <input id="inv-search" type="text" class="form-control inventory-search" placeholder="Buscar variante o producto...">
         <div class="actions">
-          <select class="form-select admin-select-role"><option>Filtrar: Todos</option><option>Stock Crítico</option></select>
-          <button class="btn btn-primary" onclick="Modal.open('modal-inv')"><i class="bi bi-plus-slash-minus"></i> Ajuste manual</button>
+          <select id="inv-stock-filter" class="form-select admin-select-role">
+            <option value="TODOS">Filtrar: Todos</option>
+            <option value="CRITICO">Stock critico (<=5)</option>
+            <option value="AGOTADO">Agotado</option>
+          </select>
+          <button class="btn btn-primary" id="btn-ajuste-open"><i class="bi bi-plus-slash-minus"></i> Ajuste manual</button>
         </div>
       </div>
 
       <div class="table-wrap p-2">
         <table class="table align-middle mb-0">
-          <thead><tr><th>ID Var</th><th>Producto y Variante</th><th>Stock Actual</th><th>Alertas</th><th>Acciones</th></tr></thead>
-          <tbody>
+          <thead>
             <tr>
-              <td class="inv-id">VAR-101</td>
-              <td><strong class="text-brand-strong">Selva Negra Tradicional</strong> <span class="inv-meta">| Torta Entera (Top)</span></td>
-              <td><span class="inv-stock-healthy">12</span> un.</td>
-              <td><span class="badge badge-green">Stock saludable</span></td>
-              <td><button class="btn btn-outline btn-sm" onclick="setAjuste(101, 'Selva Negra Tradicional')"><i class="bi bi-tools"></i> Ajustar</button></td>
+              <th>ID Var</th>
+              <th>Producto y variante</th>
+              <th>Stock actual</th>
+              <th>Alerta</th>
+              <th>Precio</th>
+              <th>Acciones</th>
             </tr>
-            <tr class="inventory-low-row">
-              <td class="inv-id">VAR-102</td>
-              <td><strong class="text-brand-strong">Selva Negra Tradicional</strong> <span class="inv-meta">| Porción</span></td>
-              <td><span class="inv-stock-low">0</span> un.</td>
-              <td><span class="badge badge-red">Agotado</span></td>
-              <td><button class="btn btn-outline btn-sm" onclick="setAjuste(102, 'Porción Selva Negra')"><i class="bi bi-tools"></i> Ajustar</button></td>
-            </tr>
-            <tr>
-              <td class="inv-id">VAR-205</td>
-              <td><strong class="text-brand-strong">Cheesecake de Maracuyá</strong> <span class="inv-meta">| Torta Mediana</span></td>
-              <td><span class="inv-stock-low">4</span> un.</td>
-              <td><span class="badge badge-yellow">Stock bajo</span></td>
-              <td><button class="btn btn-outline btn-sm" onclick="setAjuste(205, 'Cheesecake Maracuyá')"><i class="bi bi-tools"></i> Ajustar</button></td>
-            </tr>
-          </tbody>
+          </thead>
+          <tbody id="inv-tbody"></tbody>
         </table>
       </div>
     </div>
@@ -104,42 +95,47 @@
   <div class="modal">
     <div class="modal-header">
       <h3 class="modal-title">Ajuste de inventario</h3>
-      <button class="modal-close" onclick="Modal.close('modal-inv')"><i class="bi bi-x-lg"></i></button>
+      <button class="modal-close" data-close-modal="modal-inv"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
-      <form class="field admin-form-gap" onsubmit="doAjuste(event)">
+      <form class="field admin-form-gap" id="form-inv-ajuste">
         <div class="field">
-          <label class="label">Variante (ID o selección)</label>
-          <input type="text" class="form-control" id="aj-var" value="VAR-102: Porción Selva Negra" readonly>
+          <label class="label">Variante</label>
+          <input type="text" class="form-control" id="aj-var" readonly>
         </div>
         <div class="row g-3">
-          <div class="col-md-6 field"><label class="label">Tipo de movimiento</label><select class="form-select" id="aj-tipo"><option value="in">Entrada (+)</option><option value="out">Salida (-)</option></select></div>
-          <div class="col-md-6 field"><label class="label">Cantidad</label><input type="number" class="form-control" required min="1" value="10"></div>
+          <div class="col-md-6 field">
+            <label class="label">Tipo de movimiento</label>
+            <select class="form-select" id="aj-tipo">
+              <option value="ENTRADA">Entrada (+)</option>
+              <option value="SALIDA">Salida (-)</option>
+              <option value="AJUSTE">Ajuste</option>
+            </select>
+          </div>
+          <div class="col-md-6 field">
+            <label class="label">Cantidad</label>
+            <input type="number" id="aj-cantidad" class="form-control" required min="1" value="1">
+          </div>
         </div>
-        <div class="field"><label class="label">Motivo u observación</label><input type="text" class="form-control" placeholder="Producción lote mañana..."></div>
-        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check2-circle"></i> Confirmar movimiento</button>
+        <div class="field">
+          <label class="label">Motivo</label>
+          <input type="text" id="aj-motivo" class="form-control" placeholder="Produccion, ajuste operativo o regularizacion">
+        </div>
+        <button type="submit" id="btn-ajuste-submit" class="btn btn-primary w-100"><i class="bi bi-check2-circle"></i> Confirmar movimiento</button>
       </form>
     </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/core/config.js"></script>
+<script src="../../js/core/storage.js"></script>
+<script src="../../js/auth/session.js"></script>
+<script src="../../js/components/toast.js"></script>
+<script src="../../js/services/http.js"></script>
+<script src="../../js/utils/format.js"></script>
 <script src="../../js/app.js"></script>
-<script>
-  Auth.requireAdmin();
-  let selectedId = 102;
-  function setAjuste(id, name) {
-    selectedId = id;
-    document.getElementById('aj-var').value = `VAR-${id}: ${name}`;
-    Modal.open('modal-inv');
-  }
-  async function doAjuste(e) {
-    e.preventDefault();
-    try {
-      Toast.ok('Movimiento de inventario registrado correctamente');
-      Modal.close('modal-inv');
-    } catch { Toast.err('Error al actualizar inventario'); }
-  }
-</script>
+<script src="../../js/admin/inventario.js"></script>
 </body>
 </html>
+

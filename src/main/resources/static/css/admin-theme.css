@@ -719,3 +719,21 @@ body {
     padding: 1rem;
   }
 }
+.variant-row {
+  background: #fff9f6;
+  border: 1px solid var(--admin-border);
+  border-radius: 0.75rem;
+  padding: 0.6rem 0.5rem;
+}
+
+.prod-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 0.65rem;
+  object-fit: cover;
+  border: 1px solid var(--admin-border);
+}
+
+.inventory-search {
+  max-width: 440px;
+}

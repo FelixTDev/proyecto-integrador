@@ -1,233 +1,212 @@
-/* ═══════════════════════════════════════════════
-   LA CASA DEL CHANTILLY — Core App Logic (JS)
-   ═══════════════════════════════════════════════ */
+(function () {
+  window.CC = window.CC || {};
 
-const API = {
-  BASE: '',
+  const config = window.CC.config;
+  const session = window.CC.session;
+  const http = window.CC.http;
+  const toast = window.CC.toast;
+  const format = window.CC.format;
 
-  headers(auth = true) {
-    const h = { 'Content-Type': 'application/json' };
-    if (auth) {
-      const jwt = Auth.token();
-      if (jwt) h['Authorization'] = 'Bearer ' + jwt;
-    }
-    return h;
-  },
-
-  async request(method, path, body = null) {
-    const normalizedPath = String(path || '').startsWith('/') ? String(path) : `/${String(path || '')}`;
-    const options = { method, headers: this.headers() };
-    if (body) options.body = JSON.stringify(body);
-    
-    try {
-      const res = await fetch(this.BASE + normalizedPath, options);
-      if (!res.ok) {
-        let msg = `Error ${res.status}`;
-        try {
-          const errObj = await res.json();
-          msg = errObj.message || msg;
-          if (errObj.data && typeof errObj.data === 'object') {
-            const firstError = Object.values(errObj.data)[0];
-            if (firstError) msg = `${msg}: ${firstError}`;
-          }
-        } catch(e) {}
-        this.handleAuthError(res.status, normalizedPath, msg);
-        throw new Error(msg);
-      }
-      // Algunos endpoints pueden no devolver JSON
-      const text = await res.text();
-      if (!text) return {};
-      const parsed = JSON.parse(text);
-      // Normaliza respuestas backend envueltas en ApiResponse<T>
-      if (parsed && typeof parsed === 'object' && Object.prototype.hasOwnProperty.call(parsed, 'data')) {
-        return parsed.data;
-      }
-      return parsed;
-    } catch (err) {
-      Toast.err(`API Error: ${err.message}`);
-      throw err;
-    }
-  },
-
-  handleAuthError(status, path, message) {
-    const isAuthPath = String(path || '').startsWith('/api/auth/');
-    const isProtectedPath = /^\/api\/(admin|cliente|carrito|pedido|pedidos|pago|pagos)\b/.test(String(path || ''));
-    if (isAuthPath) return;
-
-    if (status === 401) {
-      Auth.clear();
-      if (isProtectedPath) {
-        const current = window.location.pathname || '';
-        if (!current.includes('/pages/auth/login.html')) {
-          setTimeout(() => {
-            window.location.href = '/pages/auth/login.html?reason=expired';
-          }, 250);
-        }
-      }
-    } else if (status === 403 && isProtectedPath) {
-      const current = window.location.pathname || '';
-      if (current.includes('/pages/admin/') && !Auth.isAdmin()) {
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 250);
-      }
-    }
-  },
-
-  async get(path) { return this.request('GET', path); },
-  async post(path, body) { return this.request('POST', path, body); },
-  async put(path, body) { return this.request('PUT', path, body); },
-  async patch(path, body) { return this.request('PATCH', path, body); },
-  async delete(path) { return this.request('DELETE', path); }
-};
-
-/* ── Auth ── */
-const Auth = {
-  token: ()  => localStorage.getItem('jwt'),
-  email: ()  => localStorage.getItem('email'),
-  roles: () => {
-    const token = Auth.token();
-    if (!token) return [];
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.roles || [];
-    } catch { return []; }
-  },
-  hasRole: (role) => Auth.roles().includes(role),
-  isAdmin: () => {
-    return Auth.hasRole('ROLE_ADMIN') || Auth.hasRole('ROLE_VENDEDOR');
-  },
-  isClient: () => Auth.hasRole('ROLE_CLIENTE'),
-  isLoggedIn: () => !!Auth.token(),
-  save: (token, email) => {
-    localStorage.setItem('jwt', token);
-    localStorage.setItem('email', email || '');
-  },
-  clear: () => {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('email');
-  },
-  requireLogin: () => {
-    if (!Auth.isLoggedIn()) { window.location.href = '/pages/auth/login.html'; return false; }
-    return true;
-  },
-  requireAdmin: () => {
-    if (!Auth.isAdmin()) { window.location.href = '/'; return false; }
-    return true;
-  },
-  requireClient: () => {
-    if (!Auth.isLoggedIn()) { window.location.href = '/pages/auth/login.html'; return false; }
-    if (!Auth.isClient()) {
-      window.location.href = Auth.isAdmin() ? '/pages/admin/dashboard.html' : '/';
-      return false;
-    }
-    return true;
+  function ensureCore() {
+    const missing = [];
+    if (!config) missing.push('config');
+    if (!session) missing.push('session');
+    if (!http) missing.push('http');
+    if (!toast) missing.push('toast');
+    if (!format) missing.push('format');
+    if (missing.length) throw new Error('Faltan modulos core: ' + missing.join(', '));
   }
-};
 
-/* ── Toast Notifications ── */
-const Toast = {
-  _container: null,
-  _get() {
-    if (!this._container) {
-      this._container = document.createElement('div');
-      this._container.id = 'toast-container';
-      document.body.appendChild(this._container);
+  function isVendorOnly() {
+    return session.hasRole('ROLE_VENDEDOR') && !session.hasRole('ROLE_ADMIN');
+  }
+
+  function hideAdminOnlyLinksForVendor() {
+    if (!isVendorOnly()) return;
+    const restricted = [
+      'productos.html',
+      'inventario.html',
+      'promociones.html',
+      'usuarios.html'
+    ];
+    document.querySelectorAll('.sidebar a').forEach(function (link) {
+      const href = String(link.getAttribute('href') || '');
+      if (restricted.some(function (r) { return href.endsWith(r); })) {
+        link.style.display = 'none';
+      }
+    });
+  }
+
+  function enforceAdminSubmodulePermissions() {
+    if (!isVendorOnly()) return;
+    const path = window.location.pathname || '';
+    const blocked = [
+      '/pages/admin/productos.html',
+      '/pages/admin/inventario.html',
+      '/pages/admin/promociones.html',
+      '/pages/admin/usuarios.html'
+    ];
+    if (blocked.some(function (p) { return path.endsWith(p); })) {
+      window.location.href = '/pages/admin/dashboard.html';
     }
-    return this._container;
-  },
-  show(msg, type = 'info', duration = 3500) {
-    const icons = { ok: 'bi-check-circle-fill', err: 'bi-x-circle-fill', info: 'bi-info-circle-fill' };
-    const cssColor = type === 'ok' ? 'var(--green)' : type === 'err' ? 'var(--red)' : 'var(--gold)';
-    const t = document.createElement('div');
-    t.className = `toast toast-${type}`;
-    t.innerHTML = `<i class="bi ${icons[type] || icons.info}" style="color:${cssColor};font-size:1.1rem"></i><span>${msg}</span>`;
-    this._get().appendChild(t);
-    setTimeout(() => {
-      t.classList.add('out');
-      setTimeout(() => t.remove(), 300);
-    }, duration);
-  },
-  ok:   (msg) => Toast.show(msg, 'ok'),
-  err:  (msg) => Toast.show(msg, 'err'),
-  info: (msg) => Toast.show(msg, 'info'),
-};
-
-/* ── Modal Helpers ── */
-const Modal = {
-  open(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('open');
-  },
-  close(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('open');
-  },
-  closeAll() {
-    document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
   }
-};
 
-// Cerrar modal al hacer clic en el backdrop
-document.addEventListener('click', e => {
-  if (e.target.classList.contains('modal-backdrop')) Modal.closeAll();
-});
+  function updateNav() {
+    const loggedIn = session.isLoggedIn();
+    const isAdmin = session.isAdmin();
 
-/* ── UI / Navegación Dinámica ── */
-function updateNav() {
-  const loggedIn = Auth.isLoggedIn();
-  const isAdmin  = Auth.isAdmin();
+    const navLogin = document.getElementById('nav-login');
+    const navLogout = document.getElementById('nav-logout');
+    const navAdmin = document.getElementById('nav-admin');
+    const navUser = document.getElementById('nav-user');
+    const navPerfil = document.getElementById('nav-perfil');
+    const navReclamos = document.getElementById('nav-reclamos');
 
-  const navLogin   = document.getElementById('nav-login');
-  const navLogout  = document.getElementById('nav-logout');
-  const navAdmin   = document.getElementById('nav-admin');
-  const navUser    = document.getElementById('nav-user');
-  const navPerfil  = document.getElementById('nav-perfil');
-  const navReclamos = document.getElementById('nav-reclamos');
-
-  if (navLogin)  navLogin.style.display  = loggedIn ? 'none' : '';
-  if (navLogout) navLogout.style.display = loggedIn ? '' : 'none';
-  if (navAdmin)  navAdmin.style.display  = isAdmin  ? '' : 'none';
-  if (navUser)   navUser.textContent     = Auth.email() || '';
-  if (navPerfil) navPerfil.style.display = loggedIn ? '' : 'none';
-  if (navReclamos) navReclamos.style.display = (loggedIn && Auth.isClient()) ? '' : 'none';
-}
-
-function enforcePageAccessByRole() {
-  const path = window.location.pathname || '';
-  if (path.includes('/pages/admin/') && !Auth.isAdmin()) {
-    window.location.href = '/';
-    return;
+    if (navLogin) navLogin.style.display = loggedIn ? 'none' : '';
+    if (navLogout) navLogout.style.display = loggedIn ? '' : 'none';
+    if (navAdmin) navAdmin.style.display = isAdmin ? '' : 'none';
+    if (navUser) navUser.textContent = session.email() || '';
+    if (navPerfil) navPerfil.style.display = loggedIn ? '' : 'none';
+    if (navReclamos) navReclamos.style.display = loggedIn && session.isClient() ? '' : 'none';
   }
-  if (path.includes('/pages/cliente/')) {
-    if (!Auth.isLoggedIn()) {
-      window.location.href = '/pages/auth/login.html';
+
+  function enforcePageAccessByRole() {
+    const path = window.location.pathname || '';
+
+    if (path.includes('/pages/admin/') && !session.isAdmin()) {
+      window.location.href = config.homePath;
       return;
     }
-    if (!Auth.isClient()) {
-      window.location.href = Auth.isAdmin() ? '/pages/admin/dashboard.html' : '/';
+
+    if (path.includes('/pages/cliente/')) {
+      if (!session.isLoggedIn()) {
+        window.location.href = config.loginPath;
+        return;
+      }
+      if (!session.isClient()) {
+        window.location.href = session.isAdmin() ? config.adminPath : config.homePath;
+      }
     }
   }
-}
 
-async function doLogout() {
-  const jwt = Auth.token();
-  if (jwt) {
-    try { await API.post('/api/auth/logout', {}); } catch {}
+  async function doLogout() {
+    if (session.isLoggedIn()) await http.logout();
+    session.clear();
+    window.location.href = config.homePath;
   }
-  Auth.clear();
-  window.location.href = '/';
-}
 
-/* ── Formateadores ── */
-const fmt = {
-  money: (v) => 'S/ ' + Number(v || 0).toFixed(2),
-  date:  (s) => s ? new Date(s).toLocaleDateString('es-PE', { day:'2-digit', month:'short', year:'numeric' }) : '—',
-  dt:    (s) => s ? new Date(s).toLocaleString('es-PE', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—',
-};
+  const modal = {
+    open(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('open');
+    },
+    close(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('open');
+    },
+    closeAll() {
+      document.querySelectorAll('.modal-backdrop.open').forEach(function (m) {
+        m.classList.remove('open');
+      });
+    }
+  };
 
-/* ── Run on DOM ready ── */
-document.addEventListener('DOMContentLoaded', () => {
-  enforcePageAccessByRole();
-  updateNav();
-});
+  const authApi = {
+    token() { return session.token(); },
+    email() { return session.email(); },
+    roles() { return session.roles(); },
+    hasRole(role) { return session.hasRole(role); },
+    isAdmin() { return session.isAdmin(); },
+    isClient() { return session.isClient(); },
+    isLoggedIn() { return session.isLoggedIn(); },
+    save(token, email) { session.save({ token: token, email: email }); },
+    clear() { session.clear(); },
+    requireLogin() {
+      if (!session.isLoggedIn()) {
+        window.location.href = config.loginPath;
+        return false;
+      }
+      return true;
+    },
+    requireAdmin() {
+      if (!session.isAdmin()) {
+        window.location.href = config.homePath;
+        return false;
+      }
+      return true;
+    },
+    requireClient() {
+      if (!session.isLoggedIn()) {
+        window.location.href = config.loginPath;
+        return false;
+      }
+      if (!session.isClient()) {
+        window.location.href = session.isAdmin() ? config.adminPath : config.homePath;
+        return false;
+      }
+      return true;
+    },
+    requireRole(roleName) {
+      if (!session.hasRole(roleName)) {
+        window.location.href = config.adminPath;
+        return false;
+      }
+      return true;
+    }
+  };
+
+  function parseLoginResponse(response) {
+    if (!response || typeof response !== 'object') return null;
+    return { token: response.token || null, email: response.email || null };
+  }
+
+  function boot() {
+    ensureCore();
+
+    window.API = {
+      BASE: config.apiBaseUrl,
+      request: http.request.bind(http),
+      get: http.get.bind(http),
+      post: http.post.bind(http),
+      put: http.put.bind(http),
+      patch: http.patch.bind(http),
+      delete: http.delete.bind(http)
+    };
+
+    window.Auth = authApi;
+    window.Toast = toast;
+    window.Modal = modal;
+    window.fmt = {
+      money: format.money,
+      date: format.date,
+      dt: format.datetime
+    };
+    window.parseLoginResponse = parseLoginResponse;
+    window.doLogout = doLogout;
+    window.updateNav = updateNav;
+
+    document.addEventListener('click', function (event) {
+      if (event.target.classList.contains('modal-backdrop')) modal.closeAll();
+      const closeBtn = event.target.closest('[data-close-modal]');
+      if (closeBtn) modal.close(closeBtn.getAttribute('data-close-modal'));
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      enforcePageAccessByRole();
+      enforceAdminSubmodulePermissions();
+      hideAdminOnlyLinksForVendor();
+      updateNav();
+      const navLogoutBtn = document.getElementById('nav-logout');
+      if (navLogoutBtn && !navLogoutBtn.getAttribute('onclick') && !navLogoutBtn.dataset.boundLogout) {
+        navLogoutBtn.dataset.boundLogout = '1';
+        navLogoutBtn.addEventListener('click', doLogout);
+      }
+
+    });
+  }
+
+  boot();
+})();
+
+
+

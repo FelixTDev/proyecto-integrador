@@ -33,7 +33,7 @@ public class Pago {
     @Column(name = "referencia_externa", length = 200)
     private String referenciaExterna;
 
-    @Column(nullable = false, length = 3)
+    @Column(nullable = false, length = 3, columnDefinition = "CHAR(3)")
     private String moneda = "PEN";
 
     @Column(name = "id_transaccion_externa", length = 120)

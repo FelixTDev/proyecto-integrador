@@ -1,336 +1,419 @@
-/* ═══════════════════════════════════════════════
-   PERFIL — Mi Cuenta (RF14/RF15/RF17/RF19/RF21)
-   ═══════════════════════════════════════════════ */
+const perfilState = {
+  zonas: [],
+  direcciones: [],
+  notificaciones: [],
+  reclamos: []
+};
 
-document.addEventListener('DOMContentLoaded', () => {
-  if (!Auth.requireClient()) return;
-  loadProfile();
-  loadHistorial();
-  loadDirecciones();
-  loadPuntos();
-  loadReclamos();
-  loadNotificaciones();
-
-  const hash = window.location.hash?.replace('#tab-','').replace('#','');
-  if (hash && document.getElementById('tab-' + hash)) {
-    const link = [...document.querySelectorAll('.p-nav-link')].find(l => l.textContent.toLowerCase().includes(hash.substring(0,4)));
-    if (link) switchTab(hash, link);
-  }
-});
-
-/* ─ Tab switching ─ */
-function switchTab(tab, el) {
-  document.querySelectorAll('.p-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.p-nav-link').forEach(l => l.classList.remove('active'));
-  const target = document.getElementById('tab-' + tab);
-  if (target) target.classList.add('active');
-  if (el) el.classList.add('active');
+function px(id) {
+  return document.getElementById(id);
 }
 
-/* ═══ Profile ═══ */
+function escapeHtml(v) {
+  return String(v || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function setTab(tab) {
+  document.querySelectorAll('.p-content').forEach((c) => c.classList.remove('active'));
+  document.querySelectorAll('#perfil-tabs-nav .p-nav-link[data-tab]').forEach((b) => b.classList.remove('active'));
+  px('tab-' + tab)?.classList.add('active');
+  document.querySelector('#perfil-tabs-nav .p-nav-link[data-tab="' + tab + '"]')?.classList.add('active');
+}
+
 async function loadProfile() {
   try {
     const data = await API.get('/api/auth/me');
-    const el = (id) => document.getElementById(id);
-    el('p-name').textContent = data.nombre || '—';
-    el('p-email').textContent = data.email || '—';
-    const initials = (data.nombre || 'CC').split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase();
-    el('p-avatar').textContent = initials;
-  } catch {}
-}
-
-/* ═══ Historial de Pedidos (RF14) ═══ */
-async function loadHistorial() {
-  const container = document.getElementById('historial-list');
-  try {
-    const pedidos = await API.get('/api/pedidos/mis-pedidos');
-    if (!pedidos || pedidos.length === 0) {
-      container.innerHTML = '<p class="text-secondary">No tienes pedidos aún.</p>';
-      return;
-    }
-    container.innerHTML = pedidos.map(p => `
-      <div class="card p-3 mb-3">
-        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
-          <div>
-            <strong>${p.codigoPedido || '#'+p.id}</strong>
-            <span class="badge ${estadoBadge(p.estado)} ms-2">${p.estado || '—'}</span>
-          </div>
-          <small class="text-secondary">${fmt.dt(p.fechaCreacion)}</small>
-        </div>
-        <p class="mb-1 mt-2 text-secondary small">${(p.items||[]).map(i => i.nombre).join(', ') || 'Ver detalles'}</p>
-        <div class="d-flex flex-wrap gap-2 mt-2">
-          <span class="fw-bold">${fmt.money(p.total)}</span>
-          ${(p.estado === 'Pendiente' || p.estado === 'En preparacion' || p.estado === 'Pago confirmado') ? `<a href="personalizar.html?pedidoId=${p.id}" class="btn btn-sm btn-outline-brand"><i class="bi bi-magic"></i> Personalizar</a>` : ''}
-          <button class="btn btn-sm btn-outline-brand ms-auto" onclick="verComprobante(${p.id})"><i class="bi bi-receipt"></i> Comprobante</button>
-          <button class="btn btn-sm btn-brand" onclick="reordenar(${p.id})"><i class="bi bi-arrow-repeat"></i> Reordenar</button>
-          <button class="btn btn-sm btn-outline-secondary" onclick="abrirChat(${p.id})"><i class="bi bi-chat-dots"></i> Chat</button>
-        </div>
-      </div>
-    `).join('');
-  } catch { container.innerHTML = '<p class="text-danger">Error al cargar historial.</p>'; }
+    px('p-name').textContent = data.nombre || '-';
+    px('p-email').textContent = data.email || '-';
+    const initials = (data.nombre || 'CC').split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+    px('p-avatar').textContent = initials;
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo cargar perfil.');
+  }
 }
 
 function estadoBadge(estado) {
-  const map = { 'Pendiente':'bg-warning text-dark','Pago confirmado':'bg-info','En preparacion':'bg-primary',
-    'Listo para entrega':'bg-success','En camino':'bg-info','Entregado':'bg-success',
-    'Cancelado':'bg-danger','Rechazado':'bg-danger' };
+  const map = {
+    Pendiente: 'bg-warning text-dark',
+    'Pago confirmado': 'bg-info',
+    'En preparacion': 'bg-primary',
+    'Listo para entrega': 'bg-success',
+    'En camino': 'bg-info',
+    Entregado: 'bg-success',
+    Cancelado: 'bg-danger',
+    Rechazado: 'bg-danger'
+  };
   return map[estado] || 'bg-secondary';
+}
+
+function reclamoBadge(estado) {
+  return { ABIERTO: 'bg-warning text-dark', EN_REVISION: 'bg-info', RESUELTO: 'bg-success', CERRADO: 'bg-secondary' }[estado] || 'bg-secondary';
+}
+
+async function loadHistorial() {
+  const root = px('historial-list');
+  try {
+    const pedidos = await API.get('/api/pedidos/mis-pedidos');
+    if (!pedidos.length) {
+      root.innerHTML = '<p class="text-secondary">No tienes pedidos aun.</p>';
+      return;
+    }
+
+    root.innerHTML = pedidos.map((p) => `
+      <div class="card p-3 mb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+          <div>
+            <strong>${escapeHtml(p.codigoPedido || '#' + p.pedidoId)}</strong>
+            <span class="badge ${estadoBadge(p.estado)} ms-2">${escapeHtml(p.estado || '-')}</span>
+          </div>
+          <small class="text-secondary">${fmt.dt(p.fechaCreacion)}</small>
+        </div>
+        <p class="mb-1 mt-2 text-secondary small">${(p.items || []).map((i) => escapeHtml(i.descripcion)).join(', ') || 'Ver detalles'}</p>
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          <span class="fw-bold">${fmt.money(p.total)}</span>
+          ${(p.estado === 'Pendiente' || p.estado === 'En preparacion' || p.estado === 'Pago confirmado') ? `<a href="personalizar.html?pedidoId=${p.pedidoId}" class="btn btn-sm btn-outline-brand"><i class="bi bi-magic"></i> Personalizar</a>` : ''}
+          <button class="btn btn-sm btn-outline-brand ms-auto" data-comprobante="${p.pedidoId}"><i class="bi bi-receipt"></i> Comprobante</button>
+          <button class="btn btn-sm btn-brand" data-reordenar="${p.pedidoId}"><i class="bi bi-arrow-repeat"></i> Reordenar</button>
+          <button class="btn btn-sm btn-outline-secondary" data-chat="${p.pedidoId}"><i class="bi bi-chat-dots"></i> Chat</button>
+        </div>
+      </div>`).join('');
+  } catch (error) {
+    root.innerHTML = '<p class="text-danger">Error al cargar historial.</p>';
+  }
 }
 
 async function verComprobante(pedidoId) {
   try {
-    const data = await API.get(`/api/pedidos/${pedidoId}/comprobante`);
-    let html = `<h4>Comprobante ${data.codigoPedido||'#'+data.pedidoId}</h4>
-      <p><strong>Cliente:</strong> ${data.nombreCliente||'—'}<br>
-      <strong>Fecha:</strong> ${fmt.dt(data.fechaCreacion)}<br>
-      <strong>Estado:</strong> ${data.estadoActual||'—'}</p>
-      <table class="table table-sm"><thead><tr><th>Producto</th><th>Cant.</th><th>P.U.</th><th>Sub</th></tr></thead><tbody>`;
-    (data.items||[]).forEach(i => {
-      html += `<tr><td>${i.nombre}</td><td>${i.cantidad}</td><td>${fmt.money(i.precioUnitario)}</td><td>${fmt.money(i.subtotalLinea)}</td></tr>`;
-    });
-    html += `</tbody></table>
-      <p class="text-end"><strong>Subtotal:</strong> ${fmt.money(data.subtotal)}<br>
-      <strong>Envío:</strong> ${fmt.money(data.costoEnvio)}<br>
-      <strong class="fs-5">Total: ${fmt.money(data.total)}</strong></p>`;
-    const w = window.open('','_blank','width=600,height=700');
-    w.document.write(`<html><head><title>Comprobante</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"></head><body class="p-4">${html}<button onclick="window.print()" class="btn btn-primary btn-sm mt-3">Imprimir</button></body></html>`);
-  } catch { Toast.err('Error al obtener comprobante'); }
+    const data = await API.get('/api/pedidos/' + pedidoId + '/comprobante');
+    const popup = window.open('', '_blank', 'width=800,height=760');
+    const rows = (data.items || []).map((i) => `
+      <tr>
+        <td>${escapeHtml(i.nombre || i.descripcion)}</td>
+        <td>${i.cantidad}</td>
+        <td>${fmt.money(i.precioUnitario)}</td>
+        <td>${fmt.money(i.subtotalLinea)}</td>
+      </tr>`).join('');
+
+    popup.document.write(`
+      <html><head><title>Comprobante ${escapeHtml(data.codigoPedido || '#' + data.pedidoId)}</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"></head>
+      <body class="p-4">
+      <h4>Comprobante ${escapeHtml(data.codigoPedido || '#' + data.pedidoId)}</h4>
+      <p><strong>Fecha:</strong> ${fmt.dt(data.fechaCreacion)}<br><strong>Estado:</strong> ${escapeHtml(data.estadoActual || '-')}</p>
+      <table class="table table-sm"><thead><tr><th>Producto</th><th>Cant.</th><th>P.U.</th><th>Sub</th></tr></thead><tbody>${rows}</tbody></table>
+      <p class="text-end"><strong>Subtotal:</strong> ${fmt.money(data.subtotal)}<br><strong>Envio:</strong> ${fmt.money(data.costoEnvio)}<br><strong class="fs-5">Total: ${fmt.money(data.total)}</strong></p>
+      <button id="btn-print-comprobante" class="btn btn-primary btn-sm">Imprimir</button>
+      </body></html>`);
+    popup.document.getElementById('btn-print-comprobante')?.addEventListener('click', () => popup.print());
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo abrir comprobante.');
+  }
 }
 
-async function reordenar(pedidoId) {
+async function reordenarPedido(pedidoId) {
   try {
-    const result = await API.post(`/api/pedidos/${pedidoId}/reordenar`, {});
-    Toast.ok('Productos agregados al carrito (' + (result.itemsAgregados||0) + ')');
-  } catch {}
+    const result = await API.post('/api/pedidos/' + pedidoId + '/reordenar', {});
+    Toast.ok('Productos agregados al carrito (' + (result.itemsAgregados || 0) + ').');
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo reordenar.');
+  }
 }
 
-function abrirChat(pedidoId) {
-  window.location.href = `/pages/cliente/chat.html?pedidoId=${pedidoId}`;
-}
-
-/* ═══ Direcciones (RF17) ═══ */
-let zonas = [];
 async function loadDirecciones() {
   try {
-    zonas = await API.get('/api/cliente/direcciones/zonas');
-  } catch { zonas = []; }
+    const [zonas, dirs] = await Promise.all([
+      API.get('/api/cliente/direcciones/zonas'),
+      API.get('/api/cliente/direcciones')
+    ]);
+    perfilState.zonas = zonas || [];
+    perfilState.direcciones = dirs || [];
+  } catch {
+    perfilState.zonas = [];
+    perfilState.direcciones = [];
+  }
   renderDirecciones();
 }
 
-async function renderDirecciones() {
-  const container = document.getElementById('dir-list');
-  try {
-    const dirs = await API.get('/api/cliente/direcciones');
-    if (!dirs || dirs.length === 0) {
-      container.innerHTML = '<p class="text-secondary">No tienes direcciones registradas.</p>';
-      return;
-    }
-    container.innerHTML = dirs.map(d => `
-      <div class="card p-3 mb-2 ${d.esPrincipal ? 'border-warning' : ''}">
-        <div class="d-flex justify-content-between align-items-start">
-          <div>
-            <strong>${d.etiqueta || 'Sin etiqueta'}</strong>
-            ${d.esPrincipal ? '<span class="badge bg-warning text-dark ms-2">Principal</span>' : ''}
-            ${!d.activo ? '<span class="badge bg-secondary ms-2">Inactiva</span>' : ''}
-          </div>
-          <div class="d-flex gap-1">
-            ${d.activo && !d.esPrincipal ? `<button class="btn btn-sm btn-outline-warning" onclick="marcarPrincipal(${d.id})" title="Hacer principal"><i class="bi bi-star"></i></button>` : ''}
-            <button class="btn btn-sm btn-outline-brand" onclick="editarDireccion(${d.id})" title="Editar"><i class="bi bi-pencil"></i></button>
-            ${d.activo ? `<button class="btn btn-sm btn-outline-danger" onclick="desactivarDireccion(${d.id})" title="Eliminar"><i class="bi bi-trash"></i></button>` : ''}
-          </div>
+function renderDirecciones() {
+  const root = px('dir-list');
+  if (!perfilState.direcciones.length) {
+    root.innerHTML = '<p class="text-secondary">No tienes direcciones registradas.</p>';
+    return;
+  }
+
+  root.innerHTML = perfilState.direcciones.map((d) => `
+    <div class="card p-3 mb-2 ${d.esPrincipal ? 'border-warning' : ''}">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <strong>${escapeHtml(d.etiqueta || 'Sin etiqueta')}</strong>
+          ${d.esPrincipal ? '<span class="badge bg-warning text-dark ms-2">Principal</span>' : ''}
+          ${!d.activo ? '<span class="badge bg-secondary ms-2">Inactiva</span>' : ''}
         </div>
-        <p class="text-secondary small mb-0 mt-1">${d.direccionCompleta} ${d.zonaNombre ? '('+d.zonaNombre+')' : ''}</p>
+        <div class="d-flex gap-1">
+          ${d.activo && !d.esPrincipal ? `<button class="btn btn-sm btn-outline-warning" data-principal="${d.id}" title="Hacer principal"><i class="bi bi-star"></i></button>` : ''}
+          <button class="btn btn-sm btn-outline-brand" data-edit-dir="${d.id}" title="Editar"><i class="bi bi-pencil"></i></button>
+          ${d.activo ? `<button class="btn btn-sm btn-outline-danger" data-del-dir="${d.id}" title="Eliminar"><i class="bi bi-trash"></i></button>` : ''}
+        </div>
       </div>
-    `).join('');
-  } catch { container.innerHTML = '<p class="text-danger">Error al cargar direcciones.</p>'; }
+      <p class="text-secondary small mb-0 mt-1">${escapeHtml(d.direccionCompleta)} ${d.zonaNombre ? '(' + escapeHtml(d.zonaNombre) + ')' : ''}</p>
+    </div>`).join('');
 }
 
 function openDireccionModal(dir = null) {
-  document.getElementById('dir-modal-title').textContent = dir ? 'Editar dirección' : 'Nueva dirección';
-  document.getElementById('dir-id').value = dir?.id || '';
-  document.getElementById('dir-etiqueta').value = dir?.etiqueta || '';
-  document.getElementById('dir-direccion').value = dir?.direccionCompleta || '';
-  document.getElementById('dir-ref').value = dir?.referencia || '';
-  document.getElementById('dir-dest').value = dir?.destinatarioNombre || '';
-  document.getElementById('dir-tel').value = dir?.destinatarioTelefono || '';
-  document.getElementById('dir-principal').checked = dir?.esPrincipal || false;
-
-  const sel = document.getElementById('dir-zona');
-  sel.innerHTML = '<option value="">Sin zona</option>' + zonas.map(z =>
-    `<option value="${z.id}" ${z.id === dir?.zonaId ? 'selected' : ''}>${z.nombreDistrito} - ${fmt.money(z.costoDelivery)}</option>`
-  ).join('');
+  px('dir-modal-title').textContent = dir ? 'Editar direccion' : 'Nueva direccion';
+  px('dir-id').value = dir?.id || '';
+  px('dir-etiqueta').value = dir?.etiqueta || '';
+  px('dir-direccion').value = dir?.direccionCompleta || '';
+  px('dir-ref').value = dir?.referencia || '';
+  px('dir-dest').value = dir?.destinatarioNombre || '';
+  px('dir-tel').value = dir?.destinatarioTelefono || '';
+  px('dir-principal').checked = !!dir?.esPrincipal;
+  px('dir-zona').innerHTML = '<option value="">Sin zona</option>' + perfilState.zonas.map((z) => `<option value="${z.id}" ${z.id === dir?.zonaId ? 'selected' : ''}>${escapeHtml(z.nombreDistrito)} - ${fmt.money(z.costoDelivery)}</option>`).join('');
   Modal.open('modal-dir');
 }
 
-async function editarDireccion(dirId) {
-  try {
-    const dirs = await API.get('/api/cliente/direcciones');
-    const dir = dirs.find(d => d.id === dirId);
-    if (dir) openDireccionModal(dir);
-  } catch {}
-}
-
 async function guardarDireccion() {
-  const id = document.getElementById('dir-id').value;
+  const id = px('dir-id').value;
   const body = {
-    etiqueta: document.getElementById('dir-etiqueta').value,
-    direccionCompleta: document.getElementById('dir-direccion').value,
-    referencia: document.getElementById('dir-ref').value,
-    destinatarioNombre: document.getElementById('dir-dest').value,
-    destinatarioTelefono: document.getElementById('dir-tel').value,
-    zonaId: document.getElementById('dir-zona').value || null,
-    esPrincipal: document.getElementById('dir-principal').checked
+    etiqueta: px('dir-etiqueta').value,
+    direccionCompleta: px('dir-direccion').value,
+    referencia: px('dir-ref').value,
+    destinatarioNombre: px('dir-dest').value,
+    destinatarioTelefono: px('dir-tel').value,
+    zonaId: px('dir-zona').value || null,
+    esPrincipal: px('dir-principal').checked
   };
+
   try {
-    if (id) {
-      await API.put(`/api/cliente/direcciones/${id}`, body);
-    } else {
-      await API.post('/api/cliente/direcciones', body);
-    }
+    if (id) await API.put('/api/cliente/direcciones/' + id, body);
+    else await API.post('/api/cliente/direcciones', body);
+    Toast.ok('Direccion guardada.');
     Modal.close('modal-dir');
-    Toast.ok('Dirección guardada');
-    renderDirecciones();
-  } catch {}
+    await loadDirecciones();
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo guardar la direccion.');
+  }
 }
 
 async function desactivarDireccion(dirId) {
-  if (!confirm('¿Eliminar esta dirección?')) return;
   try {
-    await API.delete(`/api/cliente/direcciones/${dirId}`);
-    Toast.ok('Dirección eliminada');
-    renderDirecciones();
-  } catch {}
+    await API.delete('/api/cliente/direcciones/' + dirId);
+    Toast.ok('Direccion eliminada.');
+    await loadDirecciones();
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo eliminar direccion.');
+  }
 }
 
 async function marcarPrincipal(dirId) {
   try {
-    await API.patch(`/api/cliente/direcciones/${dirId}/principal`);
-    Toast.ok('Dirección marcada como principal');
-    renderDirecciones();
-  } catch {}
+    await API.patch('/api/cliente/direcciones/' + dirId + '/principal');
+    Toast.ok('Direccion marcada como principal.');
+    await loadDirecciones();
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo actualizar direccion principal.');
+  }
 }
 
-/* ═══ Puntos de Fidelidad (RF19) ═══ */
 async function loadPuntos() {
   try {
     const data = await API.get('/api/cliente/puntos');
-    document.getElementById('puntos-saldo').textContent = data.saldo || 0;
-    document.getElementById('p-puntos').innerHTML = `<i class="bi bi-star-fill me-1"></i>${data.saldo || 0} Puntos`;
+    px('puntos-saldo').textContent = data.saldo || 0;
+    px('p-puntos').innerHTML = `<i class="bi bi-star-fill me-1"></i>${data.saldo || 0} Puntos`;
 
-    const container = document.getElementById('puntos-list');
-    if (!data.movimientos || data.movimientos.length === 0) {
-      container.innerHTML = '<p class="text-secondary">Sin movimientos aún.</p>';
+    const root = px('puntos-list');
+    if (!data.movimientos || !data.movimientos.length) {
+      root.innerHTML = '<p class="text-secondary">Sin movimientos aun.</p>';
       return;
     }
-    container.innerHTML = data.movimientos.map(m => `
+
+    root.innerHTML = data.movimientos.map((m) => `
       <div class="card p-3 mb-2">
         <div class="d-flex justify-content-between">
           <div>
-            <span class="badge ${m.tipo === 'GANADO' ? 'bg-success' : m.tipo === 'CANJEADO' ? 'bg-warning text-dark' : 'bg-secondary'}">${m.tipo}</span>
-            <span class="ms-2">${m.descripcion || '—'}</span>
+            <span class="badge ${m.tipo === 'GANADO' ? 'bg-success' : m.tipo === 'CANJEADO' ? 'bg-warning text-dark' : 'bg-secondary'}">${escapeHtml(m.tipo)}</span>
+            <span class="ms-2">${escapeHtml(m.descripcion || '-')}</span>
           </div>
           <div class="text-end">
             <strong class="${m.puntos > 0 ? 'text-success' : 'text-danger'}">${m.puntos > 0 ? '+' : ''}${m.puntos}</strong>
             <small class="d-block text-secondary">${fmt.dt(m.fecha)}</small>
           </div>
         </div>
-      </div>
-    `).join('');
-  } catch {
-    document.getElementById('puntos-saldo').textContent = '—';
-    document.getElementById('puntos-list').innerHTML = '<p class="text-secondary">No se pudo cargar los puntos.</p>';
+      </div>`).join('');
+  } catch (error) {
+    px('puntos-saldo').textContent = '-';
+    px('puntos-list').innerHTML = '<p class="text-secondary">No se pudo cargar los puntos.</p>';
   }
-}
-
-/* ═══ Reclamos (RF15) ═══ */
-function toggleReclamoForm() {
-  const card = document.getElementById('reclamo-form-card');
-  card.style.display = card.style.display === 'none' ? 'block' : 'none';
-  if (card.style.display === 'block') loadPedidosForReclamo();
 }
 
 async function loadPedidosForReclamo() {
   try {
     const pedidos = await API.get('/api/pedidos/mis-pedidos');
-    const sel = document.getElementById('reclamo-pedido');
-    sel.innerHTML = pedidos.map(p => `<option value="${p.id}">${p.codigoPedido || '#'+p.id} — ${fmt.dt(p.fechaCreacion)}</option>`).join('');
-  } catch {}
+    px('reclamo-pedido').innerHTML = pedidos.map((p) => `<option value="${p.pedidoId}">${escapeHtml(p.codigoPedido || '#' + p.pedidoId)} - ${fmt.dt(p.fechaCreacion)}</option>`).join('');
+  } catch {
+    px('reclamo-pedido').innerHTML = '<option value="">Sin pedidos disponibles</option>';
+  }
 }
 
 async function enviarReclamo() {
+  const pedidoId = Number(px('reclamo-pedido').value);
   const body = {
-    pedidoId: parseInt(document.getElementById('reclamo-pedido').value),
-    tipo: document.getElementById('reclamo-tipo').value,
-    descripcion: document.getElementById('reclamo-desc').value
+    pedidoId,
+    tipo: px('reclamo-tipo').value,
+    descripcion: px('reclamo-desc').value
   };
   try {
     await API.post('/api/cliente/reclamos', body);
-    Toast.ok('Reclamo registrado exitosamente');
-    document.getElementById('reclamo-form').reset();
-    document.getElementById('reclamo-form-card').style.display = 'none';
-    loadReclamos();
-  } catch {}
+    Toast.ok('Reclamo registrado exitosamente.');
+    px('reclamo-form').reset();
+    px('reclamo-form-card').style.display = 'none';
+    await loadReclamos();
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo registrar reclamo.');
+  }
 }
 
 async function loadReclamos() {
-  const container = document.getElementById('reclamos-list');
+  const root = px('reclamos-list');
   try {
-    const reclamos = await API.get('/api/cliente/reclamos');
-    if (!reclamos || reclamos.length === 0) {
-      container.innerHTML = '<p class="text-secondary">No tienes reclamos registrados.</p>';
+    perfilState.reclamos = await API.get('/api/cliente/reclamos');
+    if (!perfilState.reclamos.length) {
+      root.innerHTML = '<p class="text-secondary">No tienes reclamos registrados.</p>';
       return;
     }
-    container.innerHTML = reclamos.map(r => `
+
+    root.innerHTML = perfilState.reclamos.map((r) => `
       <div class="card p-3 mb-2">
         <div class="d-flex justify-content-between align-items-start">
           <div>
             <strong>Reclamo #${r.id}</strong>
-            <span class="badge ${reclamoBadge(r.estado)} ms-2">${r.estado}</span>
-            <span class="badge bg-secondary ms-1">${r.tipo}</span>
+            <span class="badge ${reclamoBadge(r.estado)} ms-2">${escapeHtml(r.estado)}</span>
+            <span class="badge bg-secondary ms-1">${escapeHtml(r.tipo)}</span>
           </div>
           <small class="text-secondary">${fmt.dt(r.fechaCreacion)}</small>
         </div>
-        <p class="text-secondary small mb-1 mt-2">${r.descripcion}</p>
-        ${r.detalleResolucion ? `<p class="small mb-0"><strong>Resolución:</strong> ${r.detalleResolucion}</p>` : ''}
+        <p class="text-secondary small mb-1 mt-2">${escapeHtml(r.descripcion)}</p>
+        ${r.detalleResolucion ? `<p class="small mb-0"><strong>Resolucion:</strong> ${escapeHtml(r.detalleResolucion)}</p>` : ''}
         ${r.montoReembolso > 0 ? `<p class="small text-success mb-0"><strong>Reembolso:</strong> ${fmt.money(r.montoReembolso)}</p>` : ''}
-      </div>
-    `).join('');
-  } catch { container.innerHTML = '<p class="text-danger">Error al cargar reclamos.</p>'; }
+      </div>`).join('');
+  } catch {
+    root.innerHTML = '<p class="text-danger">Error al cargar reclamos.</p>';
+  }
 }
 
-function reclamoBadge(estado) {
-  return { ABIERTO:'bg-warning text-dark', EN_REVISION:'bg-info', RESUELTO:'bg-success', CERRADO:'bg-secondary' }[estado] || 'bg-secondary';
-}
-
-/* ═══ Notificaciones (RF21) ═══ */
 async function loadNotificaciones() {
-  const container = document.getElementById('notif-list');
+  const root = px('notif-list');
   try {
-    const notifs = await API.get('/api/cliente/notificaciones');
-    if (!notifs || notifs.length === 0) {
-      container.innerHTML = '<p class="text-secondary">Sin notificaciones.</p>';
+    perfilState.notificaciones = await API.get('/api/cliente/notificaciones');
+    if (!perfilState.notificaciones.length) {
+      root.innerHTML = '<p class="text-secondary">Sin notificaciones.</p>';
       return;
     }
-    container.innerHTML = notifs.map(n => `
-      <div class="card p-3 mb-2 ${n.leida ? 'opacity-75' : ''}" style="cursor:pointer" onclick="marcarNotifLeida(${n.id}, this)">
+
+    root.innerHTML = perfilState.notificaciones.map((n) => `
+      <button type="button" class="card p-3 mb-2 w-100 text-start ${n.leida ? 'opacity-75' : ''}" data-notif="${n.id}">
         <div class="d-flex justify-content-between align-items-start">
           <div>
             ${!n.leida ? '<i class="bi bi-circle-fill text-warning me-2" style="font-size:0.5rem"></i>' : ''}
-            <strong>${n.asunto || 'Notificación'}</strong>
+            <strong>${escapeHtml(n.asunto || 'Notificacion')}</strong>
           </div>
           <small class="text-secondary">${fmt.dt(n.fechaEnvio)}</small>
         </div>
-        <p class="text-secondary small mb-0 mt-1">${n.mensaje}</p>
-      </div>
-    `).join('');
-  } catch { container.innerHTML = '<p class="text-danger">Error al cargar notificaciones.</p>'; }
+        <p class="text-secondary small mb-0 mt-1">${escapeHtml(n.mensaje)}</p>
+      </button>`).join('');
+  } catch {
+    root.innerHTML = '<p class="text-danger">Error al cargar notificaciones.</p>';
+  }
 }
 
-async function marcarNotifLeida(notifId, el) {
+async function marcarNotifLeida(notifId) {
   try {
-    await API.patch(`/api/cliente/notificaciones/${notifId}/leida`);
-    el.classList.add('opacity-75');
-    const dot = el.querySelector('.bi-circle-fill');
-    if (dot) dot.remove();
-  } catch {}
+    await API.patch('/api/cliente/notificaciones/' + notifId + '/leida');
+    await loadNotificaciones();
+  } catch (error) {
+    Toast.err(error.message || 'No se pudo marcar notificacion.');
+  }
 }
+
+function bindEvents() {
+  document.getElementById('perfil-tabs-nav').addEventListener('click', (event) => {
+    const btn = event.target.closest('[data-tab]');
+    if (!btn) return;
+    const tab = btn.getAttribute('data-tab');
+    setTab(tab);
+    window.location.hash = 'tab-' + tab;
+  });
+
+  px('perfil-logout').addEventListener('click', doLogout);
+  px('btn-open-direccion').addEventListener('click', () => openDireccionModal());
+  px('btn-save-dir').addEventListener('click', guardarDireccion);
+
+  px('historial-list').addEventListener('click', (event) => {
+    const cb = event.target.closest('[data-comprobante]');
+    if (cb) return verComprobante(Number(cb.getAttribute('data-comprobante')));
+    const reo = event.target.closest('[data-reordenar]');
+    if (reo) return reordenarPedido(Number(reo.getAttribute('data-reordenar')));
+    const chat = event.target.closest('[data-chat]');
+    if (chat) window.location.href = '/pages/cliente/chat.html?pedidoId=' + Number(chat.getAttribute('data-chat'));
+  });
+
+  px('dir-list').addEventListener('click', (event) => {
+    const edit = event.target.closest('[data-edit-dir]');
+    if (edit) {
+      const id = Number(edit.getAttribute('data-edit-dir'));
+      const dir = perfilState.direcciones.find((d) => d.id === id);
+      if (dir) openDireccionModal(dir);
+      return;
+    }
+
+    const del = event.target.closest('[data-del-dir]');
+    if (del) {
+      desactivarDireccion(Number(del.getAttribute('data-del-dir')));
+      return;
+    }
+
+    const pri = event.target.closest('[data-principal]');
+    if (pri) {
+      marcarPrincipal(Number(pri.getAttribute('data-principal')));
+    }
+  });
+
+  px('btn-open-reclamo').addEventListener('click', async () => {
+    const card = px('reclamo-form-card');
+    const show = card.style.display === 'none';
+    card.style.display = show ? 'block' : 'none';
+    if (show) await loadPedidosForReclamo();
+  });
+
+  px('reclamo-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    enviarReclamo();
+  });
+
+  px('notif-list').addEventListener('click', (event) => {
+    const card = event.target.closest('[data-notif]');
+    if (!card) return;
+    marcarNotifLeida(Number(card.getAttribute('data-notif')));
+  });
+}
+
+async function initPerfil() {
+  if (!Auth.requireClient()) return;
+  bindEvents();
+
+  await Promise.all([
+    loadProfile(),
+    loadHistorial(),
+    loadDirecciones(),
+    loadPuntos(),
+    loadReclamos(),
+    loadNotificaciones()
+  ]);
+
+  const hashTab = (window.location.hash || '').replace('#tab-', '').trim();
+  if (hashTab && px('tab-' + hashTab)) {
+    setTab(hashTab);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initPerfil);

@@ -356,3 +356,11 @@ input, select, textarea { font-family: inherit; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .page-title { font-size: 2rem; }
 }
+.btn-hero-scale {
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.btn-hero-scale:hover {
+  transform: scale(1.05);
+}

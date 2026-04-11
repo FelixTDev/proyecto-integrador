@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Productos — Admin Casa Chantilly</title>
+  <title>Productos - Admin Casa Chantilly</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
   <link rel="stylesheet" href="../../css/variables.css"/>
@@ -20,8 +20,8 @@
     </button>
     <div class="collapse navbar-collapse" id="adminTopNav">
       <div class="navbar-nav ms-auto align-items-lg-center gap-2 pt-3 pt-lg-0">
-        <span class="small text-white-50">Admin: <strong id="nav-user" class="text-white"></strong></span>
-        <button id="nav-logout" class="btn btn-sm btn-soft" onclick="doLogout()"><i class="bi bi-box-arrow-right"></i> Salir</button>
+        <span class="small text-white-50">Usuario: <strong id="nav-user" class="text-white"></strong></span>
+        <button id="nav-logout" class="btn btn-sm btn-soft" ><i class="bi bi-box-arrow-right"></i> Salir</button>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
 <div class="layout-admin">
   <aside class="sidebar">
     <div class="sidebar-section">
-      <span class="sidebar-label">Catálogo</span>
+      <span class="sidebar-label">Catalogo</span>
       <a href="dashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a>
       <a href="productos.html" class="sidebar-link active"><i class="bi bi-box-seam"></i> Productos</a>
       <a href="inventario.html" class="sidebar-link"><i class="bi bi-archive"></i> Inventario</a>
@@ -43,7 +43,7 @@
     <div class="sidebar-section">
       <span class="sidebar-label">Reportes</span>
       <a href="reportes.html" class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Reportes ventas</a>
-      <a href="analisis.html" class="sidebar-link"><i class="bi bi-graph-up"></i> Análisis</a>
+      <a href="analisis.html" class="sidebar-link"><i class="bi bi-graph-up"></i> Analisis</a>
     </div>
     <div class="sidebar-section">
       <span class="sidebar-label">Config</span>
@@ -55,22 +55,31 @@
 
   <main class="admin-main">
     <div class="page-header">
-      <h1 class="page-title mb-1"><i class="bi bi-box-seam me-2"></i>Gestión de productos</h1>
-      <p class="page-sub mb-0">Catálogo maestro con acciones de creación, edición y activación.</p>
+      <h1 class="page-title mb-1"><i class="bi bi-box-seam me-2"></i>Gestion de productos</h1>
+      <p class="page-sub mb-0">Alta, edicion, disponibilidad e inventario base de productos y variantes.</p>
     </div>
 
     <div class="card p-3 p-lg-4">
       <div class="admin-toolbar">
         <div class="actions">
-          <button class="btn btn-primary" onclick="openForm()"><i class="bi bi-plus-lg"></i> Nuevo producto</button>
-          <button class="btn btn-outline" onclick="Modal.open('modal-custom')"><i class="bi bi-magic"></i> Personalizar especial</button>
+          <button class="btn btn-primary" id="btn-open-product"><i class="bi bi-plus-lg"></i> Nuevo producto</button>
         </div>
         <div id="loading" class="text-danger fs-4" style="display:none"><i class="bi bi-arrow-repeat spin"></i></div>
       </div>
 
       <div class="table-wrap p-2">
         <table class="table align-middle" id="table-prods">
-          <thead><tr><th>ID</th><th>Producto</th><th>Categoría</th><th>Precio Base</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Producto</th>
+              <th>Categoria</th>
+              <th>Precio base</th>
+              <th>Disponibilidad</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
           <tbody id="tbody-prods"></tbody>
         </table>
       </div>
@@ -80,163 +89,42 @@
 </div>
 
 <div class="modal-backdrop" id="modal-form">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="modal-header">
-      <h3 class="modal-title" id="md-title">Nuevo Producto</h3>
-      <button class="modal-close" onclick="Modal.close('modal-form')"><i class="bi bi-x-lg"></i></button>
+      <h3 class="modal-title" id="md-title">Nuevo producto</h3>
+      <button class="modal-close" data-close-modal="modal-form"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="modal-body">
-      <form id="prod-form" class="field admin-form-gap" onsubmit="saveProduct(event)">
+      <form id="prod-form" class="field admin-form-gap">
         <input type="hidden" id="f-id">
         <div class="field"><label class="label">Nombre</label><input type="text" class="form-control" id="f-nombre" required></div>
-        <div class="field"><label class="label">Descripción</label><textarea class="form-control" id="f-desc" rows="3"></textarea></div>
+        <div class="field"><label class="label">Descripcion</label><textarea class="form-control" id="f-desc" rows="3"></textarea></div>
         <div class="row g-3">
-          <div class="col-md-6 field"><label class="label">Categoría</label><select class="form-select" id="f-cat" required></select></div>
-          <div class="col-md-6 field"><label class="label">URL Imagen Portada</label><input type="url" class="form-control" id="f-img"></div>
+          <div class="col-md-6 field"><label class="label">Categoria</label><select class="form-select" id="f-cat" required></select></div>
+          <div class="col-md-6 field"><label class="label">URL imagen</label><input type="url" class="form-control" id="f-img"></div>
         </div>
-        <button type="submit" class="btn btn-primary w-100 mt-2" id="v-btn">Guardar información</button>
+
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <h4 class="h6 mb-0 text-brand-strong">Variantes</h4>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-add-variant"><i class="bi bi-plus-lg"></i> Agregar variante</button>
+        </div>
+        <div id="variant-list" class="d-grid gap-2"></div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-2" id="v-btn">Guardar producto</button>
       </form>
     </div>
   </div>
 </div>
 
-<div class="modal-backdrop" id="modal-custom">
-  <div class="modal">
-    <div class="modal-header">
-      <h3 class="modal-title">Solicitar pastel personalizado</h3>
-      <button class="modal-close" onclick="Modal.close('modal-custom')"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div class="modal-body">
-      <div class="field admin-form-gap">
-        <div class="field"><label class="label">Texto en el pastel</label><input type="text" class="form-control" placeholder="Feliz Cumpleaños María"></div>
-        <div class="row g-3">
-          <div class="col-md-6 field"><label class="label">Color base</label><input type="color" class="form-control form-control-color w-100" value="#FFFFFF"></div>
-          <div class="col-md-6 field"><label class="label">Imagen de referencia</label><input type="file" class="form-control"></div>
-        </div>
-        <div class="field"><label class="label">Notas adicionales / alergias</label><textarea class="form-control" rows="3" placeholder="Sin maní por favor..."></textarea></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="Modal.close('modal-custom')">Cerrar</button>
-      <button class="btn btn-primary" onclick="Toast.ok('Cotización enviada'); Modal.close('modal-custom')"><i class="bi bi-send"></i> Enviar cotización</button>
-    </div>
-  </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/core/config.js"></script>
+<script src="../../js/core/storage.js"></script>
+<script src="../../js/auth/session.js"></script>
+<script src="../../js/components/toast.js"></script>
+<script src="../../js/services/http.js"></script>
+<script src="../../js/utils/format.js"></script>
 <script src="../../js/app.js"></script>
-<script>
-  Auth.requireAdmin();
-  let state = { page: 0, size: 10, totalPages: 0 };
-  let allCategorias = [];
-
-  async function loadCategoriasAdmin() {
-    try {
-      allCategorias = await API.get('/api/catalogo/categorias');
-      const sel = document.getElementById('f-cat');
-      sel.innerHTML = allCategorias.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
-    } catch {}
-  }
-
-  async function loadData() {
-    const tb = document.getElementById('tbody-prods');
-    document.getElementById('loading').style.display = 'block';
-    tb.innerHTML = '';
-    try {
-      const j = await API.get(`/api/admin/productos?page=${state.page}&size=${state.size}`);
-      state.totalPages = j.totalPages;
-      if (!j.content || j.content.length === 0) { tb.innerHTML = '<tr><td colspan="6" class="text-center text-secondary py-4">No hay productos.</td></tr>'; }
-      else {
-        tb.innerHTML = j.content.map(p => `
-          <tr>
-            <td class="text-secondary">#${p.id}</td>
-            <td>
-              <div class="d-flex align-items-center gap-2">
-                <img src="${p.urlFotoPortada||'https://via.placeholder.com/40'}" class="prod-thumb">
-                <strong class="text-brand-strong">${p.nombre}</strong>
-              </div>
-            </td>
-            <td>${p.nombreCategoria || '—'}</td>
-            <td class="price-strong">${fmt.money(p.precioMinimo)}</td>
-            <td><button class="badge badge-toggle ${p.activo?'badge-green':'badge-red'}" onclick="toggle(${p.id}, ${p.activo})">${p.activo?'Activo':'Inactivo'}</button></td>
-            <td>
-              <button class="btn btn-ghost btn-sm" onclick="editForm(${p.id})" title="Editar"><i class="bi bi-pencil"></i></button>
-            </td>
-          </tr>
-        `).join('');
-      }
-      renderPag();
-    } catch { tb.innerHTML = '<tr><td colspan="6" class="text-center text-danger py-4">Error al cargar.</td></tr>'; }
-    document.getElementById('loading').style.display = 'none';
-  }
-
-  function renderPag() {
-    const c = document.getElementById('pag');
-    if (state.totalPages <= 1) { c.innerHTML=''; return; }
-    let h = `<button class="btn btn-outline btn-sm" ${state.page===0?'disabled':''} onclick="setP(${state.page-1})"><i class="bi bi-chevron-left"></i></button>`;
-    for(let i=0; i<state.totalPages; i++) {
-       h += `<button class="btn ${i===state.page?'btn-primary':'btn-outline'} btn-sm" onclick="setP(${i})">${i+1}</button>`;
-    }
-    h += `<button class="btn btn-outline btn-sm" ${state.page===state.totalPages-1?'disabled':''} onclick="setP(${state.page+1})"><i class="bi bi-chevron-right"></i></button>`;
-    c.innerHTML = h;
-  }
-  function setP(p) { state.page = p; loadData(); }
-
-  function openForm() {
-    document.getElementById('prod-form').reset();
-    document.getElementById('f-id').value = '';
-    document.getElementById('md-title').textContent = 'Nuevo Producto';
-    Modal.open('modal-form');
-  }
-
-  async function editForm(id) {
-    Toast.info('Cargando detalle...');
-    try {
-      const p = await API.get(`/api/catalogo/${id}`);
-      document.getElementById('f-id').value = p.id;
-      document.getElementById('f-nombre').value = p.nombre;
-      document.getElementById('f-desc').value = p.descripcion || '';
-      document.getElementById('f-cat').value = 1;
-      document.getElementById('f-img').value = p.urlFotoPortada || '';
-      document.getElementById('md-title').textContent = 'Editar Producto #' + id;
-      Modal.open('modal-form');
-    } catch { Toast.err('Error cargando'); }
-  }
-
-  async function saveProduct(e) {
-    e.preventDefault();
-    const id = document.getElementById('f-id').value;
-    const body = {
-      nombre: document.getElementById('f-nombre').value,
-      descripcion: document.getElementById('f-desc').value,
-      categoriaId: parseInt(document.getElementById('f-cat').value),
-      urlFotoPortada: document.getElementById('f-img').value
-    };
-    try {
-      const btn = document.getElementById('v-btn'); btn.disabled=true;
-      if (id) await API.put(`/api/admin/productos/${id}`, body);
-      else await API.post('/api/admin/productos', body);
-      Toast.ok(id ? 'Actualizado' : 'Creado');
-      Modal.close('modal-form');
-      loadData();
-      btn.disabled=false;
-    } catch(err) { Toast.err('Error: ' + err.message); document.getElementById('v-btn').disabled=false; }
-  }
-
-  async function toggle(id, isActivo) {
-    const accion = isActivo ? 'desactivar' : 'activar';
-    if (!confirm(`¿Estás seguro que deseas ${accion} este producto?`)) return;
-    try {
-      await API.patch(`/api/admin/productos/${id}/toggle`);
-      Toast.ok('Estado cambiado correctamente');
-      loadData();
-    } catch { Toast.err('Error al cambiar estado'); }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    loadCategoriasAdmin();
-    loadData();
-  });
-</script>
+<script src="../../js/admin/productos.js"></script>
 </body>
 </html>
+

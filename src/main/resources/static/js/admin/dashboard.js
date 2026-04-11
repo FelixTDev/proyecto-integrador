@@ -8,7 +8,7 @@ const estadoBadgeClass = {
   5: 'badge-yellow',
   6: 'badge-green',
   7: 'badge-red',
-  8: 'badge-red',
+  8: 'badge-red'
 };
 
 function toDate(value) {
@@ -37,7 +37,7 @@ function deltaClass(value) {
 }
 
 function escapeHtml(txt) {
-  return String(txt || '').replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+  return String(txt || '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 }
 
 async function cargarTodosProductos() {
@@ -47,7 +47,7 @@ async function cargarTodosProductos() {
   const acumulado = [];
 
   while (page < totalPages) {
-    const data = await API.get(`/api/admin/productos?page=${page}&size=${size}`);
+    const data = await API.get('/api/admin/productos?page=' + page + '&size=' + size);
     const content = Array.isArray(data.content) ? data.content : [];
     acumulado.push(...content);
     totalPages = Number(data.totalPages || 1);
@@ -57,18 +57,15 @@ async function cargarTodosProductos() {
   return acumulado;
 }
 
-function renderKpis(pedidos, productos) {
+function renderKpis(pedidos, productos, chatNoLeidos) {
   const now = new Date();
   const ayer = new Date(now);
   ayer.setDate(now.getDate() - 1);
-  const hace7Dias = new Date(now);
-  hace7Dias.setDate(now.getDate() - 7);
 
   let pedidosHoy = 0;
   let pedidosAyer = 0;
   let ingresosHoy = 0;
   let ingresosAyer = 0;
-  let completados7d = 0;
 
   for (const p of pedidos) {
     const fecha = toDate(p.fechaCreacion);
@@ -81,34 +78,22 @@ function renderKpis(pedidos, productos) {
       pedidosAyer += 1;
       ingresosAyer += Number(p.total || 0);
     }
-
-    if (fecha >= hace7Dias && p.estadoId === 6) {
-      completados7d += 1;
-    }
   }
 
   const stockCritico = productos.filter((x) => !x.hayStock).length;
-
   const pedidosDelta = pedidosHoy - pedidosAyer;
   const ingresosPct = porcentajeVariacion(ingresosHoy, ingresosAyer);
 
-  const kpiPedidosHoy = document.getElementById('kpi-pedidos-hoy');
-  const kpiPedidosHoyDelta = document.getElementById('kpi-pedidos-hoy-delta');
-  const kpiIngresosHoy = document.getElementById('kpi-ingresos-hoy');
-  const kpiIngresosHoyDelta = document.getElementById('kpi-ingresos-hoy-delta');
-  const kpiStockCritico = document.getElementById('kpi-stock-critico');
-  const kpiCompletados7d = document.getElementById('kpi-completados-7d');
+  document.getElementById('kpi-pedidos-hoy').textContent = String(pedidosHoy);
+  document.getElementById('kpi-pedidos-hoy-delta').className = deltaClass(pedidosDelta);
+  document.getElementById('kpi-pedidos-hoy-delta').textContent = `${pedidosDelta >= 0 ? '+' : ''}${pedidosDelta} vs ayer`;
 
-  kpiPedidosHoy.textContent = String(pedidosHoy);
-  kpiPedidosHoyDelta.className = deltaClass(pedidosDelta);
-  kpiPedidosHoyDelta.textContent = `${pedidosDelta >= 0 ? '+' : ''}${pedidosDelta} vs ayer`;
+  document.getElementById('kpi-ingresos-hoy').textContent = money(ingresosHoy);
+  document.getElementById('kpi-ingresos-hoy-delta').className = deltaClass(ingresosPct);
+  document.getElementById('kpi-ingresos-hoy-delta').textContent = `${ingresosPct >= 0 ? '+' : ''}${ingresosPct.toFixed(1)}% vs ayer`;
 
-  kpiIngresosHoy.textContent = money(ingresosHoy);
-  kpiIngresosHoyDelta.className = deltaClass(ingresosPct);
-  kpiIngresosHoyDelta.textContent = `${ingresosPct >= 0 ? '+' : ''}${ingresosPct.toFixed(1)}% vs ayer`;
-
-  kpiStockCritico.textContent = String(stockCritico);
-  kpiCompletados7d.textContent = String(completados7d);
+  document.getElementById('kpi-stock-critico').textContent = String(stockCritico);
+  document.getElementById('kpi-chat-no-leidos').textContent = String(chatNoLeidos || 0);
 }
 
 function renderUrgentes(pedidos) {
@@ -140,7 +125,7 @@ function renderStockAlertas(productos) {
   const criticos = productos.filter((p) => !p.hayStock).slice(0, 6);
 
   if (!criticos.length) {
-    root.innerHTML = '<div class="admin-note">No hay alertas de stock crítico.</div>';
+    root.innerHTML = '<div class="admin-note">No hay alertas de stock critico.</div>';
     return;
   }
 
@@ -148,34 +133,70 @@ function renderStockAlertas(productos) {
     <div class="admin-note d-flex justify-content-between gap-2">
       <div>
         <strong>${escapeHtml(p.nombre)}</strong>
-        <div class="small">${escapeHtml(p.nombreCategoria || 'Sin categoría')}</div>
+        <div class="small">${escapeHtml(p.nombreCategoria || 'Sin categoria')}</div>
       </div>
       <div class="text-end fw-bold text-danger">Sin stock</div>
+    </div>`).join('');
+}
+
+async function renderPickupAlertas(pedidos) {
+  const root = document.getElementById('dash-pickup-alerts');
+  const activos = pedidos
+    .filter((p) => ![6, 7, 8].includes(Number(p.estadoId)))
+    .sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion))
+    .slice(0, 8);
+
+  if (!activos.length) {
+    root.innerHTML = '<div class="admin-note">No hay pedidos activos para evaluar recogida.</div>';
+    return;
+  }
+
+  const comprobantes = await Promise.all(activos.map((p) => API.get('/api/pedidos/' + p.id + '/comprobante').catch(() => null)));
+  const pickups = comprobantes.filter((c) => c && c.recojoEnTienda === true).slice(0, 5);
+
+  if (!pickups.length) {
+    root.innerHTML = '<div class="admin-note">No hay recogidas proximas en pedidos activos.</div>';
+    return;
+  }
+
+  root.innerHTML = pickups.map((c) => `
+    <div class="admin-note d-flex justify-content-between gap-2">
+      <div>
+        <strong>${escapeHtml(c.codigoPedido || '#' + c.pedidoId)}</strong>
+        <div class="small">${fmt.dt(c.fechaCreacion)}</div>
+      </div>
+      <div class="text-end fw-semibold">Recojo en tienda</div>
     </div>`).join('');
 }
 
 async function initDashboard() {
   document.getElementById('dash-urgentes-body').innerHTML = '<tr><td colspan="3" class="text-center py-4"><div class="spinner-border text-danger spinner-border-sm" role="status"></div> Cargando...</td></tr>';
   document.getElementById('dash-stock-alerts').innerHTML = '<div class="text-center py-3"><div class="spinner-border text-danger spinner-border-sm" role="status"></div></div>';
+  document.getElementById('dash-pickup-alerts').innerHTML = '<div class="text-center py-3"><div class="spinner-border text-danger spinner-border-sm" role="status"></div></div>';
+
   try {
-    const [pedidosRes, productos] = await Promise.all([
+    const [pedidosRes, productos, chat] = await Promise.all([
       API.get('/api/admin/pedidos'),
       cargarTodosProductos(),
+      API.get('/api/chat/no-leidos').catch(() => ({ noLeidos: 0 }))
     ]);
 
     const pedidos = Array.isArray(pedidosRes) ? pedidosRes : [];
+    const noLeidos = Number(chat.noLeidos || 0);
 
-    renderKpis(pedidos, productos);
+    renderKpis(pedidos, productos, noLeidos);
     renderUrgentes(pedidos);
     renderStockAlertas(productos);
+    await renderPickupAlertas(pedidos);
   } catch (e) {
     Toast.err(`No se pudo cargar dashboard: ${e.message}`);
-
-    document.getElementById('dash-urgentes-body').innerHTML =
-      '<tr><td colspan="3" class="table-error-row">No se pudieron cargar pedidos urgentes.</td></tr>';
-    document.getElementById('dash-stock-alerts').innerHTML =
-      '<div class="admin-note">No se pudieron cargar alertas de stock.</div>';
+    document.getElementById('dash-urgentes-body').innerHTML = '<tr><td colspan="3" class="table-error-row">No se pudieron cargar pedidos urgentes.</td></tr>';
+    document.getElementById('dash-stock-alerts').innerHTML = '<div class="admin-note">No se pudieron cargar alertas de stock.</div>';
+    document.getElementById('dash-pickup-alerts').innerHTML = '<div class="admin-note">No se pudieron cargar alertas de recogida.</div>';
   }
 }
 
-document.addEventListener('DOMContentLoaded', initDashboard);
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('dash-refresh')?.addEventListener('click', initDashboard);
+  initDashboard();
+});

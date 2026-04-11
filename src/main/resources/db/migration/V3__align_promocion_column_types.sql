@@ -1,0 +1,3 @@
+ALTER TABLE promocion
+  MODIFY COLUMN tipo_descuento VARCHAR(30) NOT NULL,
+  MODIFY COLUMN aplica_a VARCHAR(20) NOT NULL;

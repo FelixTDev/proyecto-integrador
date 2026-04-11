@@ -45,7 +45,6 @@ public class Producto {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
-    /** Join table: producto_alergeno */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "producto_alergeno",
