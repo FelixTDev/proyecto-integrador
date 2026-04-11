@@ -40,7 +40,7 @@ public class SecurityConfig {
     private UsuarioDetailsService usuarioDetailsService;
     @Autowired private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     @Autowired private RestAccessDeniedHandler restAccessDeniedHandler;
-    @Value("${app.security.cors.allowed-origins:http://localhost:8081}")
+    @Value("${app.security.cors.allowed-origins:http://localhost:3000,http://localhost:5173}")
     private String corsAllowedOrigins;
 
     @Bean
@@ -59,12 +59,6 @@ public class SecurityConfig {
                         .accessDeniedHandler(restAccessDeniedHandler))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                        .requestMatchers("/", "/index.html", "/login.html", "/registro.html",
-                                "/carrito.html", "/checkout.html")
-                        .permitAll()
-                        .requestMatchers("/pages/**").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
 
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 

@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 public class AdminProductoService {
@@ -158,10 +159,11 @@ public class AdminProductoService {
         v.setStockDisponible(vReq.stockDisponible() != null ? vReq.stockDisponible() : 0);
         v.setActivo(vReq.activo() != null ? vReq.activo() : true);
         String base = slugify(producto.getNombre()) + "-" + slugify(vReq.nombreVariante());
-        if (base.length() > 50) {
-            base = base.substring(0, 50);
+        if (base.length() > 43) {
+            base = base.substring(0, 43);
         }
-        v.setCodigoSku("SKU-" + base.toUpperCase(Locale.ROOT));
+        String suffix = UUID.randomUUID().toString().replace("-", "").substring(0, 6).toUpperCase(Locale.ROOT);
+        v.setCodigoSku("SKU-" + base.toUpperCase(Locale.ROOT) + "-" + suffix);
         return v;
     }
 
