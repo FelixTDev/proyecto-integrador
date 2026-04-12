@@ -7,7 +7,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pe.edu.utp.proyecto_integrador_casachantilly.notificacion.servicio.NotificacionService;
+import pe.edu.utp.proyecto_integrador_casachantilly.operacion.dto.AlertaOperativaDTO;
+import pe.edu.utp.proyecto_integrador_casachantilly.operacion.servicio.AlertaOperativaStreamService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +23,7 @@ public class AlertaOperativaScheduler {
 
     @Autowired private JdbcTemplate jdbcTemplate;
     @Autowired private NotificacionService notificacionService;
+    @Autowired private AlertaOperativaStreamService alertaOperativaStreamService;
 
     @Scheduled(fixedRate = 3600_000)
     public void verificarStockBajo() {
@@ -37,12 +41,12 @@ public class AlertaOperativaScheduler {
                 StringBuilder msg = new StringBuilder("Productos con stock bajo:\n");
                 for (Map<String, Object> row : bajosStock) {
                     msg.append("- ").append(row.get("nombre"))
-                       .append(" (").append(row.get("nombre_variante")).append(")")
-                       .append(": ").append(row.get("stock_disponible")).append(" uds\n");
+                            .append(" (").append(row.get("nombre_variante")).append(")")
+                            .append(": ").append(row.get("stock_disponible")).append(" uds\n");
                 }
 
                 List<Integer> adminIds = jdbcTemplate.queryForList(
-                        "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre = 'ADMIN'",
+                        "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre IN ('ADMIN','VENDEDOR')",
                         Integer.class
                 );
 
@@ -50,18 +54,25 @@ public class AlertaOperativaScheduler {
                     notificacionService.registrarEventoPedido(adminId, null,
                             "Alerta: Stock bajo", msg.toString());
                 }
-                log.info("Alerta de stock bajo enviada a {} administradores para {} productos",
+                alertaOperativaStreamService.publish(new AlertaOperativaDTO(
+                        "STOCK_BAJO",
+                        "Alerta de stock bajo",
+                        "Se detectaron " + bajosStock.size() + " variantes con stock bajo",
+                        LocalDateTime.now(),
+                        Map.of("cantidadVariantes", bajosStock.size())
+                ));
+                log.info("Alerta de stock bajo enviada a {} usuarios staff para {} productos",
                         adminIds.size(), bajosStock.size());
             }
         } catch (Exception e) {
-            log.warn("Error en verificación de stock bajo: {}", e.getMessage());
+            log.warn("Error en verificacion de stock bajo: {}", e.getMessage());
         }
     }
 
     @Scheduled(fixedRate = 1800_000)
     public void verificarRecojosProximos() {
         try {
-            long recojosProximos = 0;
+            long recojosProximos;
             try {
                 recojosProximos = jdbcTemplate.queryForObject(
                         """
@@ -80,17 +91,24 @@ public class AlertaOperativaScheduler {
 
             if (recojosProximos > 0) {
                 List<Integer> adminIds = jdbcTemplate.queryForList(
-                        "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre = 'ADMIN'",
+                        "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre IN ('ADMIN','VENDEDOR')",
                         Integer.class
                 );
                 for (Integer adminId : adminIds) {
                     notificacionService.registrarEventoPedido(adminId, null,
-                            "Recojo próximo", recojosProximos + " pedido(s) de recojo en la próxima hora.");
+                            "Recojo proximo", recojosProximos + " pedido(s) de recojo en la proxima hora.");
                 }
-                log.info("Alerta de recojo próximo: {} pedidos", recojosProximos);
+                alertaOperativaStreamService.publish(new AlertaOperativaDTO(
+                        "RECOJO_PROXIMO",
+                        "Recojos proximos",
+                        "Hay " + recojosProximos + " pedido(s) de recojo para la proxima hora",
+                        LocalDateTime.now(),
+                        Map.of("pedidosRecojo", recojosProximos)
+                ));
+                log.info("Alerta de recojo proximo: {} pedidos", recojosProximos);
             }
         } catch (Exception e) {
-            log.warn("Error en verificación de recojos: {}", e.getMessage());
+            log.warn("Error en verificacion de recojos: {}", e.getMessage());
         }
     }
 
@@ -111,18 +129,25 @@ public class AlertaOperativaScheduler {
             }
 
             List<Integer> adminIds = jdbcTemplate.queryForList(
-                    "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre = 'ADMIN'",
+                    "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre IN ('ADMIN','VENDEDOR')",
                     Integer.class
             );
             for (Integer adminId : adminIds) {
                 notificacionService.registrarEventoPedido(adminId, null,
-                        "Pedidos urgentes en revisión",
-                        "Hay " + totalUrgentes + " pedido(s) nuevos/urgentes en los últimos 30 minutos.");
+                        "Pedidos urgentes en revision",
+                        "Hay " + totalUrgentes + " pedido(s) nuevos/urgentes en los ultimos 30 minutos.");
             }
+            alertaOperativaStreamService.publish(new AlertaOperativaDTO(
+                    "PEDIDOS_URGENTES",
+                    "Pedidos urgentes",
+                    "Hay " + totalUrgentes + " pedido(s) nuevos/urgentes en los ultimos 30 minutos",
+                    LocalDateTime.now(),
+                    Map.of("pedidosUrgentes", totalUrgentes)
+            ));
             ultimoConteoUrgentesNotificado = totalUrgentes;
             log.info("Alerta de pedidos urgentes enviada: {}", totalUrgentes);
         } catch (Exception e) {
-            log.warn("Error en verificación de pedidos urgentes: {}", e.getMessage());
+            log.warn("Error en verificacion de pedidos urgentes: {}", e.getMessage());
         }
     }
 }

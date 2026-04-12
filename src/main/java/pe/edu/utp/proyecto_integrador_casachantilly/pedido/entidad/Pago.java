@@ -39,6 +39,12 @@ public class Pago {
     @Column(name = "id_transaccion_externa", length = 120)
     private String idTransaccionExterna;
 
+    @Column(name = "idempotency_key", length = 80)
+    private String idempotencyKey;
+
+    @Column(name = "codigo_error_proveedor", length = 80)
+    private String codigoErrorProveedor;
+
     @Column(name = "fecha_aprobacion")
     private LocalDateTime fechaAprobacion;
 

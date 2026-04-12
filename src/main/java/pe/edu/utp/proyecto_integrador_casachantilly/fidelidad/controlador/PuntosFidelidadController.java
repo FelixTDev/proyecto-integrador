@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Tag(name = "Cliente — Puntos", description = "Programa de fidelidad")
 @SecurityRequirement(name = "bearerAuth")
-@PreAuthorize("hasRole('CLIENTE')")
+@PreAuthorize("hasAnyRole('CLIENTE','ADMIN')")
 @RestController
 @RequestMapping("/api/cliente/puntos")
 public class PuntosFidelidadController {

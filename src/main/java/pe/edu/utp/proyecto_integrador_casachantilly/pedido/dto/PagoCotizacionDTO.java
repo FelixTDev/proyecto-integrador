@@ -6,8 +6,15 @@ public record PagoCotizacionDTO(
         Integer carritoId,
         BigDecimal subtotal,
         BigDecimal impuestos,
+        BigDecimal descuento,
         BigDecimal costoEnvio,
         BigDecimal total,
         boolean franjaDisponible,
-        String mensajeFranja
+        String mensajeFranja,
+        String codigoCupon,
+        String tipoPromocion,
+        boolean envioGratisAplicado,
+        BigDecimal costoEnvioOriginal,
+        boolean esUrgente,
+        BigDecimal recargoUrgencia
 ) {}

@@ -19,6 +19,7 @@ public class CulqiPagoGateway implements PagoGateway {
         boolean aprobado = Boolean.TRUE.equals(response.get("aprobado"));
         String mensaje = String.valueOf(response.getOrDefault("mensaje", ""));
         String referencia = String.valueOf(response.getOrDefault("referencia", ""));
-        return new ResultadoCargo(aprobado, mensaje, referencia);
+        String codigoError = aprobado ? null : String.valueOf(response.getOrDefault("codigoError", "PAGO_RECHAZADO"));
+        return new ResultadoCargo(aprobado, mensaje, referencia, codigoError);
     }
 }

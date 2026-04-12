@@ -20,7 +20,7 @@ import java.util.List;
 
 @Tag(name = "Cliente — Personalización", description = "Personalización de pedidos especiales")
 @SecurityRequirement(name = "bearerAuth")
-@PreAuthorize("hasRole('CLIENTE')")
+@PreAuthorize("hasAnyRole('CLIENTE','ADMIN')")
 @RestController
 @RequestMapping("/api/pedidos/{pedidoId}/personalizacion")
 public class PersonalizacionController {

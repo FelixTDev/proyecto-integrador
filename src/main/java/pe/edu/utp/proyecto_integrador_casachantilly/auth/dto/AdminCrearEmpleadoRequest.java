@@ -29,8 +29,8 @@ public record AdminCrearEmpleadoRequest(
 
         @NotBlank(message = "El rol es requerido")
         @Pattern(
-                regexp = "(?i)^ADMIN$",
-                message = "El rol permitido es ADMIN"
+                regexp = "(?i)^(ADMIN|VENDEDOR)$",
+                message = "Los roles permitidos son ADMIN o VENDEDOR"
         )
         String rol
 ) {}

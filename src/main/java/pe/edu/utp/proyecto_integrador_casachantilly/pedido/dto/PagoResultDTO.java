@@ -9,5 +9,8 @@ public record PagoResultDTO(
         Integer pagoId,
         String referenciaExterna,
         BigDecimal montoTotal,
-        Integer intentos
+        Integer intentos,
+        String estadoPago,
+        String idempotencyKey,
+        String codigoError
 ) {}

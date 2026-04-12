@@ -35,11 +35,17 @@ public class CatalogoService {
      */
     @Transactional(readOnly = true)
     public Page<ProductoCardDTO> getProductosPaginados(Integer categoriaId, Pageable pageable) {
+        return getProductosPaginados(categoriaId, null, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductoCardDTO> getProductosPaginados(Integer categoriaId, LocalDate fechaEntrega, Pageable pageable) {
         Page<Producto> page = (categoriaId != null && categoriaId > 0)
                 ? productoRepository.findByCategoriaIdAndActivoTrue(categoriaId, pageable)
                 : productoRepository.findByActivoTrue(pageable);
 
-        boolean hayCapacidadProduccion = capacidadProduccionService.hayCapacidadParaFecha(LocalDate.now());
+        LocalDate fechaObjetivo = fechaEntrega != null ? fechaEntrega : LocalDate.now();
+        boolean hayCapacidadProduccion = capacidadProduccionService.hayCapacidadParaFecha(fechaObjetivo);
         return page.map(p -> toCardDTO(p, hayCapacidadProduccion));
     }
 
@@ -48,9 +54,15 @@ public class CatalogoService {
      */
     @Transactional(readOnly = true)
     public ProductoDetalleDTO getDetalleProducto(Integer productoId) {
+        return getDetalleProducto(productoId, null);
+    }
+
+    @Transactional(readOnly = true)
+    public ProductoDetalleDTO getDetalleProducto(Integer productoId, LocalDate fechaEntrega) {
         Producto p = productoRepository.findById(productoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado: " + productoId));
-        boolean hayCapacidadProduccion = capacidadProduccionService.hayCapacidadParaFecha(LocalDate.now());
+        LocalDate fechaObjetivo = fechaEntrega != null ? fechaEntrega : LocalDate.now();
+        boolean hayCapacidadProduccion = capacidadProduccionService.hayCapacidadParaFecha(fechaObjetivo);
         return toDetalleDTO(p, hayCapacidadProduccion);
     }
 

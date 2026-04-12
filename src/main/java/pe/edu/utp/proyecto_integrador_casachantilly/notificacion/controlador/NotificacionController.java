@@ -20,7 +20,7 @@ import java.util.Map;
 
 @Tag(name = "Cliente — Notificaciones", description = "Consulta de notificaciones transaccionales")
 @SecurityRequirement(name = "bearerAuth")
-@PreAuthorize("hasRole('CLIENTE')")
+@PreAuthorize("hasAnyRole('CLIENTE','ADMIN')")
 @RestController
 @RequestMapping("/api/cliente/notificaciones")
 public class NotificacionController {

@@ -31,31 +31,37 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiResponse<ApiErrorData>> handleNotFound(ResourceNotFoundException ex, HttpServletRequest req) {
+        log.warn("Not found en {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return build(HttpStatus.NOT_FOUND, ex.getMessage(), "RESOURCE_NOT_FOUND", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiResponse<ApiErrorData>> handleBadRequest(BadRequestException ex, HttpServletRequest req) {
+        log.warn("Bad request en {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return build(HttpStatus.BAD_REQUEST, ex.getMessage(), "BAD_REQUEST", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiResponse<ApiErrorData>> handleUnauthorized(UnauthorizedException ex, HttpServletRequest req) {
+        log.warn("Unauthorized en {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return build(HttpStatus.UNAUTHORIZED, ex.getMessage(), "UNAUTHORIZED", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ApiResponse<ApiErrorData>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest req) {
+        log.warn("Forbidden en {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return build(HttpStatus.FORBIDDEN, "Acceso denegado", "FORBIDDEN", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(TooManyRequestsException.class)
     public ResponseEntity<ApiResponse<ApiErrorData>> handleTooManyRequests(TooManyRequestsException ex, HttpServletRequest req) {
+        log.warn("Rate limit en {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return build(HttpStatus.TOO_MANY_REQUESTS, ex.getMessage(), "TOO_MANY_REQUESTS", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<ApiErrorData>> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest req) {
+        log.warn("Validation error en {} {}", req.getMethod(), req.getRequestURI());
         Map<String, Object> details = new LinkedHashMap<>();
         for (FieldError fe : ex.getBindingResult().getFieldErrors()) {
             details.put(fe.getField(), fe.getDefaultMessage());
@@ -65,11 +71,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class, UnsupportedOperationException.class})
     public ResponseEntity<ApiResponse<ApiErrorData>> handleMalformedRequest(Exception ex, HttpServletRequest req) {
+        log.warn("Malformed request en {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return build(HttpStatus.BAD_REQUEST, "Solicitud invalida", "MALFORMED_REQUEST", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ApiResponse<ApiErrorData>> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex, HttpServletRequest req) {
+        log.warn("Method not allowed en {} {}: {}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return build(HttpStatus.METHOD_NOT_ALLOWED, ex.getMessage(), "METHOD_NOT_ALLOWED", req.getRequestURI(), Map.of());
     }
 

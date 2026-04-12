@@ -22,7 +22,7 @@ import java.util.List;
 
 @Tag(name = "Cliente — Direcciones", description = "Gestión de direcciones de entrega del cliente")
 @SecurityRequirement(name = "bearerAuth")
-@PreAuthorize("hasRole('CLIENTE')")
+@PreAuthorize("hasAnyRole('CLIENTE','ADMIN')")
 @RestController
 @RequestMapping("/api/cliente")
 public class DireccionController {

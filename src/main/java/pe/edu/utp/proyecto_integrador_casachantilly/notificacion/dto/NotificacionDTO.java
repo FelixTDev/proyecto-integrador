@@ -13,5 +13,6 @@ public record NotificacionDTO(
         Integer intentos,
         String estadoEnvio,
         String destinoCanal,
+        String errorProveedor,
         LocalDateTime fechaEnvio
 ) {}

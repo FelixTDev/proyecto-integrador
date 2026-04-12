@@ -18,12 +18,18 @@ import java.io.IOException;
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RestAuthenticationEntryPoint.class);
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
+        log.warn("No autenticado en {} {}: {}",
+                request.getMethod(),
+                request.getRequestURI(),
+                authException.getMessage());
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");

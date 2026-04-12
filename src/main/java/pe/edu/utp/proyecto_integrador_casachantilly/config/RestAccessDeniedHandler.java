@@ -18,12 +18,19 @@ import java.io.IOException;
 @Component
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(RestAccessDeniedHandler.class);
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
+        log.warn("Acceso denegado en {} {} para usuario='{}': {}",
+                request.getMethod(),
+                request.getRequestURI(),
+                request.getUserPrincipal() != null ? request.getUserPrincipal().getName() : "anonimo",
+                accessDeniedException.getMessage());
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");

@@ -4,17 +4,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.CrearProductoRequest;
-import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.ProductoDetalleDTO;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.InventarioMovimientoDTO;
 import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.InventarioMovimientoRequest;
-import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.*;
-import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.repositorio.*;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.dto.ProductoDetalleDTO;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.Alergeno;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.Categoria;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.InventarioMovimiento;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.Producto;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.entidad.ProductoVariante;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.repositorio.AlergenoRepository;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.repositorio.CategoriaRepository;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.repositorio.InventarioMovimientoRepository;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.repositorio.ProductoRepository;
+import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.repositorio.ProductoVarianteRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.BadRequestException;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -32,12 +42,10 @@ public class AdminProductoService {
         return productoRepository.findAll(pageable).map(catalogoService::toCardDTO);
     }
 
-
-
     @Transactional
     public ProductoDetalleDTO crearProducto(CrearProductoRequest req) {
         Categoria categoria = categoriaRepository.findById(req.categoriaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada: " + req.categoriaId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria no encontrada: " + req.categoriaId()));
 
         Producto producto = new Producto();
         producto.setNombre(req.nombre());
@@ -59,13 +67,10 @@ public class AdminProductoService {
             varianteRepository.save(variante);
         }
 
-
         Producto reloaded = productoRepository.findById(saved.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Error al recargar producto"));
         return catalogoService.toDetalleDTO(reloaded);
     }
-
-
 
     @Transactional
     public ProductoDetalleDTO editarProducto(Integer id, CrearProductoRequest req) {
@@ -73,12 +78,14 @@ public class AdminProductoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado: " + id));
 
         Categoria categoria = categoriaRepository.findById(req.categoriaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada: " + req.categoriaId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria no encontrada: " + req.categoriaId()));
 
         producto.setNombre(req.nombre());
         producto.setDescripcion(req.descripcion());
         producto.setCategoria(categoria);
-        if (req.activo() != null) producto.setActivo(req.activo());
+        if (req.activo() != null) {
+            producto.setActivo(req.activo());
+        }
         producto.setSlug(slugify(req.nombre()));
         producto.setFechaActualizacion(LocalDateTime.now());
 
@@ -89,9 +96,7 @@ public class AdminProductoService {
 
         productoRepository.save(producto);
 
-
         if (req.variantes() != null && !req.variantes().isEmpty()) {
-
             varianteRepository.desactivarPorProductoId(id);
             for (CrearProductoRequest.VarianteRequest vReq : req.variantes()) {
                 varianteRepository.save(buildVariante(vReq, producto));
@@ -102,8 +107,6 @@ public class AdminProductoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Error al recargar producto"));
         return catalogoService.toDetalleDTO(reloaded);
     }
-
-
 
     @Transactional
     public boolean toggleProducto(Integer id) {
@@ -131,8 +134,6 @@ public class AdminProductoService {
         varianteRepository.desactivarPorProductoId(id);
     }
 
-
-
     @Transactional
     public void registrarMovimientoInventario(Integer varianteId, InventarioMovimientoRequest req) {
         ProductoVariante variante = varianteRepository.findById(varianteId)
@@ -142,8 +143,7 @@ public class AdminProductoService {
             case ENTRADA -> variante.getStockDisponible() + req.cantidad();
             case SALIDA -> {
                 if (variante.getStockDisponible() < req.cantidad()) {
-                    throw new BadRequestException(
-                            "Stock insuficiente. Disponible: " + variante.getStockDisponible());
+                    throw new BadRequestException("Stock insuficiente. Disponible: " + variante.getStockDisponible());
                 }
                 yield variante.getStockDisponible() - req.cantidad();
             }
@@ -162,7 +162,22 @@ public class AdminProductoService {
         inventarioRepository.save(mov);
     }
 
+    @Transactional(readOnly = true)
+    public List<InventarioMovimientoDTO> listarMovimientosInventario(Integer varianteId, LocalDateTime desde, LocalDateTime hasta) {
+        varianteRepository.findById(varianteId)
+                .orElseThrow(() -> new ResourceNotFoundException("Variante no encontrada: " + varianteId));
 
+        LocalDateTime fechaDesde = desde == null ? LocalDateTime.now().minusDays(30) : desde;
+        LocalDateTime fechaHasta = hasta == null ? LocalDateTime.now() : hasta;
+        if (fechaHasta.isBefore(fechaDesde)) {
+            throw new BadRequestException("El rango de fechas es invalido");
+        }
+
+        return inventarioRepository.findByVarianteIdAndFechaBetweenOrderByFechaDesc(varianteId, fechaDesde, fechaHasta)
+                .stream()
+                .map(this::toInventarioDto)
+                .toList();
+    }
 
     private ProductoVariante buildVariante(CrearProductoRequest.VarianteRequest vReq, Producto producto) {
         ProductoVariante v = new ProductoVariante();
@@ -193,5 +208,19 @@ public class AdminProductoService {
                 .trim()
                 .replaceAll("\\s+", "-")
                 .replaceAll("-{2,}", "-");
+    }
+
+    private InventarioMovimientoDTO toInventarioDto(InventarioMovimiento mov) {
+        return new InventarioMovimientoDTO(
+                mov.getId(),
+                mov.getVariante().getId(),
+                mov.getTipo(),
+                mov.getCantidad(),
+                mov.getStockResultante(),
+                mov.getMotivo(),
+                mov.getPedidoId(),
+                mov.getUsuarioId(),
+                mov.getFecha()
+        );
     }
 }

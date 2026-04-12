@@ -52,6 +52,7 @@ public class NotificacionService {
         n.setFechaEnvio(LocalDateTime.now());
         n.setDestinoCanal(destino);
         n.setEstadoEnvio(enviado ? Notificacion.EstadoEnvio.ENVIADA : Notificacion.EstadoEnvio.ERROR);
+        n.setErrorProveedor(enviado ? null : "No se pudo entregar por canal " + canal.name());
         notificacionRepository.save(n);
     }
 
@@ -87,6 +88,7 @@ public class NotificacionService {
                 n.getIntentos(),
                 n.getEstadoEnvio().name(),
                 n.getDestinoCanal(),
+                n.getErrorProveedor(),
                 n.getFechaEnvio()
         );
     }

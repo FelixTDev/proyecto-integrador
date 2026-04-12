@@ -58,4 +58,7 @@ public class Notificacion {
 
     @Column(name = "destino_canal", length = 160)
     private String destinoCanal;
+
+    @Column(name = "error_proveedor", length = 255)
+    private String errorProveedor;
 }

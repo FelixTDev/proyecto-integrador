@@ -3,6 +3,7 @@ package pe.edu.utp.proyecto_integrador_casachantilly.catalogo.controlador;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import pe.edu.utp.proyecto_integrador_casachantilly.catalogo.servicio.CatalogoSe
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
 
 import java.util.List;
+import java.time.LocalDate;
 
 @Tag(name = "Catálogo", description = "Endpoints públicos del catálogo de productos")
 @RestController
@@ -37,11 +39,12 @@ public class CatalogoController {
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ProductoCardDTO>>> getProductos(
             @RequestParam(required = false) Integer categoria,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaEntrega,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "12") int size) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("nombre").ascending());
-        Page<ProductoCardDTO> result = catalogoService.getProductosPaginados(categoria, pageable);
+        Page<ProductoCardDTO> result = catalogoService.getProductosPaginados(categoria, fechaEntrega, pageable);
         return ResponseEntity.ok(ApiResponse.ok("OK", result));
     }
 
@@ -51,8 +54,10 @@ public class CatalogoController {
      */
     @Operation(summary = "Obtener detalle de un producto")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<ProductoDetalleDTO>> getDetalle(@PathVariable Integer id) {
-        ProductoDetalleDTO detalle = catalogoService.getDetalleProducto(id);
+    public ResponseEntity<ApiResponse<ProductoDetalleDTO>> getDetalle(
+            @PathVariable Integer id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaEntrega) {
+        ProductoDetalleDTO detalle = catalogoService.getDetalleProducto(id, fechaEntrega);
         return ResponseEntity.ok(ApiResponse.ok("OK", detalle));
     }
 

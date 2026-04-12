@@ -13,18 +13,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AuthMeResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AuthResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.LoginRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.RecuperarPasswordRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.RegistroRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.ResetPasswordRequest;
+import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.SocialLoginRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.AuthRateLimitService;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.AuthService;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
-import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotFoundException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Tag(name = "Autenticacion", description = "Registro, login y logout con JWT")
 @RestController
@@ -63,6 +61,24 @@ public class AuthController {
         }
         authRateLimitService.clearLoginFailures(key);
         return ResponseEntity.ok(ApiResponse.ok("Login exitoso", result));
+    }
+
+    @Operation(summary = "Login social con Google")
+    @PostMapping("/social/google")
+    public ResponseEntity<ApiResponse<AuthResponse>> loginGoogle(
+            @Valid @RequestBody SocialLoginRequest request,
+            HttpServletRequest httpRequest) {
+        AuthResponse result = authService.loginSocial(request, "GOOGLE", httpRequest.getRemoteAddr(), httpRequest.getHeader("User-Agent"));
+        return ResponseEntity.ok(ApiResponse.ok("Login social exitoso", result));
+    }
+
+    @Operation(summary = "Login social con Facebook")
+    @PostMapping("/social/facebook")
+    public ResponseEntity<ApiResponse<AuthResponse>> loginFacebook(
+            @Valid @RequestBody SocialLoginRequest request,
+            HttpServletRequest httpRequest) {
+        AuthResponse result = authService.loginSocial(request, "FACEBOOK", httpRequest.getRemoteAddr(), httpRequest.getHeader("User-Agent"));
+        return ResponseEntity.ok(ApiResponse.ok("Login social exitoso", result));
     }
 
     @Operation(summary = "Cerrar sesion (invalidar token)")
@@ -106,19 +122,11 @@ public class AuthController {
 
     @Operation(summary = "Obtener datos del usuario logueado")
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> me(org.springframework.security.core.Authentication authentication) {
+    public ResponseEntity<ApiResponse<AuthMeResponse>> me(org.springframework.security.core.Authentication authentication) {
         if (authentication == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("No autenticado"));
         }
-        var usuario = authService.getUsuarioRepository().findByEmailIgnoreCase(authentication.getName())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
-
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("id", usuario.getId());
-        resp.put("nombre", usuario.getNombre());
-        resp.put("email", usuario.getEmail());
-        resp.put("telefono", usuario.getTelefono());
-        resp.put("roles", usuario.getRoles().stream().map(r -> r.getNombre()).toList());
+        AuthMeResponse resp = authService.obtenerPerfil(authentication.getName());
         return ResponseEntity.ok(ApiResponse.ok("OK", resp));
     }
 }

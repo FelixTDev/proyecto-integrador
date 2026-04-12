@@ -7,7 +7,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Usuario;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.repositorio.UsuarioRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
@@ -27,7 +30,7 @@ public class PagoController {
     @Autowired private PagoService pagoService;
     @Autowired private UsuarioRepository usuarioRepository;
 
-    @Operation(summary = "Cotizar total del checkout (envío + disponibilidad de franja)")
+    @Operation(summary = "Cotizar total del checkout")
     @PostMapping("/cotizacion")
     public ResponseEntity<ApiResponse<PagoCotizacionDTO>> cotizar(
             Authentication auth,
@@ -39,9 +42,11 @@ public class PagoController {
                 request.direccionId(),
                 request.esRecojoTienda(),
                 request.franjaHorariaId(),
-                request.zonaEntrega()
+                request.zonaEntrega(),
+                request.esUrgente(),
+                request.codigoCupon()
         );
-        return ResponseEntity.ok(ApiResponse.ok("Cotización calculada", dto));
+        return ResponseEntity.ok(ApiResponse.ok("Cotizacion calculada", dto));
     }
 
     @Operation(summary = "Procesar pago del carrito")

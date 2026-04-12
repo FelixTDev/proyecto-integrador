@@ -20,7 +20,7 @@ import java.util.List;
 
 @Tag(name = "Cliente — Reclamos", description = "Gestión de reclamos del cliente")
 @SecurityRequirement(name = "bearerAuth")
-@PreAuthorize("hasRole('CLIENTE')")
+@PreAuthorize("hasAnyRole('CLIENTE','ADMIN')")
 @RestController
 @RequestMapping("/api/cliente/reclamos")
 public class ReclamoController {

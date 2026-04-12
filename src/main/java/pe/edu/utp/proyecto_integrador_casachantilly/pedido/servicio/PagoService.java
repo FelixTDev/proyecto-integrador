@@ -1,6 +1,7 @@
 package pe.edu.utp.proyecto_integrador_casachantilly.pedido.servicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.utp.proyecto_integrador_casachantilly.carrito.dto.CarritoDTO;
@@ -13,6 +14,7 @@ import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.ResourceNotF
 import pe.edu.utp.proyecto_integrador_casachantilly.direccion.entidad.Direccion;
 import pe.edu.utp.proyecto_integrador_casachantilly.direccion.repositorio.ZonaEnvioRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.direccion.servicio.DireccionService;
+import pe.edu.utp.proyecto_integrador_casachantilly.entrega.entidad.FranjaHoraria;
 import pe.edu.utp.proyecto_integrador_casachantilly.entrega.repositorio.FranjaHorariaRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.notificacion.servicio.NotificacionService;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.dto.PagoCotizacionDTO;
@@ -27,8 +29,11 @@ import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.EstadoPed
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.MetodoPagoRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.PagoRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.PedidoRepository;
+import pe.edu.utp.proyecto_integrador_casachantilly.promocion.dto.CuponResultDTO;
+import pe.edu.utp.proyecto_integrador_casachantilly.promocion.servicio.PromocionService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -51,73 +56,138 @@ public class PagoService {
     @Autowired private PedidoRepository pedidoRepository;
     @Autowired private NotificacionService notificacionService;
     @Autowired private CapacidadProduccionService capacidadProduccionService;
+    @Autowired private PromocionService promocionService;
+
+    @Value("${app.envio.recargo-urgencia:5.00}")
+    private BigDecimal recargoUrgencia;
 
     @Transactional(readOnly = true)
-    public PagoCotizacionDTO cotizar(Integer carritoId, Integer usuarioId, Integer direccionId,
-                                     Boolean esRecojoTienda, Integer franjaHorariaId, String zonaEntrega) {
+    public PagoCotizacionDTO cotizar(Integer carritoId,
+                                     Integer usuarioId,
+                                     Integer direccionId,
+                                     Boolean esRecojoTienda,
+                                     Integer franjaHorariaId,
+                                     String zonaEntrega,
+                                     Boolean esUrgente,
+                                     String codigoCupon) {
         CarritoDTO resumen = carritoService.calcularResumen(carritoId);
         if (resumen.items().isEmpty()) {
-            throw new BadRequestException("El carrito está vacío");
+            throw new BadRequestException("El carrito esta vacio");
         }
-
         if (franjaHorariaId == null) {
             throw new BadRequestException("Debes seleccionar una franja horaria");
         }
 
+        boolean recojo = Boolean.TRUE.equals(esRecojoTienda);
+        boolean urgente = Boolean.TRUE.equals(esUrgente);
+
+        validarCompatibilidadFranja(franjaHorariaId, recojo);
         boolean franjaDisponible = isFranjaDisponible(franjaHorariaId);
         validarCapacidadOperativa(franjaHorariaId);
-        BigDecimal costoEnvio = resolverCostoEnvio(usuarioId, direccionId, esRecojoTienda, zonaEntrega);
+
+        BigDecimal costoEnvioBase = resolverCostoEnvio(usuarioId, direccionId, recojo, zonaEntrega);
+        BigDecimal recargo = urgente ? obtenerRecargoUrgencia(recojo) : BigDecimal.ZERO;
+        BigDecimal costoEnvioCalculado = costoEnvioBase.add(recargo);
+
+        CuponResultDTO cupon = resolverCupon(codigoCupon, resumen.subtotal(), costoEnvioCalculado);
+        BigDecimal descuento = cupon.descuento();
+        BigDecimal totalBruto = resumen.subtotal().add(resumen.igv()).add(costoEnvioCalculado);
+        BigDecimal totalFinal = totalBruto.subtract(descuento).max(BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP);
 
         return new PagoCotizacionDTO(
                 carritoId,
                 resumen.subtotal(),
                 resumen.igv(),
-                costoEnvio,
-                resumen.total().add(costoEnvio),
+                descuento,
+                cupon.costoEnvioFinal(),
+                totalFinal,
                 franjaDisponible,
-                franjaDisponible ? "Franja disponible" : "La franja seleccionada no tiene cupos disponibles"
+                franjaDisponible ? "Franja disponible" : "La franja seleccionada no tiene cupos disponibles",
+                codigoCupon,
+                cupon.tipoDescuento(),
+                cupon.envioGratisAplicado(),
+                cupon.costoEnvioOriginal(),
+                urgente,
+                recargo
         );
     }
 
-    /**
-     * Flujo completo de pago:
-     * 1) Revalida stock y franja
-     * 2) Crea el pedido congelando precios
-     * 3) Llama a Culqi con token de tarjeta
-     * 4) Si APROBADO: descuenta stock, guarda pago, confirma estado y vacía carrito
-     */
     @Transactional
     public PagoResultDTO procesarPago(PagoRequestDTO req, Integer usuarioId) {
         metodoPagoRepository.findById(req.metodoPagoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Método de pago no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Metodo de pago no encontrado"));
+
+        String idemKey = normalizarIdempotencyKey(req.idempotencyKey());
+        if (idemKey != null) {
+            var previo = pagoRepository.findFirstByIdempotencyKeyOrderByFechaDesc(idemKey);
+            if (previo.isPresent()) {
+                Pago existente = previo.get();
+                return new PagoResultDTO(
+                        Pago.EstadoPago.APROBADO.equals(existente.getEstado()),
+                        "Operacion idempotente: se devolvio el pago previamente registrado",
+                        existente.getPedidoId(),
+                        existente.getId(),
+                        existente.getReferenciaExterna(),
+                        existente.getMonto(),
+                        existente.getIntentos(),
+                        existente.getEstado().name(),
+                        existente.getIdempotencyKey(),
+                        existente.getCodigoErrorProveedor()
+                );
+            }
+        }
 
         CarritoDTO resumen = carritoService.calcularResumen(req.carritoId());
         if (resumen.items().isEmpty()) {
-            throw new BadRequestException("El carrito está vacío");
+            throw new BadRequestException("El carrito esta vacio");
         }
 
         if (req.franjaHorariaId() == null) {
             throw new BadRequestException("Debes seleccionar una franja horaria");
         }
+
+        boolean recojo = Boolean.TRUE.equals(req.esRecojoTienda());
+        boolean urgente = Boolean.TRUE.equals(req.esUrgente());
+
+        validarCompatibilidadFranja(req.franjaHorariaId(), recojo);
         if (!isFranjaDisponible(req.franjaHorariaId())) {
             throw new BadRequestException("La franja horaria seleccionada ya no tiene cupos disponibles");
         }
         validarCapacidadOperativa(req.franjaHorariaId());
-
         validarStockDisponible(resumen.items());
-        BigDecimal costoEnvio = resolverCostoEnvio(usuarioId, req.direccionId(), req.esRecojoTienda(), req.zonaEntrega());
-        Integer direccionPedidoId = resolveDireccionPedidoId(usuarioId, req.direccionId(), req.esRecojoTienda());
 
+        BigDecimal costoEnvioBase = resolverCostoEnvio(usuarioId, req.direccionId(), recojo, req.zonaEntrega());
+        BigDecimal recargo = urgente ? obtenerRecargoUrgencia(recojo) : BigDecimal.ZERO;
+        BigDecimal costoEnvioCalculado = costoEnvioBase.add(recargo);
+
+        CuponResultDTO cupon = resolverCupon(req.codigoCupon(), resumen.subtotal(), costoEnvioCalculado);
+        BigDecimal descuento = cupon.descuento();
+
+        Integer direccionPedidoId = resolveDireccionPedidoId(usuarioId, req.direccionId(), recojo);
         Pedido pedido = pedidoService.crearPedido(
-                req.carritoId(), usuarioId,
-                direccionPedidoId, req.franjaHorariaId(),
-                req.esRecojoTienda(), costoEnvio
+                req.carritoId(),
+                usuarioId,
+                direccionPedidoId,
+                req.franjaHorariaId(),
+                recojo,
+                cupon.costoEnvioFinal()
         );
 
-        BigDecimal totalConEnvio = resumen.total().add(costoEnvio);
-        int montoCentimos = totalConEnvio.multiply(BigDecimal.valueOf(100)).intValue();
+        BigDecimal totalConEnvio = resumen.subtotal().add(resumen.igv()).add(cupon.costoEnvioFinal())
+                .subtract(descuento)
+                .max(BigDecimal.ZERO)
+                .setScale(2, RoundingMode.HALF_UP);
 
+        pedido.setPromocionId(null);
+        pedido.setDescuento(descuento);
+        pedido.setCostoEnvio(cupon.costoEnvioFinal());
+        pedido.setTotal(totalConEnvio);
+        pedido.setFechaActualizacion(LocalDateTime.now());
+        pedidoRepository.save(pedido);
+
+        int montoCentimos = totalConEnvio.multiply(BigDecimal.valueOf(100)).intValue();
         String email = req.email() != null ? req.email() : "cliente@casachantilly.pe";
+
         PagoGateway.ResultadoCargo cargo = pagoGateway.crearCargo(req.tokenTarjeta(), montoCentimos, email);
         boolean aprobado = cargo.aprobado();
         String referencia = cargo.referencia();
@@ -130,6 +200,8 @@ public class PagoService {
         pago.setMoneda("PEN");
         pago.setReferenciaExterna(referencia);
         pago.setIdTransaccionExterna(referencia);
+        pago.setIdempotencyKey(idemKey);
+        pago.setCodigoErrorProveedor(cargo.codigoError());
 
         if (aprobado) {
             descontarStock(resumen.items());
@@ -145,14 +217,14 @@ public class PagoService {
             EstadoPedidoHistorial hist = new EstadoPedidoHistorial();
             hist.setPedidoId(pedido.getId());
             hist.setEstadoId(estadoConfirmado.getId());
-            hist.setObservacion("Pago aprobado — ref: " + referencia);
+            hist.setObservacion("Pago aprobado - ref: " + referencia);
             historialRepository.save(hist);
 
             pedido.setEstadoActualId(estadoConfirmado.getId());
             pedido.setFechaActualizacion(LocalDateTime.now());
+            pedidoRepository.save(pedido);
 
             carritoService.vaciarCarrito(req.carritoId());
-
             notificacionService.registrarEventoPedido(
                     usuarioId,
                     pedido.getId(),
@@ -161,8 +233,18 @@ public class PagoService {
                             + " fue confirmado exitosamente."
             );
 
-            return new PagoResultDTO(true, mensaje, pedido.getId(),
-                    pago.getId(), referencia, totalConEnvio, 1);
+            return new PagoResultDTO(
+                    true,
+                    mensaje,
+                    pedido.getId(),
+                    pago.getId(),
+                    referencia,
+                    totalConEnvio,
+                    1,
+                    pago.getEstado().name(),
+                    pago.getIdempotencyKey(),
+                    null
+            );
         }
 
         pago.setEstado(Pago.EstadoPago.RECHAZADO);
@@ -170,8 +252,35 @@ public class PagoService {
         pago.setProximoIntento(LocalDateTime.now().plusMinutes(5));
         pagoRepository.save(pago);
 
-        return new PagoResultDTO(false, mensaje, pedido.getId(),
-                pago.getId(), referencia, totalConEnvio, 1);
+        return new PagoResultDTO(
+                false,
+                mensaje,
+                pedido.getId(),
+                pago.getId(),
+                referencia,
+                totalConEnvio,
+                1,
+                pago.getEstado().name(),
+                pago.getIdempotencyKey(),
+                pago.getCodigoErrorProveedor() == null ? "PAGO_RECHAZADO" : pago.getCodigoErrorProveedor()
+        );
+    }
+
+    private CuponResultDTO resolverCupon(String codigoCupon, BigDecimal subtotal, BigDecimal costoEnvioCalculado) {
+        if (codigoCupon == null || codigoCupon.isBlank()) {
+            return new CuponResultDTO(
+                    false,
+                    "Sin cupon",
+                    BigDecimal.ZERO,
+                    null,
+                    null,
+                    BigDecimal.ZERO,
+                    false,
+                    costoEnvioCalculado,
+                    costoEnvioCalculado
+            );
+        }
+        return promocionService.validarCupon(codigoCupon, subtotal, costoEnvioCalculado);
     }
 
     private BigDecimal resolverCostoEnvio(Integer usuarioId, Integer direccionId, Boolean esRecojoTienda, String zonaEntrega) {
@@ -180,7 +289,7 @@ public class PagoService {
         }
 
         if (direccionId == null) {
-            throw new BadRequestException("Debes seleccionar una dirección de entrega");
+            throw new BadRequestException("Debes seleccionar una direccion de entrega");
         }
 
         Direccion direccion = direccionService.obtenerDireccionActivaUsuario(usuarioId, direccionId);
@@ -197,7 +306,7 @@ public class PagoService {
             return null;
         }
         if (direccionId == null) {
-            throw new BadRequestException("Debes seleccionar una dirección de entrega");
+            throw new BadRequestException("Debes seleccionar una direccion de entrega");
         }
         Direccion direccion = direccionService.obtenerDireccionActivaUsuario(usuarioId, direccionId);
         return direccion.getId();
@@ -232,8 +341,29 @@ public class PagoService {
         var franja = franjaHorariaRepository.findById(franjaHorariaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Franja horaria no encontrada"));
         if (!capacidadProduccionService.hayCapacidadParaFecha(franja.getFecha())) {
-            throw new BadRequestException("No hay capacidad de producción disponible para la fecha seleccionada");
+            throw new BadRequestException("No hay capacidad de produccion disponible para la fecha seleccionada");
         }
+    }
+
+    private void validarCompatibilidadFranja(Integer franjaHorariaId, boolean recojo) {
+        FranjaHoraria franja = franjaHorariaRepository.findById(franjaHorariaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Franja horaria no encontrada"));
+        if (recojo && FranjaHoraria.TipoFranja.DELIVERY.equals(franja.getTipo())) {
+            throw new BadRequestException("La franja seleccionada solo permite delivery");
+        }
+        if (!recojo && FranjaHoraria.TipoFranja.RECOJO.equals(franja.getTipo())) {
+            throw new BadRequestException("La franja seleccionada solo permite recojo en tienda");
+        }
+    }
+
+    private BigDecimal obtenerRecargoUrgencia(boolean recojo) {
+        if (recojo) {
+            throw new BadRequestException("La urgencia aplica solo para delivery");
+        }
+        if (recargoUrgencia == null || recargoUrgencia.compareTo(BigDecimal.ZERO) < 0) {
+            return BigDecimal.ZERO;
+        }
+        return recargoUrgencia.setScale(2, RoundingMode.HALF_UP);
     }
 
     private void validarStockDisponible(Iterable<CarritoItemDTO> items) {
@@ -241,7 +371,7 @@ public class PagoService {
             ProductoVariante variante = varianteRepository.findByIdForUpdate(item.varianteId())
                     .orElseThrow(() -> new ResourceNotFoundException("Variante no encontrada: " + item.varianteId()));
             if (!Boolean.TRUE.equals(variante.getActivo())) {
-                throw new BadRequestException("La variante '" + item.varianteNombre() + "' no está activa");
+                throw new BadRequestException("La variante '" + item.varianteNombre() + "' no esta activa");
             }
             if (variante.getStockDisponible() < item.cantidad()) {
                 throw new BadRequestException("Stock insuficiente para '" + item.productoNombre()
@@ -261,5 +391,19 @@ public class PagoService {
             variante.setStockDisponible(nuevoStock);
             varianteRepository.save(variante);
         }
+    }
+
+    private String normalizarIdempotencyKey(String key) {
+        if (key == null) {
+            return null;
+        }
+        String clean = key.trim();
+        if (clean.isBlank()) {
+            return null;
+        }
+        if (clean.length() > 80) {
+            throw new BadRequestException("idempotencyKey excede longitud maxima de 80");
+        }
+        return clean;
     }
 }

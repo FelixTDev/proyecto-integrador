@@ -8,5 +8,7 @@ public record PagoCotizacionRequestDTO(
         Integer direccionId,
         Boolean esRecojoTienda,
         Integer franjaHorariaId,
-        String zonaEntrega
+        String zonaEntrega,
+        Boolean esUrgente,
+        String codigoCupon
 ) {}

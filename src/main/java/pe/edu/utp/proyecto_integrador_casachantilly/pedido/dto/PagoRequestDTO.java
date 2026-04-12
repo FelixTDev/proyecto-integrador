@@ -7,7 +7,6 @@ public record PagoRequestDTO(
         @NotNull(message = "El carritoId es requerido")
         Integer carritoId,
 
-        /** Token generado por Culqi.js en el frontend */
         @NotBlank(message = "El token de tarjeta es requerido")
         String tokenTarjeta,
 
@@ -15,15 +14,18 @@ public record PagoRequestDTO(
 
         Integer franjaHorariaId,
 
-        /** Si es recojo en tienda (no necesita dirección) */
         Boolean esRecojoTienda,
 
-        /** Compatibilidad temporal para clientes antiguos; el checkout MVP usa direccionId */
         String zonaEntrega,
+
+        Boolean esUrgente,
+
+        String codigoCupon,
 
         String email,
 
-        /** Método de pago: 1=Tarjeta, 2=Yape, etc. */
-        @NotNull(message = "El método de pago es requerido")
+        String idempotencyKey,
+
+        @NotNull(message = "El metodo de pago es requerido")
         Integer metodoPagoId
 ) {}

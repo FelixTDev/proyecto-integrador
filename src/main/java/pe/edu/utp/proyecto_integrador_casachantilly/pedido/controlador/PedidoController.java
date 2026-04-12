@@ -40,7 +40,7 @@ public class PedidoController {
     }
 
     @Operation(summary = "Listar historial de pedidos del cliente autenticado")
-    @PreAuthorize("hasRole('CLIENTE')")
+    @PreAuthorize("hasAnyRole('CLIENTE','ADMIN')")
     @GetMapping("/mis-pedidos")
     public ResponseEntity<ApiResponse<List<PedidoHistorialDTO>>> listarHistorial(Authentication auth) {
         UserContext ctx = getUser(auth);
@@ -49,7 +49,7 @@ public class PedidoController {
     }
 
     @Operation(summary = "Reordenar un pedido previo hacia el carrito actual")
-    @PreAuthorize("hasRole('CLIENTE')")
+    @PreAuthorize("hasAnyRole('CLIENTE','ADMIN')")
     @PostMapping("/{pedidoId}/reordenar")
     public ResponseEntity<ApiResponse<ReordenarResultadoDTO>> reordenar(
             @PathVariable Integer pedidoId,

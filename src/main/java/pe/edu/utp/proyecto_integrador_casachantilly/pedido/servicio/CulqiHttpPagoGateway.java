@@ -51,7 +51,7 @@ public class CulqiHttpPagoGateway implements PagoGateway {
                     .body(Map.class);
 
             if (response == null) {
-                return new ResultadoCargo(false, "Respuesta vacia de pasarela", null);
+                return new ResultadoCargo(false, "Respuesta vacia de pasarela", null, "CULQI_EMPTY_RESPONSE");
             }
             String referencia = String.valueOf(response.getOrDefault("id", ""));
             Object outcomeObj = response.get("outcome");
@@ -62,10 +62,11 @@ public class CulqiHttpPagoGateway implements PagoGateway {
                 aprobado = "venta_exitosa".equalsIgnoreCase(type);
             }
             String mensaje = aprobado ? "Pago procesado" : String.valueOf(response.getOrDefault("user_message", "Pago rechazado"));
-            return new ResultadoCargo(aprobado, mensaje, referencia);
+            String codigoError = aprobado ? null : String.valueOf(response.getOrDefault("object", "CULQI_REJECTED"));
+            return new ResultadoCargo(aprobado, mensaje, referencia, codigoError);
         } catch (Exception ex) {
             log.error("Error en Culqi HTTP gateway: {}", ex.getMessage());
-            return new ResultadoCargo(false, "Error al procesar pago con proveedor", null);
+            return new ResultadoCargo(false, "Error al procesar pago con proveedor", null, "CULQI_PROVIDER_ERROR");
         }
     }
 }

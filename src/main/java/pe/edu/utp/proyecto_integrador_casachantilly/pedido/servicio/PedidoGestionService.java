@@ -17,9 +17,11 @@ import pe.edu.utp.proyecto_integrador_casachantilly.pedido.entidad.DetallePedido
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.entidad.EstadoPedido;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.entidad.EstadoPedidoHistorial;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.entidad.Pedido;
+import pe.edu.utp.proyecto_integrador_casachantilly.pedido.entidad.PedidoValidacionAuditoria;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.EstadoPedidoHistorialRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.EstadoPedidoRepository;
 import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.PedidoRepository;
+import pe.edu.utp.proyecto_integrador_casachantilly.pedido.repositorio.PedidoValidacionAuditoriaRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -35,6 +37,7 @@ public class PedidoGestionService {
     @Autowired private CarritoService carritoService;
     @Autowired private ProductoVarianteRepository varianteRepository;
     @Autowired private NotificacionService notificacionService;
+    @Autowired private PedidoValidacionAuditoriaRepository pedidoValidacionAuditoriaRepository;
 
     @Transactional(readOnly = true)
     public List<AdminPedidoDTO> listarPedidosAdmin() {
@@ -94,7 +97,17 @@ public class PedidoGestionService {
         }
 
         aplicarCambioEstado(pedido, siguiente, observacion, adminId);
+        registrarAuditoriaValidacion(pedidoId, adminId, Boolean.TRUE.equals(req.aprobar()), req.motivo());
         return toAdminPedidoDTO(pedido);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PedidoValidacionAuditoriaDTO> listarAuditoriaValidacion(Integer pedidoId) {
+        pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + pedidoId));
+        return pedidoValidacionAuditoriaRepository.findByPedidoIdOrderByFechaDesc(pedidoId).stream()
+                .map(this::toValidacionDto)
+                .toList();
     }
 
     @Transactional
@@ -335,6 +348,28 @@ public class PedidoGestionService {
                 p.getEsRecojoTienda(),
                 p.getDireccionId(),
                 items
+        );
+    }
+
+    private void registrarAuditoriaValidacion(Integer pedidoId, Integer usuarioId, boolean aprobado, String motivo) {
+        PedidoValidacionAuditoria auditoria = new PedidoValidacionAuditoria();
+        auditoria.setPedidoId(pedidoId);
+        auditoria.setUsuarioId(usuarioId);
+        auditoria.setResultado(aprobado ? PedidoValidacionAuditoria.Resultado.APROBADO : PedidoValidacionAuditoria.Resultado.RECHAZADO);
+        auditoria.setMotivo(motivo == null ? null : motivo.trim());
+        pedidoValidacionAuditoriaRepository.save(auditoria);
+    }
+
+    private PedidoValidacionAuditoriaDTO toValidacionDto(PedidoValidacionAuditoria row) {
+        Usuario usuario = usuarioRepository.findById(row.getUsuarioId()).orElse(null);
+        return new PedidoValidacionAuditoriaDTO(
+                row.getId(),
+                row.getPedidoId(),
+                row.getUsuarioId(),
+                usuario == null ? null : usuario.getNombre(),
+                row.getResultado().name(),
+                row.getMotivo(),
+                row.getFecha()
         );
     }
 }

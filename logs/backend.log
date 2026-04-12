@@ -1,0 +1,1273 @@
+2026-04-12 15:57:00.062 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 15:57:00.114 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 28664 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 15:57:00.115 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 15:57:01.146 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 15:57:01.286 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 131 ms. Found 24 JPA repository interfaces.
+2026-04-12 15:57:01.834 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 15:57:01.845 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 15:57:01.847 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 15:57:01.847 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 15:57:01.914 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 15:57:01.915 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1766 ms
+2026-04-12 15:57:02.192 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 15:57:02.332 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@36511772
+2026-04-12 15:57:02.334 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 15:57:02.745 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 15:57:02.792 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 6 migrations (execution time 00:00.031s)
+2026-04-12 15:57:02.802 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 5
+2026-04-12 15:57:02.804 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 15:57:02.890 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 15:57:02.932 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 15:57:02.960 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 15:57:03.167 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 15:57:03.219 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 15:57:03.224 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 15:57:03.236 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 15:57:04.233 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 15:57:04.235 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 15:57:04.628 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 15:57:04.669 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 15:57:04.671 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 15:57:04.714 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 15:57:05.909 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 15:57:06.153 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 15:57:06.670 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 15:57:06.687 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-04-12 15:57:06.703 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Started ProyectoIntegradorCasachantillyApplication in 7.063 seconds (process running for 7.368)
+2026-04-12 15:57:06.758 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-04-12 15:57:06.759 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-04-12 15:57:06.780 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=admin@casachantilly.pe subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 15:57:06.827 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=aquiles@gmail.com subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 15:57:06.836 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999111222 subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 15:57:06.844 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999300400 subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 15:57:06.852 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=milagros@chantilly.pe subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 15:57:06.861 INFO  [scheduling-1] [rid:] p.e.u.p.c.AlertaOperativaScheduler - Alerta de pedidos urgentes enviada: 1
+2026-04-12 15:57:06.872 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=admin@casachantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 15:57:06.880 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=aquiles@gmail.com subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 15:57:06.889 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999111222 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 15:57:06.899 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999300400 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 15:57:06.906 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=milagros@chantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 15:57:06.914 INFO  [scheduling-1] [rid:] p.e.u.p.c.AlertaOperativaScheduler - Alerta de stock bajo enviada a 5 administradores para 3 productos
+2026-04-12 15:57:16.377 INFO  [http-nio-8081-exec-4] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-12 15:57:16.377 INFO  [http-nio-8081-exec-4] [rid:] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-12 15:57:16.379 INFO  [http-nio-8081-exec-4] [rid:] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2026-04-12 15:57:16.588 WARN  [http-nio-8081-exec-1] [rid:e9c289b8-5e91-4d36-925d-acf31ac3a057] o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-04-12 15:57:18.494 WARN  [http-nio-8081-exec-3] [rid:8f3f38fd-84b2-43d7-b973-f44843cfdb84] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:18.494 WARN  [http-nio-8081-exec-1] [rid:aa23a3a0-ef91-4edf-8509-afc717916a42] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:18.494 WARN  [http-nio-8081-exec-2] [rid:b0404e5e-40ae-4589-9c03-b8d86d6515bd] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:18.494 WARN  [http-nio-8081-exec-5] [rid:4651834b-ccb1-46be-bf43-91b0fc6e624e] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:18.494 WARN  [http-nio-8081-exec-10] [rid:7c1e5b03-0114-44d0-9181-63b91b62460d] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:57:18.513 WARN  [http-nio-8081-exec-7] [rid:e15348c8-eeaa-4b50-9df3-a0339131eb71] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:18.513 WARN  [http-nio-8081-exec-10] [rid:99819a84-c46a-4c9e-9b24-51e82c1643f5] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:18.513 WARN  [http-nio-8081-exec-4] [rid:e6377320-33cc-45a7-af3f-48f020d02519] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:18.513 WARN  [http-nio-8081-exec-8] [rid:508445da-6bb6-4b20-9f85-f9bae0f8407f] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:57:18.513 WARN  [http-nio-8081-exec-9] [rid:639bc02c-32eb-4cf5-9795-06d6da743d9b] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:20.345 WARN  [http-nio-8081-exec-6] [rid:7a961047-63e2-4eba-bab6-6b87f24efbf3] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:20.345 WARN  [http-nio-8081-exec-9] [rid:1e3b30f5-422f-4508-879c-e27a7dca70ea] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:20.345 WARN  [http-nio-8081-exec-8] [rid:56af05ef-e395-4e3f-b1f6-81c2d6b52f85] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:57:20.345 WARN  [http-nio-8081-exec-1] [rid:81dcc550-e484-4491-91bd-533c49985ef0] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:20.354 WARN  [http-nio-8081-exec-7] [rid:e3655161-9137-4c6d-a1cf-98883c6a92e7] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:20.360 WARN  [http-nio-8081-exec-2] [rid:86eb7655-990f-435b-823f-9991dee61105] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:57:20.360 WARN  [http-nio-8081-exec-5] [rid:46caa07b-7d2b-4791-874f-53832dd160e0] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:20.366 WARN  [http-nio-8081-exec-4] [rid:db20b8a6-21de-4c72-be9b-1fedd8f4435a] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:20.373 WARN  [http-nio-8081-exec-9] [rid:ef2068d9-ef47-4e12-a2aa-5eb6620e5f81] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:20.373 WARN  [http-nio-8081-exec-6] [rid:cea75a7d-d758-4df7-8742-6d33c7b7b02f] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:20.943 WARN  [http-nio-8081-exec-2] [rid:60403f0d-dcb6-4e61-b4bf-a88bd8f1bcf9] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:20.943 WARN  [http-nio-8081-exec-5] [rid:f5893c04-a729-4718-9ae5-2c70c0601f41] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:20.944 WARN  [http-nio-8081-exec-4] [rid:6ee60c6a-b25e-4172-ba54-ab1374241393] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:20.944 WARN  [http-nio-8081-exec-10] [rid:44ae250f-12b7-49b1-82a9-fce72e2b2295] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:57:20.952 WARN  [http-nio-8081-exec-9] [rid:3b723d43-2090-42ce-9096-ff7fffc09fda] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:20.962 WARN  [http-nio-8081-exec-1] [rid:96e84ee4-0cc2-4705-9224-9d82e3976a09] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:20.962 WARN  [http-nio-8081-exec-7] [rid:6bbe05b4-41f6-49a1-ad45-4a69b4f7b22c] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:20.962 WARN  [http-nio-8081-exec-8] [rid:7d438b10-201d-4813-a72e-dd5a8b45e943] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:20.985 WARN  [http-nio-8081-exec-4] [rid:87dc3080-4c3d-4b3a-b22e-23791dff0b90] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:57:20.985 WARN  [http-nio-8081-exec-5] [rid:ecc2196f-cc44-4424-b457-70f7ce06200d] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:39.571 WARN  [http-nio-8081-exec-6] [rid:c6725c36-a686-433a-a3e9-14b70c3781c7] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:39.583 WARN  [http-nio-8081-exec-5] [rid:48f5da07-a469-4a05-9df7-18a0b86395e7] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:41.913 WARN  [http-nio-8081-exec-7] [rid:da1f4d68-e66d-4fd9-8634-43fc4856edf6] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:41.913 WARN  [http-nio-8081-exec-3] [rid:962acf6c-3224-4193-86b0-e1b391500b10] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:57:41.913 WARN  [http-nio-8081-exec-2] [rid:115b73da-19a7-4d17-8c46-90c00add73f4] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:41.913 WARN  [http-nio-8081-exec-8] [rid:c9f46d5e-0689-4b0c-8907-d7dea87ebe92] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:41.913 WARN  [http-nio-8081-exec-4] [rid:4156daef-cca2-4e1b-bbe2-d83f5edff1f0] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:41.925 WARN  [http-nio-8081-exec-1] [rid:2a3a8963-1f0c-4ae7-b286-a3058c92210a] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones/zonas: Access Denied
+2026-04-12 15:57:41.925 WARN  [http-nio-8081-exec-10] [rid:53d1fadb-ba45-48fb-89e0-55ef8ef431e0] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/pedidos/mis-pedidos: Access Denied
+2026-04-12 15:57:41.925 WARN  [http-nio-8081-exec-5] [rid:dc205db7-8cd6-4abd-a1e7-a13ba5ac20fc] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/puntos: Access Denied
+2026-04-12 15:57:41.925 WARN  [http-nio-8081-exec-6] [rid:d3671f88-f6be-4ee4-a27d-03da596366df] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/direcciones: Access Denied
+2026-04-12 15:57:41.925 WARN  [http-nio-8081-exec-7] [rid:991a7107-b4ff-4d29-9d2a-b1f85508a6bc] p.e.u.p.comun.GlobalExceptionHandler - Forbidden en GET /api/cliente/notificaciones: Access Denied
+2026-04-12 15:58:42.478 WARN  [http-nio-8081-exec-10] [rid:] p.e.u.p.c.RestAuthenticationEntryPoint - No autenticado en GET /: Full authentication is required to access this resource
+2026-04-12 15:58:45.530 INFO  [http-nio-8081-exec-10] [rid:52131d48-d34d-4752-a835-d682771e8b62] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 684 ms
+2026-04-12 16:01:43.107 INFO  [SpringApplicationShutdownHook] [rid:] o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-12 16:01:43.111 INFO  [tomcat-shutdown] [rid:] o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-12 16:01:43.119 INFO  [SpringApplicationShutdownHook] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:01:43.123 INFO  [SpringApplicationShutdownHook] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:01:43.129 INFO  [SpringApplicationShutdownHook] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:02:20.099 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:02:20.156 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 28512 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:02:20.158 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:02:21.141 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:02:21.261 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 113 ms. Found 24 JPA repository interfaces.
+2026-04-12 16:02:21.733 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:02:21.747 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:02:21.750 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:02:21.751 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:02:21.824 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:02:21.828 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1634 ms
+2026-04-12 16:02:22.105 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:02:22.251 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1a06602f
+2026-04-12 16:02:22.252 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:02:22.651 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:02:22.701 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 7 migrations (execution time 00:00.033s)
+2026-04-12 16:02:22.710 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 5
+2026-04-12 16:02:22.726 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Migrating schema `prueba_db` to version "6 - seed secondary admin"
+2026-04-12 16:02:22.762 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Successfully applied 1 migration to schema `prueba_db`, now at version v6 (execution time 00:00.019s)
+2026-04-12 16:02:22.847 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:02:22.905 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:02:22.940 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:02:23.168 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:02:23.211 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:02:23.226 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:02:23.240 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:02:24.293 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:02:24.296 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:02:24.684 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:02:24.725 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:02:24.726 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:02:24.767 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:02:26.010 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:02:26.231 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:02:26.714 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:02:26.735 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-04-12 16:02:26.749 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Started ProyectoIntegradorCasachantillyApplication in 7.09 seconds (process running for 7.387)
+2026-04-12 16:02:26.818 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-04-12 16:02:26.819 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-04-12 16:02:26.832 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=admin@casachantilly.pe subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 16:02:26.880 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=aquiles@gmail.com subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 16:02:26.891 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999111222 subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 16:02:26.901 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999300400 subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 16:02:26.910 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=milagros@chantilly.pe subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 16:02:26.919 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999200300 subject=Pedidos urgentes en revisión message=Hay 1 pedido(s) nuevos/urgentes en los últimos 30 minutos.
+2026-04-12 16:02:26.927 INFO  [scheduling-1] [rid:] p.e.u.p.c.AlertaOperativaScheduler - Alerta de pedidos urgentes enviada: 1
+2026-04-12 16:02:26.938 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=admin@casachantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:02:26.948 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=aquiles@gmail.com subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:02:26.959 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999111222 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:02:26.968 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999300400 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:02:26.979 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=milagros@chantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:02:26.988 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999200300 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:02:26.996 INFO  [scheduling-1] [rid:] p.e.u.p.c.AlertaOperativaScheduler - Alerta de stock bajo enviada a 6 administradores para 3 productos
+2026-04-12 16:02:42.413 INFO  [http-nio-8081-exec-1] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-12 16:02:42.413 INFO  [http-nio-8081-exec-1] [rid:] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-12 16:02:42.414 INFO  [http-nio-8081-exec-1] [rid:] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-12 16:02:42.608 WARN  [http-nio-8081-exec-4] [rid:8f2278db-0132-4f93-9e27-121ab907ee5a] o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-04-12 16:12:46.032 INFO  [http-nio-8081-exec-1] [rid:855c1527-e718-43b2-b167-a4539244b159] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 752 ms
+2026-04-12 16:27:27.679 INFO  [SpringApplicationShutdownHook] [rid:] o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2026-04-12 16:27:27.708 INFO  [tomcat-shutdown] [rid:] o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2026-04-12 16:27:27.744 INFO  [SpringApplicationShutdownHook] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:27:27.766 INFO  [SpringApplicationShutdownHook] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:27:27.772 INFO  [SpringApplicationShutdownHook] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:45:34.090 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:45:34.123 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplicationTests - Starting ProyectoIntegradorCasachantillyApplicationTests using Java 21.0.9 with PID 28052 (started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:45:34.123 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:45:35.443 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:45:35.628 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 173 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:45:36.473 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:45:36.718 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1214c98b
+2026-04-12 16:45:36.720 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:45:37.164 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:45:37.232 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.041s)
+2026-04-12 16:45:37.243 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 6
+2026-04-12 16:45:37.271 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Migrating schema `prueba_db` to version "7 - rf roles pagos auditoria alertas"
+2026-04-12 16:45:37.419 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Successfully applied 1 migration to schema `prueba_db`, now at version v7 (execution time 00:00.121s)
+2026-04-12 16:45:37.560 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:45:37.634 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:45:37.676 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:45:37.994 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:45:38.048 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:45:38.054 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:45:38.069 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:45:39.329 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:45:39.331 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:45:39.403 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:45:39.911 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:45:39.912 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:45:39.959 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:45:41.650 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:45:42.041 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:45:42.746 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplicationTests - Started ProyectoIntegradorCasachantillyApplicationTests in 9.052 seconds (process running for 10.01)
+2026-04-12 16:45:42.853 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=admin@casachantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:45:42.856 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-04-12 16:45:42.856 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-04-12 16:45:42.937 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=aquiles@gmail.com subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:45:42.946 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999111222 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:45:42.957 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999300400 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:45:42.966 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=milagros@chantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:45:42.976 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999200300 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:45:42.983 INFO  [scheduling-1] [rid:] p.e.u.p.c.AlertaOperativaScheduler - Alerta de stock bajo enviada a 6 usuarios staff para 3 productos
+2026-04-12 16:45:43.028 INFO  [scheduling-1] [rid:] p.e.u.p.c.SesionCleanupScheduler - Sesiones activas expiradas: 2
+2026-04-12 16:45:43.283 INFO  [SpringApplicationShutdownHook] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:45:43.287 INFO  [SpringApplicationShutdownHook] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:45:43.296 INFO  [SpringApplicationShutdownHook] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:46:50.236 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:46:50.298 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 15004 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:46:50.301 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:46:51.309 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:46:51.426 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 110 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:46:51.897 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:46:51.910 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:46:51.912 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:46:51.912 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:46:51.981 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:46:51.981 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1648 ms
+2026-04-12 16:46:52.242 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:46:52.373 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:46:52.374 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:46:52.778 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:46:52.820 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.028s)
+2026-04-12 16:46:52.829 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:46:52.832 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:46:52.912 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:46:52.953 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:46:52.979 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:46:53.180 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:46:53.226 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:46:53.229 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:46:53.240 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:46:54.228 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:46:54.231 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:46:54.627 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:46:54.666 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:46:54.667 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:46:54.707 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:46:55.911 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:46:56.158 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:46:56.627 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:46:56.718 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2026-04-12 16:46:56.733 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Started ProyectoIntegradorCasachantillyApplication in 6.903 seconds (process running for 7.204)
+2026-04-12 16:46:56.786 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-04-12 16:46:56.787 WARN  [main] [rid:] o.s.c.events.SpringDocAppInitializer - SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-04-12 16:46:56.809 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=admin@casachantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:46:56.909 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=aquiles@gmail.com subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:46:56.956 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999111222 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:46:57.000 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999300400 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:46:57.033 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.EmailNotificacionGatewayMock - [NOTIF MOCK][EMAIL] to=milagros@chantilly.pe subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:46:57.075 INFO  [scheduling-1] [rid:] p.e.u.p.n.s.WhatsappNotificacionGatewayMock - [NOTIF MOCK][WHATSAPP] to=999200300 subject=Alerta: Stock bajo message=Productos con stock bajo:
+- Cheesecake de Maracuya (Entera 18cm): 5 uds
+- Producto QA Front 000420 Editado (Base): 2 uds
+- QA Admin Product 002000 (Base): 1 uds
+
+2026-04-12 16:46:57.116 INFO  [scheduling-1] [rid:] p.e.u.p.c.AlertaOperativaScheduler - Alerta de stock bajo enviada a 6 usuarios staff para 3 productos
+2026-04-12 16:47:08.379 INFO  [http-nio-8081-exec-1] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-12 16:47:08.379 INFO  [http-nio-8081-exec-1] [rid:] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-04-12 16:47:08.381 INFO  [http-nio-8081-exec-1] [rid:] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-04-12 16:47:09.023 WARN  [http-nio-8081-exec-7] [rid:ff0a773f-fa5e-461f-a970-075d4b2894b3] p.e.u.p.comun.GlobalExceptionHandler - Unauthorized en POST /api/auth/login: Credenciales invalidas
+2026-04-12 16:47:37.843 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:47:37.889 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 21520 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:47:37.889 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:47:38.829 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:47:38.947 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 110 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:47:39.415 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:47:39.427 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:47:39.429 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:47:39.429 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:47:39.497 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:47:39.497 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1577 ms
+2026-04-12 16:47:39.740 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:47:39.878 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:47:39.879 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:47:40.274 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:47:40.323 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.036s)
+2026-04-12 16:47:40.332 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:47:40.336 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:47:40.415 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:47:40.470 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:47:40.504 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:47:40.721 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:47:40.764 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:47:40.768 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:47:40.781 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:47:41.835 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:47:41.837 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:47:42.224 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:47:42.260 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:47:42.261 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:47:42.302 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:47:43.478 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:47:43.684 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:47:44.153 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:47:44.159 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:47:44.165 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:47:44.167 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:47:44.171 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:47:44.185 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:47:44.202 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:47:54.139 WARN  [http-nio-8081-exec-4] [rid:e6f01c80-9c71-4a35-a237-c37b2ea15777] p.e.u.p.comun.GlobalExceptionHandler - Unauthorized en POST /api/auth/login: Credenciales invalidas
+2026-04-12 16:47:54.234 WARN  [http-nio-8081-exec-5] [rid:e3d461a5-556e-47f4-aaec-d96c1fcc02e9] p.e.u.p.comun.GlobalExceptionHandler - Unauthorized en POST /api/auth/login: Credenciales invalidas
+2026-04-12 16:47:54.306 WARN  [http-nio-8081-exec-9] [rid:dfe47bcf-3bd6-44ae-8652-0c3d06958304] p.e.u.p.comun.GlobalExceptionHandler - Unauthorized en POST /api/auth/login: Credenciales invalidas
+2026-04-12 16:47:54.386 WARN  [http-nio-8081-exec-10] [rid:9eff1a93-cbbf-4086-a904-947f16f721e5] p.e.u.p.comun.GlobalExceptionHandler - Unauthorized en POST /api/auth/login: Credenciales invalidas
+2026-04-12 16:47:54.393 WARN  [http-nio-8081-exec-1] [rid:c7928d71-97e2-4624-881e-fb824b37e08a] p.e.u.p.comun.GlobalExceptionHandler - Rate limit en POST /api/auth/login: Demasiados intentos de LOGIN. Reintenta en 899 segundos.
+2026-04-12 16:47:54.399 WARN  [http-nio-8081-exec-2] [rid:6f9f62fb-042a-489b-96f1-baa4311a3c00] p.e.u.p.comun.GlobalExceptionHandler - Rate limit en POST /api/auth/login: Demasiados intentos de LOGIN. Reintenta en 899 segundos.
+2026-04-12 16:47:54.403 WARN  [http-nio-8081-exec-3] [rid:f87fb37c-2b3b-4fc5-8ce1-d1c9acf7152a] p.e.u.p.comun.GlobalExceptionHandler - Rate limit en POST /api/auth/login: Demasiados intentos de LOGIN. Reintenta en 899 segundos.
+2026-04-12 16:47:54.408 WARN  [http-nio-8081-exec-7] [rid:ce9581a8-979f-4797-818f-a43a57a92ecd] p.e.u.p.comun.GlobalExceptionHandler - Rate limit en POST /api/auth/login: Demasiados intentos de LOGIN. Reintenta en 899 segundos.
+2026-04-12 16:47:54.412 WARN  [http-nio-8081-exec-8] [rid:a5414590-c9e8-4f10-950b-3f6c689ab357] p.e.u.p.comun.GlobalExceptionHandler - Rate limit en POST /api/auth/login: Demasiados intentos de LOGIN. Reintenta en 899 segundos.
+2026-04-12 16:47:54.417 WARN  [http-nio-8081-exec-6] [rid:5946e642-4a72-4d8a-8d5d-d103e0b3ffce] p.e.u.p.comun.GlobalExceptionHandler - Rate limit en POST /api/auth/login: Demasiados intentos de LOGIN. Reintenta en 899 segundos.
+2026-04-12 16:48:16.882 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:48:16.928 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 28060 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:48:16.929 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:48:17.881 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:48:18.001 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 113 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:48:18.457 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:48:18.467 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:48:18.469 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:48:18.469 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:48:18.530 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:48:18.531 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1572 ms
+2026-04-12 16:48:18.788 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:48:18.925 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:48:18.927 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:48:19.327 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:48:19.368 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.025s)
+2026-04-12 16:48:19.377 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:48:19.380 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:48:19.456 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:48:19.496 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:48:19.522 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:48:19.735 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:48:19.772 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:48:19.776 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:48:19.786 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:48:20.776 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:48:20.779 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:48:21.206 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:48:21.241 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:48:21.242 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:48:21.277 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:48:22.448 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:48:22.667 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:48:23.157 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:48:23.162 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:48:23.168 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:48:23.169 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:48:23.175 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:48:23.188 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:48:23.201 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:48:33.630 WARN  [http-nio-8081-exec-7] [rid:] p.e.u.p.c.RestAccessDeniedHandler - Acceso denegado en GET /api/admin/pedidos para usuario='cliente.rf.1776030513@casachantilly.pe': Access Denied
+2026-04-12 16:49:26.234 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:49:26.290 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 18092 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:49:26.291 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:49:27.266 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:49:27.393 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 118 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:49:27.833 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:49:27.844 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:49:27.846 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:49:27.847 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:49:27.910 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:49:27.911 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1586 ms
+2026-04-12 16:49:28.163 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:49:28.290 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:49:28.292 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:49:28.689 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:49:28.730 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.027s)
+2026-04-12 16:49:28.740 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:49:28.743 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:49:28.827 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:49:28.867 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:49:28.893 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:49:29.096 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:49:29.134 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:49:29.137 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:49:29.148 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:49:30.174 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:49:30.177 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:49:30.566 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:49:30.602 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:49:30.603 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:49:30.638 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:49:31.848 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:49:32.069 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:49:32.546 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:49:32.550 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:49:32.556 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:49:32.558 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:49:32.563 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:49:32.577 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:49:32.594 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:49:42.747 WARN  [http-nio-8081-exec-4] [rid:28e1054c-47fd-4330-92dd-e6d67661698a] o.s.d.w.c.SpringDataJacksonConfiguration$PageModule$WarningLoggingModifier - Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2026-04-12 16:49:43.090 WARN  [http-nio-8081-exec-8] [rid:6acc99d6-7ad7-4a2e-9143-16b3eaba6da8] p.e.u.p.comun.GlobalExceptionHandler - Bad request en POST /api/carrito/items: Esta variante no está activa
+2026-04-12 16:50:14.884 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:50:14.931 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 30608 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:50:14.932 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:50:15.892 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:50:16.008 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 108 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:50:16.476 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:50:16.486 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:50:16.488 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:50:16.488 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:50:16.553 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:50:16.553 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1589 ms
+2026-04-12 16:50:16.807 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:50:16.939 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:50:16.940 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:50:17.356 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:50:17.397 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.026s)
+2026-04-12 16:50:17.407 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:50:17.409 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:50:17.484 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:50:17.524 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:50:17.550 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:50:17.753 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:50:17.801 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:50:17.805 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:50:17.816 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:50:18.805 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:50:18.807 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:50:19.187 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:50:19.227 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:50:19.228 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:50:19.261 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:50:20.421 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:50:20.657 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:50:21.156 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:50:21.160 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:50:21.166 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:50:21.168 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:50:21.172 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:50:21.185 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:50:21.197 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:50:31.556 WARN  [http-nio-8081-exec-1] [rid:] p.e.u.p.c.RestAuthenticationEntryPoint - No autenticado en GET /error: Full authentication is required to access this resource
+2026-04-12 16:51:02.436 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:51:02.485 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 16712 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:51:02.486 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:51:03.454 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:51:03.572 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 111 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:51:04.029 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:51:04.038 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:51:04.040 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:51:04.040 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:51:04.104 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:51:04.104 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1587 ms
+2026-04-12 16:51:04.365 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:51:04.494 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:51:04.496 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:51:04.901 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:51:04.952 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.036s)
+2026-04-12 16:51:04.963 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:51:04.966 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:51:05.045 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:51:05.088 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:51:05.112 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:51:05.317 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:51:05.361 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:51:05.364 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:51:05.375 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:51:06.376 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:51:06.379 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:51:06.770 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:51:06.805 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:51:06.806 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:51:06.849 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:51:08.016 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:51:08.233 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:51:08.735 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:51:08.740 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:51:08.751 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:51:08.754 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:51:08.760 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:51:08.772 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:51:08.786 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:51:44.370 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:51:44.416 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 30048 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:51:44.417 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:51:45.305 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:51:45.417 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 103 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:51:45.834 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:51:45.844 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:51:45.845 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:51:45.846 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:51:45.906 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:51:45.906 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1460 ms
+2026-04-12 16:51:46.136 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:51:46.258 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:51:46.260 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:51:46.659 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:51:46.698 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.025s)
+2026-04-12 16:51:46.707 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:51:46.710 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:51:46.783 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:51:46.822 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:51:46.846 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:51:47.039 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:51:47.082 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:51:47.085 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:51:47.096 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:51:48.015 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:51:48.018 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:51:48.383 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:51:48.416 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:51:48.418 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:51:48.453 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:51:49.554 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:51:49.753 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:51:50.206 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:51:50.211 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:51:50.217 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:51:50.219 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:51:50.223 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:51:50.236 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:51:50.248 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:52:33.572 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:52:33.619 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 30724 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:52:33.620 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:52:34.499 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:52:34.608 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 103 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:52:35.053 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:52:35.063 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:52:35.064 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:52:35.064 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:52:35.132 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:52:35.134 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1485 ms
+2026-04-12 16:52:35.382 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:52:35.505 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:52:35.507 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:52:35.904 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:52:35.950 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.032s)
+2026-04-12 16:52:35.959 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:52:35.961 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:52:36.035 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:52:36.071 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:52:36.097 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:52:36.290 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:52:36.329 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:52:36.331 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:52:36.342 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:52:37.270 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:52:37.272 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:52:37.632 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:52:37.664 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:52:37.665 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:52:37.696 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:52:38.808 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:52:39.007 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:52:39.427 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:52:39.431 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:52:39.437 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:52:39.443 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:52:39.448 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:52:39.460 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:52:39.473 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:52:50.411 WARN  [http-nio-8081-exec-8] [rid:3996fcd8-4495-4e9f-ae79-ca87c44d229b] p.e.u.p.comun.GlobalExceptionHandler - Bad request en POST /api/carrito/items: Esta variante no está activa
+2026-04-12 16:53:18.193 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:53:18.242 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 31120 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:53:18.243 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:53:19.199 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:53:19.314 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 107 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:53:19.734 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:53:19.744 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:53:19.746 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:53:19.747 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:53:19.808 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:53:19.809 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1536 ms
+2026-04-12 16:53:20.056 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:53:20.179 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:53:20.181 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:53:20.588 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:53:20.627 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.025s)
+2026-04-12 16:53:20.636 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:53:20.639 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:53:20.709 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:53:20.747 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:53:20.771 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:53:20.974 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:53:21.019 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:53:21.023 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:53:21.033 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:53:21.975 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:53:21.978 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:53:22.340 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:53:22.373 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:53:22.373 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:53:22.410 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:53:23.525 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:53:23.743 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:53:24.192 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:53:24.196 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:53:24.202 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:53:24.204 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:53:24.209 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:53:24.221 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:53:24.234 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:53:34.743 WARN  [http-nio-8081-exec-1] [rid:9dd8833e-1816-4803-af86-366ac83f5c89] p.e.u.p.comun.GlobalExceptionHandler - Validation error en POST /api/carrito/items
+2026-04-12 16:53:55.340 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:53:55.385 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 2848 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:53:55.386 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:53:56.309 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:53:56.421 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 105 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:53:56.853 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:53:56.863 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:53:56.864 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:53:56.865 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:53:56.925 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:53:56.925 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1506 ms
+2026-04-12 16:53:57.154 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:53:57.282 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:53:57.284 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:53:57.688 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:53:57.727 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.025s)
+2026-04-12 16:53:57.736 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:53:57.738 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:53:57.809 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:53:57.848 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:53:57.872 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:53:58.066 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:53:58.109 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:53:58.111 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:53:58.122 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:53:59.040 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:53:59.043 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:53:59.399 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:53:59.431 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:53:59.432 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:53:59.467 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:54:00.547 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:54:00.745 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:54:01.199 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:54:01.204 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:54:01.211 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:54:01.213 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:54:01.218 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:54:01.230 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:54:01.242 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:54:12.169 WARN  [http-nio-8081-exec-6] [rid:5ffd5b03-0313-4166-b275-dcd66dec9b3d] p.e.u.p.comun.GlobalExceptionHandler - Validation error en POST /api/carrito/items
+2026-04-12 16:54:35.007 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:54:35.050 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 22452 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:54:35.051 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:54:35.922 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:54:36.029 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 100 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:54:36.462 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:54:36.472 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:54:36.474 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:54:36.474 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:54:36.532 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:54:36.533 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1454 ms
+2026-04-12 16:54:36.766 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:54:36.892 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:54:36.893 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:54:37.293 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:54:37.334 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.026s)
+2026-04-12 16:54:37.343 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:54:37.345 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:54:37.415 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:54:37.452 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:54:37.477 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:54:37.666 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:54:37.709 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:54:37.712 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:54:37.723 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:54:38.720 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:54:38.723 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:54:39.147 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:54:39.190 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:54:39.191 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:54:39.234 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:54:40.493 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:54:40.719 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:54:41.200 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:54:41.205 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:54:41.211 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:54:41.213 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:54:41.217 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:54:41.229 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:54:41.241 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:55:26.970 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:55:27.013 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 29672 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:55:27.014 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:55:27.903 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:55:28.017 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 106 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:55:28.449 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:55:28.459 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:55:28.461 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:55:28.461 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:55:28.521 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:55:28.522 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1479 ms
+2026-04-12 16:55:28.790 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:55:28.914 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:55:28.916 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:55:29.316 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:55:29.355 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.024s)
+2026-04-12 16:55:29.363 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:55:29.366 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:55:29.437 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:55:29.476 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:55:29.500 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:55:29.691 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:55:29.736 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:55:29.742 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:55:29.752 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:55:30.686 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:55:30.689 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:55:31.056 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:55:31.095 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:55:31.097 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:55:31.130 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:55:32.265 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:55:32.475 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:55:32.928 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:55:32.933 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:55:32.939 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:55:32.940 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:55:32.944 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:55:32.957 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:55:32.969 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:56:11.325 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:56:11.368 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 31788 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:56:11.369 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:56:12.263 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:56:12.375 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 104 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:56:12.803 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:56:12.816 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:56:12.818 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:56:12.818 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:56:12.884 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:56:12.885 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1486 ms
+2026-04-12 16:56:13.111 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:56:13.234 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:56:13.235 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:56:13.633 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:56:13.672 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.025s)
+2026-04-12 16:56:13.681 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:56:13.683 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:56:13.754 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:56:13.792 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:56:13.818 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:56:14.008 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:56:14.055 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:56:14.057 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:56:14.067 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:56:14.964 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:56:14.967 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:56:15.332 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:56:15.369 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:56:15.369 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:56:15.402 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:56:16.502 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:56:16.707 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:56:17.169 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:56:17.174 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:56:17.180 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:56:17.182 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:56:17.186 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:56:17.198 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:56:17.210 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:56:28.215 WARN  [http-nio-8081-exec-3] [rid:23c71183-5e74-4af8-a8dd-2ee9afb0e828] p.e.u.p.comun.GlobalExceptionHandler - Bad request en POST /api/pagos/cotizacion: Debes seleccionar una franja horaria
+2026-04-12 16:56:46.673 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:56:46.717 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 30340 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:56:46.718 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:56:47.641 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:56:47.756 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 107 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:56:48.175 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:56:48.186 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:56:48.189 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:56:48.189 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:56:48.252 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:56:48.253 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1505 ms
+2026-04-12 16:56:48.502 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:56:48.626 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:56:48.629 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:56:49.027 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:56:49.066 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.024s)
+2026-04-12 16:56:49.074 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:56:49.077 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:56:49.161 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:56:49.200 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:56:49.226 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:56:49.421 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:56:49.456 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:56:49.458 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:56:49.469 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:56:50.365 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:56:50.367 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:56:50.734 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:56:50.767 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:56:50.768 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:56:50.799 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:56:51.906 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:56:52.113 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:56:52.547 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:56:52.550 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:56:52.556 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:56:52.558 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:56:52.563 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:56:52.574 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:56:52.586 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+
+2026-04-12 16:57:03.464 WARN  [http-nio-8081-exec-5] [rid:6ef93d54-6d19-4787-8182-470f78d99980] p.e.u.p.comun.GlobalExceptionHandler - Bad request en POST /api/pagos/cotizacion: Debes seleccionar una franja horaria
+2026-04-12 16:57:45.465 INFO  [background-preinit] [rid:] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+2026-04-12 16:57:45.518 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - Starting ProyectoIntegradorCasachantillyApplication using Java 21.0.9 with PID 27816 (C:\Users\felix\Downloads\proyecto-integrador-casachantilly\target\classes started by felix in C:\Users\felix\Downloads\proyecto-integrador-casachantilly)
+2026-04-12 16:57:45.520 INFO  [main] [rid:] p.e.u.p.ProyectoIntegradorCasachantillyApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-12 16:57:46.451 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-12 16:57:46.563 INFO  [main] [rid:] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 105 ms. Found 25 JPA repository interfaces.
+2026-04-12 16:57:46.977 INFO  [main] [rid:] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2026-04-12 16:57:46.989 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:57:46.991 INFO  [main] [rid:] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-04-12 16:57:46.991 INFO  [main] [rid:] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-04-12 16:57:47.054 INFO  [main] [rid:] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-04-12 16:57:47.054 INFO  [main] [rid:] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1503 ms
+2026-04-12 16:57:47.286 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-04-12 16:57:47.407 INFO  [main] [rid:] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3c8fe8ad
+2026-04-12 16:57:47.410 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-04-12 16:57:47.813 INFO  [main] [rid:] org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/prueba_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Lima&characterEncoding=UTF-8 (MySQL 5.5)
+2026-04-12 16:57:47.849 INFO  [main] [rid:] o.f.core.internal.command.DbValidate - Successfully validated 8 migrations (execution time 00:00.024s)
+2026-04-12 16:57:47.858 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Current version of schema `prueba_db`: 7
+2026-04-12 16:57:47.860 INFO  [main] [rid:] o.f.core.internal.command.DbMigrate - Schema `prueba_db` is up to date. No migration necessary.
+2026-04-12 16:57:47.937 INFO  [main] [rid:] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-12 16:57:47.987 INFO  [main] [rid:] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-04-12 16:57:48.012 INFO  [main] [rid:] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-04-12 16:57:48.204 INFO  [main] [rid:] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-12 16:57:48.238 WARN  [main] [rid:] org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-04-12 16:57:48.241 WARN  [main] [rid:] org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-12 16:57:48.251 INFO  [main] [rid:] o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 5.5.5
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-12 16:57:49.152 INFO  [main] [rid:] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-04-12 16:57:49.155 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:57:49.511 WARN  [main] [rid:] o.s.aop.framework.CglibAopProxy - Unable to proxy interface-implementing method [public final void org.springframework.web.filter.GenericFilterBean.init(jakarta.servlet.FilterConfig) throws jakarta.servlet.ServletException] because it is marked as final, consider using interface-based JDK proxies instead.
+2026-04-12 16:57:49.546 INFO  [main] [rid:] o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2026-04-12 16:57:49.546 WARN  [main] [rid:] o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2026-04-12 16:57:49.583 INFO  [main] [rid:] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-12 16:57:50.692 INFO  [main] [rid:] o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: class path resource [static/index.html]
+2026-04-12 16:57:50.889 INFO  [main] [rid:] o.s.b.a.e.web.EndpointLinksResolver - Exposing 3 endpoints beneath base path '/actuator'
+2026-04-12 16:57:51.342 INFO  [main] [rid:] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8081"]
+2026-04-12 16:57:51.345 WARN  [main] [rid:] o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'webServerStartStop'
+2026-04-12 16:57:51.352 INFO  [main] [rid:] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-04-12 16:57:51.354 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-04-12 16:57:51.359 INFO  [main] [rid:] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-04-12 16:57:51.371 INFO  [main] [rid:] o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-04-12 16:57:51.383 ERROR [main] [rid:] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Web server failed to start. Port 8081 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 8081 or configure this application to listen on another port.
+

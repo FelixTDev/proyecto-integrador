@@ -70,12 +70,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/entregas/**").permitAll()
                         .requestMatchers("/api/promociones/vigentes").permitAll()
 
+                        .requestMatchers("/api/admin/pedidos/**").hasAnyRole("ADMIN", "VENDEDOR")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
-                        .requestMatchers("/api/carrito/**").hasRole("CLIENTE")
-                        .requestMatchers("/api/pagos/**").hasRole("CLIENTE")
-                        .requestMatchers("/api/promociones/**").hasRole("CLIENTE")
+                        .requestMatchers("/api/cliente/**").hasAnyRole("CLIENTE", "ADMIN")
+                        .requestMatchers("/api/carrito/**").hasAnyRole("CLIENTE", "ADMIN")
+                        .requestMatchers("/api/pagos/**").hasAnyRole("CLIENTE", "ADMIN")
+                        .requestMatchers("/api/promociones/**").hasAnyRole("CLIENTE", "ADMIN")
 
                         .requestMatchers("/api/chat/**").authenticated()
                         .requestMatchers("/api/pedidos/**").authenticated()
