@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiErrorData;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.excepcion.BadRequestException;
@@ -59,6 +60,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class, UnsupportedOperationException.class})
     public ResponseEntity<ApiResponse<ApiErrorData>> handleMalformedRequest(Exception ex, HttpServletRequest req) {
         return build(HttpStatus.BAD_REQUEST, "Solicitud invalida", "MALFORMED_REQUEST", req.getRequestURI(), Map.of());
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiResponse<ApiErrorData>> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex, HttpServletRequest req) {
+        return build(HttpStatus.METHOD_NOT_ALLOWED, ex.getMessage(), "METHOD_NOT_ALLOWED", req.getRequestURI(), Map.of());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

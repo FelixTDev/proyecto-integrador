@@ -69,6 +69,17 @@ public class AdminProductoController {
         ));
     }
 
+    /** RF05 — Eliminar producto (baja lógica). DELETE /api/admin/productos/{id} */
+    @Operation(summary = "Eliminar producto (desactivación lógica)")
+    @DeleteMapping("/productos/{id}")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> eliminar(@PathVariable Integer id) {
+        adminProductoService.eliminarProductoLogico(id);
+        return ResponseEntity.ok(ApiResponse.ok(
+                "Producto eliminado logicamente",
+                Map.of("id", id, "activo", false)
+        ));
+    }
+
     /** RF05 — Registrar movimiento de inventario. POST /api/admin/variantes/{id}/inventario */
     @Operation(summary = "Registrar movimiento de inventario para una variante")
     @PostMapping("/variantes/{id}/inventario")

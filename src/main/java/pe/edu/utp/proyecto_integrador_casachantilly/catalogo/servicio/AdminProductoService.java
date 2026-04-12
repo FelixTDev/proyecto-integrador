@@ -115,6 +115,22 @@ public class AdminProductoService {
         return producto.getActivo();
     }
 
+    @Transactional
+    public void eliminarProductoLogico(Integer id) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado: " + id));
+
+        if (!Boolean.TRUE.equals(producto.getActivo())) {
+            return;
+        }
+
+        producto.setActivo(false);
+        producto.setFechaActualizacion(LocalDateTime.now());
+        productoRepository.save(producto);
+
+        varianteRepository.desactivarPorProductoId(id);
+    }
+
 
 
     @Transactional
