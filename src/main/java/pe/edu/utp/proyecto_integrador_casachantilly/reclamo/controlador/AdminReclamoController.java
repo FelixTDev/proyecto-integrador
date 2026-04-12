@@ -16,7 +16,7 @@ import java.util.List;
 
 @Tag(name = "Admin — Reclamos", description = "Gestión administrativa de reclamos")
 @SecurityRequirement(name = "bearerAuth")
-@PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/api/admin/reclamos")
 public class AdminReclamoController {

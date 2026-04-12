@@ -28,6 +28,10 @@ public record AdminCrearEmpleadoRequest(
         String telefono,
 
         @NotBlank(message = "El rol es requerido")
+        @Pattern(
+                regexp = "(?i)^ADMIN$",
+                message = "El rol permitido es ADMIN"
+        )
         String rol
 ) {}
 

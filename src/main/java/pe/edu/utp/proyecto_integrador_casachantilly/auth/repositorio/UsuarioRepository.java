@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Usuario;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -12,6 +13,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     Optional<Usuario> findByEmailIgnoreCase(String email);
     boolean existsByEmailIgnoreCase(String email);
     Optional<Usuario> findByResetToken(String resetToken);
+    List<Usuario> findDistinctByRolesNombreOrderByFechaCreacionDesc(String rolNombre);
 
     @Override
     default void deleteById(Integer id) {

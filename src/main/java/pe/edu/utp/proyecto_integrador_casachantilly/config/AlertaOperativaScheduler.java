@@ -111,7 +111,7 @@ public class AlertaOperativaScheduler {
             }
 
             List<Integer> adminIds = jdbcTemplate.queryForList(
-                    "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre IN ('ADMIN','VENDEDOR')",
+                    "SELECT ur.usuario_id FROM usuario_rol ur JOIN rol r ON r.id = ur.rol_id WHERE r.nombre = 'ADMIN'",
                     Integer.class
             );
             for (Integer adminId : adminIds) {

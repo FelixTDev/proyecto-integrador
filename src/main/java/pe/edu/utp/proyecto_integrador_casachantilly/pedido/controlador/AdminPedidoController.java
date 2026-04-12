@@ -24,7 +24,7 @@ import java.util.List;
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/admin/pedidos")
-@PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminPedidoController {
 
     @Autowired private PedidoGestionService pedidoGestionService;

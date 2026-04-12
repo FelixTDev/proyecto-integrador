@@ -24,7 +24,7 @@ import java.util.Map;
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/api/admin/insights")
-@PreAuthorize("hasAnyRole('ADMIN','VENDEDOR')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminInsightsController {
 
     @Autowired

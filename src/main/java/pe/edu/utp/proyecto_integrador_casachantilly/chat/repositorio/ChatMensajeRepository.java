@@ -24,6 +24,6 @@ public interface ChatMensajeRepository extends JpaRepository<ChatMensaje, Intege
 
     @Query("SELECT COUNT(c) FROM ChatMensaje c WHERE c.leido = false " +
            "AND c.usuarioId NOT IN (SELECT u.id FROM pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Usuario u " +
-           "JOIN u.roles r WHERE r.nombre = 'ADMIN' OR r.nombre = 'VENDEDOR')")
+           "JOIN u.roles r WHERE r.nombre = 'ADMIN')")
     long contarNoLeidosAdmin();
 }

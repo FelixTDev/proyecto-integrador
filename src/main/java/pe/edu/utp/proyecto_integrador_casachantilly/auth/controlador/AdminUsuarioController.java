@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AdminCrearEmpleadoRequest;
+import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AdminEmpleadoListItemResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.servicio.AuthService;
 import pe.edu.utp.proyecto_integrador_casachantilly.comun.dto.ApiResponse;
 
+import java.util.List;
 import java.util.Map;
 
 @Tag(name = "Admin — Usuarios", description = "Gestión de estado lógico de usuarios")
@@ -29,7 +32,7 @@ public class AdminUsuarioController {
     @Autowired
     private AuthService authService;
 
-    @Operation(summary = "Crear nuevo empleado (ADMIN o VENDEDOR)")
+    @Operation(summary = "Crear nuevo empleado administrativo (solo ADMIN)")
     @PostMapping("/empleados")
     public ResponseEntity<ApiResponse<Map<String, Object>>> crearEmpleado(
             @Valid @RequestBody AdminCrearEmpleadoRequest request) {
@@ -37,6 +40,15 @@ public class AdminUsuarioController {
         return ResponseEntity.ok(ApiResponse.ok(
                 "Empleado creado",
                 Map.of("id", id, "email", request.email(), "rol", request.rol().toUpperCase())
+        ));
+    }
+
+    @Operation(summary = "Listar empleados administrables (rol ADMIN)")
+    @GetMapping("/empleados")
+    public ResponseEntity<ApiResponse<List<AdminEmpleadoListItemResponse>>> listarEmpleados() {
+        return ResponseEntity.ok(ApiResponse.ok(
+                "Empleados administrativos",
+                authService.listarEmpleadosAdministrables()
         ));
     }
 

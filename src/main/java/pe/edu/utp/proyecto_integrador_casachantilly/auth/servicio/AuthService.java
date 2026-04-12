@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AuthResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AdminCrearEmpleadoRequest;
+import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.AdminEmpleadoListItemResponse;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.LoginRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.dto.RegistroRequest;
 import pe.edu.utp.proyecto_integrador_casachantilly.auth.entidad.Rol;
@@ -31,6 +32,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.HexFormat;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -126,8 +128,8 @@ public class AuthService {
         if (telefono != null && !telefono.isBlank() && !telefono.matches("^\\d{9}$")) {
             throw new BadRequestException("El número de celular debe tener 9 dígitos");
         }
-        if (!("ADMIN".equals(rolNombre) || "VENDEDOR".equals(rolNombre))) {
-            throw new BadRequestException("Rol inválido. Use ADMIN o VENDEDOR");
+        if (!"ADMIN".equals(rolNombre)) {
+            throw new BadRequestException("Rol inválido. Use ADMIN");
         }
         if (usuarioRepository.existsByEmailIgnoreCase(email)) {
             throw new BadRequestException("Ya existe un usuario con el email: " + email);
@@ -147,6 +149,19 @@ public class AuthService {
         usuario.getRoles().add(rol);
         usuarioRepository.save(usuario);
         return usuario.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public List<AdminEmpleadoListItemResponse> listarEmpleadosAdministrables() {
+        return usuarioRepository.findDistinctByRolesNombreOrderByFechaCreacionDesc("ADMIN").stream()
+                .map(usuario -> new AdminEmpleadoListItemResponse(
+                        usuario.getId(),
+                        usuario.getNombre(),
+                        usuario.getEmail(),
+                        "ADMIN",
+                        Boolean.TRUE.equals(usuario.getActivo()),
+                        usuario.getFechaCreacion()))
+                .toList();
     }
 
 

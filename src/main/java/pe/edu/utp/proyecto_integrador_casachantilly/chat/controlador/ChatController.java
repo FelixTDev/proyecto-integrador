@@ -58,7 +58,7 @@ public class ChatController {
         var usuario = usuarioRepository.findByEmailIgnoreCase(auth.getName())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         boolean esStaff = usuario.getRoles().stream()
-                .anyMatch(r -> "ADMIN".equals(r.getNombre()) || "VENDEDOR".equals(r.getNombre()));
+                .anyMatch(r -> "ADMIN".equals(r.getNombre()));
         return new UserContext(usuario.getId(), esStaff);
     }
 

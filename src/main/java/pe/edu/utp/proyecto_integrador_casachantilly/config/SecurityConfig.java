@@ -70,7 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/entregas/**").permitAll()
                         .requestMatchers("/api/promociones/vigentes").permitAll()
 
-                        .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
                         .requestMatchers("/api/carrito/**").hasRole("CLIENTE")
